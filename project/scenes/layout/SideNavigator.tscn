@@ -1,0 +1,167 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/ui/NavButton.tscn" id="1_nav_btn"]
+[ext_resource type="PackedScene" path="res://scenes/ui/LevelButton.tscn" id="2_level_btn"]
+[ext_resource type="PackedScene" path="res://scenes/ui/FishActionRow.tscn" id="3_fish_row"]
+
+[sub_resource type="StyleBoxFlat" id="1"]
+bg_color = Color(0.0470588, 0.101961, 0.192157, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.101961, 0.317647, 0.611765, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="SideNavigator" type="PanelContainer"]
+custom_minimum_size = Vector2(318, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("1")
+
+[node name="SideMargin" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="SideVBox" type="VBoxContainer" parent="SideMargin"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 4
+
+[node name="HubTitle" type="Label" parent="SideMargin/SideVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.937255, 0.905882, 0.713726, 1)
+theme_override_font_sizes/font_size = 22
+text = "Sanctuary Hub"
+
+[node name="Hub1" parent="SideMargin/SideVBox" instance=ExtResource("1_nav_btn")]
+layout_mode = 2
+text = "Coral Lab"
+
+[node name="Hub2" parent="SideMargin/SideVBox" instance=ExtResource("1_nav_btn")]
+layout_mode = 2
+text = "Fish Hatchery"
+
+[node name="Hub3" parent="SideMargin/SideVBox" instance=ExtResource("1_nav_btn")]
+layout_mode = 2
+text = "Upgrade Workshop"
+
+[node name="Hub4" parent="SideMargin/SideVBox" instance=ExtResource("1_nav_btn")]
+layout_mode = 2
+text = "Quest Log"
+
+[node name="NavigatorRow" type="HBoxContainer" parent="SideMargin/SideVBox"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="PrevLevelButton" parent="SideMargin/SideVBox/NavigatorRow" instance=ExtResource("2_level_btn")]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Prev"
+
+[node name="OpenNavigatorButton" parent="SideMargin/SideVBox/NavigatorRow" instance=ExtResource("2_level_btn")]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Blocks"
+
+[node name="NextLevelNavButton" parent="SideMargin/SideVBox/NavigatorRow" instance=ExtResource("2_level_btn")]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Next"
+
+[node name="HomeButton" parent="SideMargin/SideVBox" instance=ExtResource("2_level_btn")]
+layout_mode = 2
+text = "Back Home"
+
+[node name="FishActionsTitle" type="Label" parent="SideMargin/SideVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.933333, 0.913725, 0.768627, 1)
+theme_override_font_sizes/font_size = 17
+text = "Fish Actions"
+
+[node name="FishActionsScroll" type="ScrollContainer" parent="SideMargin/SideVBox"]
+custom_minimum_size = Vector2(0, 96)
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 1
+
+[node name="FishActionsBox" type="VBoxContainer" parent="SideMargin/SideVBox/FishActionsScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="FishRow1" parent="SideMargin/SideVBox/FishActionsScroll/FishActionsBox" instance=ExtResource("3_fish_row")]
+layout_mode = 2
+[node name="FishRow2" parent="SideMargin/SideVBox/FishActionsScroll/FishActionsBox" instance=ExtResource("3_fish_row")]
+layout_mode = 2
+[node name="FishRow3" parent="SideMargin/SideVBox/FishActionsScroll/FishActionsBox" instance=ExtResource("3_fish_row")]
+layout_mode = 2
+[node name="FishRow4" parent="SideMargin/SideVBox/FishActionsScroll/FishActionsBox" instance=ExtResource("3_fish_row")]
+layout_mode = 2
+[node name="FishRow5" parent="SideMargin/SideVBox/FishActionsScroll/FishActionsBox" instance=ExtResource("3_fish_row")]
+layout_mode = 2
+[node name="FishRow6" parent="SideMargin/SideVBox/FishActionsScroll/FishActionsBox" instance=ExtResource("3_fish_row")]
+layout_mode = 2
+[node name="FishRow7" parent="SideMargin/SideVBox/FishActionsScroll/FishActionsBox" instance=ExtResource("3_fish_row")]
+layout_mode = 2
+[node name="FishRow8" parent="SideMargin/SideVBox/FishActionsScroll/FishActionsBox" instance=ExtResource("3_fish_row")]
+layout_mode = 2
+[node name="FishRow9" parent="SideMargin/SideVBox/FishActionsScroll/FishActionsBox" instance=ExtResource("3_fish_row")]
+layout_mode = 2
+[node name="FishRow10" parent="SideMargin/SideVBox/FishActionsScroll/FishActionsBox" instance=ExtResource("3_fish_row")]
+layout_mode = 2
+
+[node name="ActionsRow" type="HBoxContainer" parent="SideMargin/SideVBox"]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="NextTurnButton" parent="SideMargin/SideVBox/ActionsRow" instance=ExtResource("2_level_btn")]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Turn"
+
+[node name="ResetButton" parent="SideMargin/SideVBox/ActionsRow" instance=ExtResource("2_level_btn")]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Reset"
+
+[node name="SyncButton" parent="SideMargin/SideVBox/ActionsRow" instance=ExtResource("2_level_btn")]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Sync"
+
+[node name="LoadButton" parent="SideMargin/SideVBox/ActionsRow" instance=ExtResource("2_level_btn")]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Load"
+
+[node name="StatusLabel" type="Label" parent="SideMargin/SideVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.921569, 0.815686, 0.490196, 1)
+theme_override_font_sizes/font_size = 14
+text = "Connected"
+
+[node name="ProgressLabel" type="Label" parent="SideMargin/SideVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.87451, 0.901961, 0.952941, 1)
+theme_override_font_sizes/font_size = 12
+text = "L1 Turns:6 Coral:2/8 Food:0"
+
+[node name="ObjectiveLabel" type="RichTextLabel" parent="SideMargin/SideVBox"]
+visible = false
+layout_mode = 2
+custom_minimum_size = Vector2(0, 60)
+bbcode_enabled = true
+
+[node name="FishLabel" type="RichTextLabel" parent="SideMargin/SideVBox"]
+visible = false
+layout_mode = 2
+custom_minimum_size = Vector2(0, 80)
+bbcode_enabled = true

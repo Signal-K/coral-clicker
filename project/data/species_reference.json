@@ -1,0 +1,60 @@
+{
+  "corals": [
+    "Antipathes atlantica",
+    "Antipathes furcata",
+    "Bebryce Sp.",
+    "Ellisellidae",
+    "Madracis Sp.",
+    "Madrepora Sp.",
+    "Muricea pendula",
+    "Acanthogorgiidae",
+    "Stichopathes",
+    "Swiftia exserta",
+    "Thesea nivea",
+    "Sponge"
+  ],
+  "fish_species": [
+    {
+      "name": "Blue Chromis",
+      "scientific_name": "Chromis cyanea",
+      "habitat": "Caribbean reef slopes",
+      "effect": "supports branching and fan corals"
+    },
+    {
+      "name": "French Angelfish",
+      "scientific_name": "Pomacanthus paru",
+      "habitat": "Western Atlantic reef and sponge habitats",
+      "effect": "supports sponge and sea-whip coral balance"
+    },
+    {
+      "name": "Creole Wrasse",
+      "scientific_name": "Clepticus parrae",
+      "habitat": "Caribbean outer reef and drop-offs",
+      "effect": "supports deep-water black coral scenarios"
+    },
+    {
+      "name": "Sergeant Major",
+      "scientific_name": "Abudefduf saxatilis",
+      "habitat": "Shallow to mid-depth Atlantic reefs",
+      "effect": "fast breeder that stabilizes early levels"
+    },
+    {
+      "name": "Parrotfish",
+      "scientific_name": "Sparisoma viride",
+      "habitat": "Caribbean reef flats and slopes",
+      "effect": "controls algae pressure and helps coral recruitment"
+    }
+  ],
+  "stressors": [
+    {
+      "name": "Red Lionfish",
+      "scientific_name": "Pterois volitans",
+      "effect": "predation pressure reduces beneficial fish"
+    },
+    {
+      "name": "Longspine Sea Urchin",
+      "scientific_name": "Diadema antillarum",
+      "effect": "overgrazing at high population harms some coral species"
+    }
+  ]
+}

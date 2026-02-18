@@ -1,0 +1,128 @@
+{
+  "economy": {
+    "starting_carryover_fishfood": 20,
+    "completion_bonus_currency": "fishfood"
+  },
+  "levels": [
+    {
+      "id": 1,
+      "name": "Nursery Reef",
+      "target_coral": "Madracis Sp.",
+      "target_population": 8,
+      "turn_limit": 6,
+      "starting_fishfood": 12,
+      "positive_fish": ["Blue Chromis", "Sergeant Major"],
+      "negative_fish": ["Longspine Sea Urchin"],
+      "starting_fish": {"Blue Chromis": 3, "Sergeant Major": 2, "Longspine Sea Urchin": 1},
+      "reward_fishfood": 8
+    },
+    {
+      "id": 2,
+      "name": "Fan Coral Current",
+      "target_coral": "Muricea pendula",
+      "target_population": 7,
+      "turn_limit": 7,
+      "starting_fishfood": 10,
+      "positive_fish": ["Blue Chromis", "Creole Wrasse"],
+      "negative_fish": ["Red Lionfish"],
+      "starting_fish": {"Blue Chromis": 2, "Creole Wrasse": 3, "Red Lionfish": 1},
+      "reward_fishfood": 9
+    },
+    {
+      "id": 3,
+      "name": "Black Coral Slope",
+      "target_coral": "Antipathes atlantica",
+      "target_population": 6,
+      "turn_limit": 8,
+      "starting_fishfood": 11,
+      "positive_fish": ["Creole Wrasse", "French Angelfish"],
+      "negative_fish": ["Red Lionfish"],
+      "starting_fish": {"Creole Wrasse": 3, "French Angelfish": 1, "Red Lionfish": 2},
+      "reward_fishfood": 11
+    },
+    {
+      "id": 4,
+      "name": "Branching Spire",
+      "target_coral": "Stichopathes",
+      "target_population": 9,
+      "turn_limit": 8,
+      "starting_fishfood": 12,
+      "positive_fish": ["Parrotfish", "Blue Chromis"],
+      "negative_fish": ["Longspine Sea Urchin"],
+      "starting_fish": {"Parrotfish": 2, "Blue Chromis": 2, "Longspine Sea Urchin": 2},
+      "reward_fishfood": 12
+    },
+    {
+      "id": 5,
+      "name": "Ellisellidae Ridge",
+      "target_coral": "Ellisellidae",
+      "target_population": 10,
+      "turn_limit": 9,
+      "starting_fishfood": 14,
+      "positive_fish": ["Blue Chromis", "Creole Wrasse"],
+      "negative_fish": ["Red Lionfish", "Longspine Sea Urchin"],
+      "starting_fish": {"Blue Chromis": 4, "Creole Wrasse": 2, "Red Lionfish": 1, "Longspine Sea Urchin": 1},
+      "reward_fishfood": 14
+    },
+    {
+      "id": 6,
+      "name": "Sea Whip Channel",
+      "target_coral": "Thesea nivea",
+      "target_population": 11,
+      "turn_limit": 10,
+      "starting_fishfood": 14,
+      "positive_fish": ["Sergeant Major", "French Angelfish"],
+      "negative_fish": ["Red Lionfish"],
+      "starting_fish": {"Sergeant Major": 3, "French Angelfish": 2, "Red Lionfish": 1},
+      "reward_fishfood": 15
+    },
+    {
+      "id": 7,
+      "name": "Deep Spur Wall",
+      "target_coral": "Madrepora Sp.",
+      "target_population": 12,
+      "turn_limit": 10,
+      "starting_fishfood": 15,
+      "positive_fish": ["Creole Wrasse", "Parrotfish"],
+      "negative_fish": ["Longspine Sea Urchin"],
+      "starting_fish": {"Creole Wrasse": 3, "Parrotfish": 2, "Longspine Sea Urchin": 2},
+      "reward_fishfood": 16
+    },
+    {
+      "id": 8,
+      "name": "Sponge Garden",
+      "target_coral": "Sponge",
+      "target_population": 12,
+      "turn_limit": 11,
+      "starting_fishfood": 16,
+      "positive_fish": ["French Angelfish", "Blue Chromis"],
+      "negative_fish": ["Red Lionfish"],
+      "starting_fish": {"French Angelfish": 3, "Blue Chromis": 2, "Red Lionfish": 1},
+      "reward_fishfood": 18
+    },
+    {
+      "id": 9,
+      "name": "Antipathes Crest",
+      "target_coral": "Antipathes furcata",
+      "target_population": 13,
+      "turn_limit": 11,
+      "starting_fishfood": 17,
+      "positive_fish": ["Creole Wrasse", "French Angelfish"],
+      "negative_fish": ["Red Lionfish", "Longspine Sea Urchin"],
+      "starting_fish": {"Creole Wrasse": 3, "French Angelfish": 2, "Red Lionfish": 1, "Longspine Sea Urchin": 1},
+      "reward_fishfood": 19
+    },
+    {
+      "id": 10,
+      "name": "Biodiversity Gauntlet",
+      "target_coral": "Acanthogorgiidae",
+      "target_population": 14,
+      "turn_limit": 12,
+      "starting_fishfood": 18,
+      "positive_fish": ["Blue Chromis", "Sergeant Major", "Parrotfish"],
+      "negative_fish": ["Red Lionfish", "Longspine Sea Urchin"],
+      "starting_fish": {"Blue Chromis": 3, "Sergeant Major": 3, "Parrotfish": 2, "Red Lionfish": 1, "Longspine Sea Urchin": 1},
+      "reward_fishfood": 24
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+{
+  "runtime": "desktop",
+  "transport": "ipc"
+}

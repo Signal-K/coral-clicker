@@ -1,0 +1,91 @@
+name: coral
+
+x-common-env: &common-env
+  SUPABASE_URL: http://host.docker.internal:54321
+  SUPABASE_ANON_KEY: sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH
+  SUPABASE_TABLE: player_progress
+  DEFAULT_PLAYER_ID: local-player
+
+x-common-host: &common-host
+  extra_hosts:
+    - "host.docker.internal:host-gateway"
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: docker/web.Dockerfile
+    working_dir: /workspace/web
+    command: sh -c "npm install && npm run dev"
+    ports:
+      - "3000:3000"
+    environment:
+      <<: *common-env
+    volumes:
+      - ./:/workspace
+      - web_node_modules:/workspace/web/node_modules
+    <<: *common-host
+
+  bridge:
+    build:
+      context: .
+      dockerfile: docker/bridge.Dockerfile
+    working_dir: /workspace
+    command: sh -c "node bridge/server.js"
+    ports:
+      - "8787:8787"
+    environment:
+      <<: *common-env
+      BRIDGE_PORT: 8787
+    volumes:
+      - ./:/workspace
+      - root_node_modules:/workspace/node_modules
+    <<: *common-host
+
+  native-metro:
+    build:
+      context: .
+      dockerfile: docker/native.Dockerfile
+    working_dir: /workspace
+    command: sh -c "npm install && npm run start"
+    ports:
+      - "8081:8081"
+    environment:
+      <<: *common-env
+    volumes:
+      - ./:/workspace
+      - root_node_modules:/workspace/node_modules
+    <<: *common-host
+
+  electron:
+    profiles: ["desktop"]
+    build:
+      context: .
+      dockerfile: docker/electron.Dockerfile
+    working_dir: /workspace
+    command: sh -c "npm --prefix electron install && npm --prefix electron run dev"
+    environment:
+      <<: *common-env
+      WEB_URL: http://web:3000
+      DISPLAY: ${DISPLAY:-}
+    volumes:
+      - ./:/workspace
+      - electron_node_modules:/workspace/electron/node_modules
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    depends_on:
+      - web
+
+  sprites:
+    profiles: ["tools"]
+    build:
+      context: .
+      dockerfile: docker/sprites.Dockerfile
+    working_dir: /workspace
+    command: sh -c "pip install --no-cache-dir -r tools/sprites/requirements.txt && python tools/sprites/generate_sprites.py --out-dir tools/sprites/out"
+    volumes:
+      - ./:/workspace
+
+volumes:
+  web_node_modules:
+  root_node_modules:
+  electron_node_modules:

@@ -1,0 +1,87 @@
+:root {
+  --bg: #051421;
+  --bg-soft: #0a2336;
+  --card: #0d2f4a;
+  --accent: #45d0ff;
+  --text: #e2f3ff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: radial-gradient(circle at 20% 10%, #133f60 0%, var(--bg) 45%, #041018 100%);
+  color: var(--text);
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+}
+
+main {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 16px;
+  padding: 16px;
+}
+
+.panel {
+  background: color-mix(in srgb, var(--card) 90%, black 10%);
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  border-radius: 14px;
+  padding: 12px;
+}
+
+.panel h1 {
+  margin-top: 0;
+  font-size: 1.2rem;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.controls button,
+.block button {
+  background: var(--bg-soft);
+  color: var(--text);
+  border: 1px solid #2d607f;
+  border-radius: 10px;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.block {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+iframe {
+  width: 100%;
+  height: calc(100vh - 32px);
+  border: 1px solid #2d607f;
+  border-radius: 14px;
+  background: black;
+}
+
+pre {
+  font-size: 12px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+@media (max-width: 960px) {
+  main {
+    grid-template-columns: 1fr;
+  }
+
+  iframe {
+    height: 62vh;
+  }
+}

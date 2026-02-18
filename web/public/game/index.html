@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coral Godot Web Host</title>
+    <style>
+      body {
+        margin: 0;
+        display: grid;
+        place-items: center;
+        min-height: 100vh;
+        font-family: Arial, sans-serif;
+        color: #d6edff;
+        background: radial-gradient(circle at 30% 0%, #17425f, #041019 60%);
+      }
+      .card {
+        width: min(90vw, 760px);
+        border: 1px solid #2f6b8f;
+        border-radius: 16px;
+        padding: 20px;
+        background: rgba(4, 16, 25, 0.8);
+      }
+      pre {
+        white-space: pre-wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>Godot Web Placeholder</h1>
+      <p>
+        Replace this page with your exported Godot Web build files (`index.js`, `.wasm`, `.pck`).
+        The message bridge contract already works and can be reused in production.
+      </p>
+      <pre id="out">Awaiting commands from host...</pre>
+    </div>
+
+    <script>
+      const out = document.getElementById("out");
+      const state = {
+        current_level: 1,
+        completed_levels: [],
+        rewards_total: 0,
+      };
+
+      function log(line) {
+        out.textContent = `${line}\n${out.textContent}`;
+      }
+
+      function emit(payload) {
+        window.parent.postMessage({ type: "godot:event", payload }, "*");
+      }
+
+      window.addEventListener("message", (event) => {
+        if (!event.data || event.data.type !== "godot:command") return;
+        const payload = event.data.payload || {};
+
+        if (payload.action === "select_level") {
+          state.current_level = Number(payload.level || 1);
+        }
+
+        if (payload.action === "complete_level") {
+          if (!state.completed_levels.includes(state.current_level)) {
+            state.completed_levels.push(state.current_level);
+          }
+          state.rewards_total += Number(payload.reward || 100);
+          state.current_level = Math.min(10, state.current_level + 1);
+        }
+
+        log(`command: ${JSON.stringify(payload)}`);
+        emit({ state });
+      });
+    </script>
+  </body>
+</html>

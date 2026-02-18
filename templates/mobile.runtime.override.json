@@ -1,0 +1,4 @@
+{
+  "runtime": "mobile",
+  "transport": "native-module"
+}

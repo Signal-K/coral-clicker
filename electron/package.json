@@ -1,0 +1,11 @@
+{
+  "name": "coral-electron",
+  "private": true,
+  "main": "main.js",
+  "scripts": {
+    "dev": "electron ."
+  },
+  "devDependencies": {
+    "electron": "34.1.1"
+  }
+}

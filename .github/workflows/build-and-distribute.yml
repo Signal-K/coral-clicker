@@ -1,0 +1,129 @@
+name: Build And Distribute
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-test-distribute:
+    runs-on: ubuntu-latest
+    env:
+      NODE_OPTIONS: --max-old-space-size=4096
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          npm run web:install
+          npm run electron:install
+          npm run template:generate
+
+      - name: Install Godot 4.5 headless
+        run: |
+          set -euo pipefail
+          GODOT_URL="https://github.com/godotengine/godot/releases/download/4.5-stable/Godot_v4.5-stable_linux.x86_64.zip"
+          curl -fsSL "$GODOT_URL" -o /tmp/godot.zip
+          unzip -q /tmp/godot.zip -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$RUNNER_TEMP/godot/Godot_v4.5-stable_linux.x86_64"
+          chmod +x "$GODOT_BIN"
+          echo "GODOT_EDITOR=$GODOT_BIN" >> "$GITHUB_ENV"
+
+      - name: Run all tests
+        run: npm run test:all
+
+      - name: Simulate Vercel preview deployment (non-live)
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -n "${VERCEL_TOKEN:-}" ]; then
+            npx --yes vercel@latest pull --yes --environment=preview --cwd web --token "$VERCEL_TOKEN"
+            npx --yes vercel@latest build --cwd web --token "$VERCEL_TOKEN"
+          else
+            echo "VERCEL_TOKEN not set; running local deploy simulation with Next.js build"
+            npm run web:build
+          fi
+
+      - name: Build web app
+        run: npm run web:build
+
+      - name: Export Godot assets for iOS and Android
+        run: npm run godot:export:all
+
+      - name: Build React Native JS bundles (iOS/Android)
+        run: |
+          mkdir -p dist/rn/ios dist/rn/android
+          npx react-native bundle --entry-file index.js --platform ios --dev false --bundle-output dist/rn/ios/main.jsbundle --assets-dest dist/rn/ios
+          npx react-native bundle --entry-file index.js --platform android --dev false --bundle-output dist/rn/android/index.android.bundle --assets-dest dist/rn/android
+
+      - name: Package Electron app (Linux)
+        run: |
+          mkdir -p dist/electron
+          npx --yes electron-packager@17 electron Coral --platform=linux --arch=x64 --overwrite --prune=true --out dist/electron
+
+      - name: Upload web build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-next-build
+          path: |
+            web/.next
+            web/package.json
+            web/next.config.*
+          if-no-files-found: error
+
+      - name: Upload Vercel simulation output
+        uses: actions/upload-artifact@v4
+        with:
+          name: vercel-preview-simulation
+          path: |
+            web/.vercel/output
+          if-no-files-found: ignore
+
+      - name: Upload Godot iOS export artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: godot-ios-export
+          path: ios/GodotTest.pck
+          if-no-files-found: error
+
+      - name: Upload Godot Android export artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: godot-android-export
+          path: android/app/src/main/assets/GodotTest
+          if-no-files-found: error
+
+      - name: Upload React Native bundles
+        uses: actions/upload-artifact@v4
+        with:
+          name: react-native-bundles
+          path: dist/rn
+          if-no-files-found: error
+
+      - name: Upload Electron packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: electron-linux-package
+          path: dist/electron
+          if-no-files-found: error

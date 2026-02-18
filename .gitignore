@@ -1,0 +1,43 @@
+# macOS
+.DS_Store
+
+# Node / JS
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Build and runtime outputs
+dist/
+build/
+coverage/
+.next/
+out/
+tmp/
+*.log
+
+# React Native / Expo derived files
+.expo/
+.expo-shared/
+android/.gradle/
+android/app/build/
+android/build/
+ios/build/
+ios/Pods/
+
+# Godot derived files
+project/.godot/
+project/.import/
+project/export_presets.cfg.bak
+*.translation

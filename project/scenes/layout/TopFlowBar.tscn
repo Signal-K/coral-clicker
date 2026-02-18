@@ -1,0 +1,207 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/ui/StatMeter.tscn" id="1_stat_meter"]
+[ext_resource type="PackedScene" path="res://scenes/ui/LevelButton.tscn" id="2_level_btn"]
+[ext_resource type="Texture2D" path="res://assets/sprites/blue_chromis_frame_00.png" id="3_fish1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/creole_wrasse_frame_00.png" id="4_fish2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/parrotfish_frame_00.png" id="5_fish3"]
+
+[sub_resource type="StyleBoxFlat" id="1"]
+bg_color = Color(0.0470588, 0.101961, 0.192157, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.101961, 0.317647, 0.611765, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="2"]
+bg_color = Color(0.101961, 0.160784, 0.270588, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.172549, 0.364706, 0.631373, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="3"]
+bg_color = Color(0.960784, 0.733333, 0.188235, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.596078, 0.384314, 0.0823529, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="TopFlowBar" type="PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("1")
+
+[node name="TopMargin" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 6
+
+[node name="TopVBox" type="VBoxContainer" parent="TopMargin"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="SceneMenuRow" type="HBoxContainer" parent="TopMargin/TopVBox"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="MenuCoralLab" parent="TopMargin/TopVBox/SceneMenuRow" instance=ExtResource("2_level_btn")]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Coral Lab"
+
+[node name="MenuFishHatchery" parent="TopMargin/TopVBox/SceneMenuRow" instance=ExtResource("2_level_btn")]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Fish Hatchery"
+
+[node name="MenuUpgradeWorkshop" parent="TopMargin/TopVBox/SceneMenuRow" instance=ExtResource("2_level_btn")]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Upgrade"
+
+[node name="MenuQuestLog" parent="TopMargin/TopVBox/SceneMenuRow" instance=ExtResource("2_level_btn")]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Quests"
+
+[node name="MenuMap" parent="TopMargin/TopVBox/SceneMenuRow" instance=ExtResource("2_level_btn")]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Map"
+
+[node name="BreedRow" type="HBoxContainer" parent="TopMargin/TopVBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="FishAGroup" type="VBoxContainer" parent="TopMargin/TopVBox/BreedRow"]
+layout_mode = 2
+
+[node name="FishA" type="TextureRect" parent="TopMargin/TopVBox/BreedRow/FishAGroup"]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+texture = ExtResource("3_fish1")
+stretch_mode = 5
+
+[node name="FishAName" type="Label" parent="TopMargin/TopVBox/BreedRow/FishAGroup"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.937255, 0.835294, 0.458824, 1)
+theme_override_font_sizes/font_size = 12
+text = "Glintfin"
+horizontal_alignment = 1
+
+[node name="Plus" type="Label" parent="TopMargin/TopVBox/BreedRow"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.984314, 0.811765, 0.427451, 1)
+theme_override_font_sizes/font_size = 24
+text = "+"
+vertical_alignment = 1
+
+[node name="FishBGroup" type="VBoxContainer" parent="TopMargin/TopVBox/BreedRow"]
+layout_mode = 2
+
+[node name="FishB" type="TextureRect" parent="TopMargin/TopVBox/BreedRow/FishBGroup"]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+texture = ExtResource("4_fish2")
+stretch_mode = 5
+
+[node name="FishBName" type="Label" parent="TopMargin/TopVBox/BreedRow/FishBGroup"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.694118, 0.792157, 0.901961, 1)
+theme_override_font_sizes/font_size = 12
+text = "Aquaquill"
+horizontal_alignment = 1
+
+[node name="Arrow" type="Label" parent="TopMargin/TopVBox/BreedRow"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.901961, 0.72549, 0.388235, 1)
+theme_override_font_sizes/font_size = 24
+text = ">>"
+vertical_alignment = 1
+
+[node name="FishCGroup" type="VBoxContainer" parent="TopMargin/TopVBox/BreedRow"]
+layout_mode = 2
+
+[node name="FishC" type="TextureRect" parent="TopMargin/TopVBox/BreedRow/FishCGroup"]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+texture = ExtResource("5_fish3")
+stretch_mode = 5
+
+[node name="FishCName" type="Label" parent="TopMargin/TopVBox/BreedRow/FishCGroup"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.921569, 0.686275, 0.34902, 1)
+theme_override_font_sizes/font_size = 12
+text = "Amber Guppy"
+horizontal_alignment = 1
+
+[node name="BreedSpacer" type="Control" parent="TopMargin/TopVBox/BreedRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ResultNameBox" type="PanelContainer" parent="TopMargin/TopVBox/BreedRow"]
+custom_minimum_size = Vector2(180, 38)
+layout_mode = 2
+theme_override_styles/panel = SubResource("2")
+
+[node name="ResultName" type="Label" parent="TopMargin/TopVBox/BreedRow/ResultNameBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.937255, 0.905882, 0.713726, 1)
+theme_override_font_sizes/font_size = 16
+text = "Amber Guppy"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BreedButton" type="Button" parent="TopMargin/TopVBox/BreedRow"]
+custom_minimum_size = Vector2(90, 38)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.152941, 0.0901961, 0.0196078, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("3")
+theme_override_styles/hover = SubResource("3")
+theme_override_styles/pressed = SubResource("3")
+text = "Breed"
+
+[node name="MetersRow" type="HBoxContainer" parent="TopMargin/TopVBox"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SalinityMeter" parent="TopMargin/TopVBox/MetersRow" instance=ExtResource("1_stat_meter")]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TitleLabel" parent="TopMargin/TopVBox/MetersRow/SalinityMeter"]
+text = "Salinity"
+
+[node name="Bar" parent="TopMargin/TopVBox/MetersRow/SalinityMeter"]
+name = "SalinityBar"
+value = 63.0
+
+[node name="TemperatureMeter" parent="TopMargin/TopVBox/MetersRow" instance=ExtResource("1_stat_meter")]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TitleLabel" parent="TopMargin/TopVBox/MetersRow/TemperatureMeter"]
+text = "Temperature"
+
+[node name="Bar" parent="TopMargin/TopVBox/MetersRow/TemperatureMeter"]
+name = "TempBar"
+value = 51.0
