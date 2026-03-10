@@ -1,4 +1,3 @@
-// Box.tsx
 import React, {memo} from "react";
 import {View, ViewStyle} from "react-native";
 

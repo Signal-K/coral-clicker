@@ -48,7 +48,6 @@ export const Wrapper: React.FC<IProps> = ({
   const {top, bottom} = useSafeAreaInsets();
   const transition = useSharedValue(0);
 
-  const controlsHeight = useSharedValue(0);
   const desiredScale = useSharedValue(1);
 
   const onControlsLayout = useCallback(
@@ -78,7 +77,7 @@ export const Wrapper: React.FC<IProps> = ({
         },
       ],
     }),
-    [top, controlsHeight, screenHeight],
+    [top, screenHeight],
   );
 
   const animatedButtonStyles = useAnimatedStyle(() => ({

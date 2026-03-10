@@ -23,9 +23,6 @@ export const Item: React.FC<ItemProps> = ({children, label, onPress}) => {
           borderRadius: 16,
           paddingHorizontal: 12,
           paddingVertical: 8,
-          // borderRadius: 19,
-          // paddingHorizontal: 15,
-          // paddingVertical: 10,
           boxShadow: "inset 0px 1.5px 1px 0px #404040",
         }}>
         {children}
