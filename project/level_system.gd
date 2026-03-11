@@ -45,21 +45,32 @@ var controller: Node = null
 var level_buttons: Array[Button] = []
 var fish_rows: Array[Dictionary] = []
 
+# Level state
 var _active_level_id := -1
 var _level_state: Dictionary = {}
 var _level_def: Dictionary = {}
 
+# Simulation state
 var _turns_remaining := 0
-var _target_population := 0
-var _coral_population := 0
+var _coral_composition: Dictionary = {}   # {coral_species: count} grown so far
+var _target_composition: Dictionary = {}  # {coral_species: count} from the reef image
+var _match_threshold := 0.75              # fraction required to win
+var _match_score := 0.0                   # current intersection score 0..1
 var _fishfood_remaining := 0
 var _session_over := false
 
+# Fish state
 var _fish_population: Dictionary = {}
-var _positive_fish: Array = []
-var _negative_fish: Array = []
+var _positive_fish: Array = []            # species that produce coral
+var _negative_fish: Array = []            # stressors that suppress production
+var _available_fish: Array[String] = []   # species the player can recruit mid-level
 var _fish_species_order: Array[String] = []
+
+# Constraints and reference data
+var _placement_constraints: Dictionary = {}
+var _species_reference: Dictionary = {}   # loaded once from AppController
 var _active_menu := "Coral Lab"
+
 
 func _ready() -> void:
 	controller = get_node_or_null("/root/AppController")
@@ -129,6 +140,14 @@ func _connect_controller() -> void:
 		controller.level_progress_changed.connect(_on_level_progress_changed)
 	if controller.has_signal("supabase_sync_status"):
 		controller.supabase_sync_status.connect(_on_supabase_sync_status)
+
+	# Load species reference once — needed for per-fish production rules
+	if controller.has_method("get_species_reference_json"):
+		var raw := str(controller.call("get_species_reference_json"))
+		var parsed = JSON.parse_string(raw)
+		if typeof(parsed) == TYPE_DICTIONARY:
+			_species_reference = parsed
+
 	status_label.text = "Connected"
 
 
@@ -180,11 +199,22 @@ func _start_level_from_state(parsed: Dictionary) -> void:
 	if typeof(_level_def) != TYPE_DICTIONARY:
 		_level_def = {}
 
-	_target_population = int(_level_def.get("target_population", 8))
+	# Composition target derived from the citizen-science reef image
+	_target_composition = _level_def.get("target_composition", {})
+	if typeof(_target_composition) != TYPE_DICTIONARY:
+		_target_composition = {}
+	_match_threshold = float(_level_def.get("match_threshold", 0.75))
+	_match_score = 0.0
+
 	_turns_remaining = int(_level_def.get("turn_limit", 6))
-	_coral_population = maxi(1, int(round(_target_population * 0.35)))
+	_coral_composition = {}
 	_fishfood_remaining = int(parsed.get("current_level_available_fishfood", 0))
 	_session_over = false
+
+	_available_fish = _to_string_array(_level_def.get("available_fish", []))
+	_placement_constraints = _level_def.get("placement_constraints", {})
+	if typeof(_placement_constraints) != TYPE_DICTIONARY:
+		_placement_constraints = {}
 
 	_fish_population = {}
 	var starting_fish: Dictionary = _level_def.get("starting_fish", {})
@@ -198,6 +228,10 @@ func _start_level_from_state(parsed: Dictionary) -> void:
 		if not _fish_population.has(species):
 			_fish_population[species] = 0
 	for species in _negative_fish:
+		if not _fish_population.has(species):
+			_fish_population[species] = 0
+	# Available fish start at 0 — recruited via the Breed button
+	for species in _available_fish:
 		if not _fish_population.has(species):
 			_fish_population[species] = 0
 
@@ -290,49 +324,76 @@ func _on_net_pressed(index: int) -> void:
 func _adjust_fish(species: String, delta: int) -> void:
 	if _session_over:
 		return
-	if _fishfood_remaining <= 0:
+	if delta > 0 and _fishfood_remaining <= 0:
 		status_label.text = "Out of fishfood"
 		return
 
 	var current := int(_fish_population.get(species, 0))
-	var next_value := maxi(0, current + delta)
+	var max_per_species := int(_placement_constraints.get("max_fish_per_species", 99))
+	var next_value := clampi(current + delta, 0, max_per_species)
 	if next_value == current:
 		return
 
 	_fish_population[species] = next_value
-	_fishfood_remaining -= 1
+	if delta > 0:
+		_fishfood_remaining -= 1
 	_update_text()
 
+
+#region Simulation
 
 func _advance_turn() -> void:
 	if _session_over:
 		return
 
-	var support := 0
-	for species in _positive_fish:
-		support += int(_fish_population.get(species, 0))
-
-	var stress := 0
+	# Stressor suppression: each stressor reduces total production
+	# suppresses_threshold: species only suppresses above that population count
+	var raw_suppression := 0.0
 	for species in _negative_fish:
-		stress += int(_fish_population.get(species, 0))
+		var count := float(_fish_population.get(species, 0))
+		if count <= 0.0:
+			continue
+		var data := _get_stressor_data(species)
+		var threshold := int(data.get("suppresses_threshold", 0))
+		if threshold > 0 and count <= float(threshold):
+			continue
+		raw_suppression += count * float(data.get("suppresses_rate", 0.25))
 
-	var coral_delta := int(round(1.0 + support * 0.30 - stress * 0.35))
-	_coral_population = maxi(0, _coral_population + coral_delta)
+	var stressor_mult := float(_placement_constraints.get("stressor_multiplier", 1.0))
+	var suppression := clampf(raw_suppression * stressor_mult, 0.0, 0.9)
 
+	# Each positive fish produces coral according to its species_reference entry
+	for species in _positive_fish:
+		var count := float(_fish_population.get(species, 0))
+		if count <= 0.0:
+			continue
+		var data := _get_fish_data(species)
+		var produces: Variant = data.get("produces", {})
+		if typeof(produces) != TYPE_DICTIONARY:
+			continue
+		var effective := count * float(data.get("produces_rate", 0.4)) * (1.0 - suppression)
+		for coral_species in produces.keys():
+			var amount := int(round(effective * float(produces[coral_species])))
+			if amount > 0:
+				_coral_composition[coral_species] = int(_coral_composition.get(coral_species, 0)) + amount
+
+	# Fish breed passively each turn
 	for species in _positive_fish:
 		_fish_population[species] = int(_fish_population.get(species, 0)) + 1
 
-	if stress >= support:
+	# Stressors grow when their suppression output exceeds half the positive fish count
+	if raw_suppression >= float(_positive_fish.size()) * 0.5:
 		for species in _negative_fish:
 			_fish_population[species] = int(_fish_population.get(species, 0)) + 1
 
 	_fishfood_remaining += 1
 	_turns_remaining -= 1
+	_match_score = _calculate_match_score()
 
-	if _coral_population >= _target_population:
+	if _match_score >= _match_threshold:
 		_session_over = true
 		var reward := int(_level_def.get("reward_fishfood", 0))
-		status_label.text = "Level %d complete! Reward: %d fishfood" % [_active_level_id, reward]
+		status_label.text = "Level %d complete! Match: %d%% | +%d fishfood" % [_active_level_id, int(_match_score * 100), reward]
 		if controller and controller.has_method("complete_current_level"):
 			controller.call("complete_current_level")
 		_refresh_fish_rows()
@@ -341,7 +402,7 @@ func _advance_turn() -> void:
 
 	if _turns_remaining <= 0:
 		_session_over = true
-		status_label.text = "Level failed. Reset and try again."
+		status_label.text = "Level failed. Match: %d%% (need %d%%). Reset to try again." % [int(_match_score * 100), int(_match_threshold * 100)]
 		_refresh_fish_rows()
 
 	_update_text()
@@ -350,18 +411,38 @@ func _advance_turn() -> void:
 func _on_breed_pressed() -> void:
 	if _session_over:
 		return
-	if _fish_species_order.size() < 1:
-		status_label.text = "No fish available for breeding"
-		return
 	if _fishfood_remaining <= 0:
 		status_label.text = "Need fishfood to breed"
 		return
 
-	var breed_target := _fish_species_order[0]
-	_fish_population[breed_target] = int(_fish_population.get(breed_target, 0)) + 1
-	_fishfood_remaining -= 1
-	status_label.text = "Bred %s" % breed_target
-	_update_text()
+	var turn_elapsed := int(_level_def.get("turn_limit", 6)) - _turns_remaining
+	var turn_unlock: Dictionary = _placement_constraints.get("turn_unlock", {})
+	if typeof(turn_unlock) != TYPE_DICTIONARY:
+		turn_unlock = {}
+	var max_per_species := int(_placement_constraints.get("max_fish_per_species", 99))
+
+	# Prefer recruiting from available_fish (new species), fall back to positive_fish
+	var candidates: Array = _available_fish if not _available_fish.is_empty() else _positive_fish
+
+	for species in candidates:
+		if int(turn_unlock.get(species, 0)) > turn_elapsed:
+			continue
+		var current := int(_fish_population.get(species, 0))
+		if current >= max_per_species:
+			continue
+		_fish_population[species] = current + 1
+		if not _fish_species_order.has(species):
+			_fish_species_order.append(species)
+			_fish_species_order.sort()
+		_fishfood_remaining -= 1
+		status_label.text = "Bred %s" % species
+		_refresh_fish_rows()
+		_update_text()
+		return
+
+	status_label.text = "No fish available to recruit (cap reached or turn-locked)"
+
+#endregion
 
 
 func _on_prev_level_pressed() -> void:
@@ -398,16 +479,37 @@ func _reset_level() -> void:
 func _update_text() -> void:
 	var rewards_total := int(_level_state.get("rewards_total", 0))
 	var carryover := int(_level_state.get("carryover_fishfood", 0))
-	progress_label.text = "%s | L%d T:%d C:%d/%d F:%d R:%d" % [_active_menu, _active_level_id, _turns_remaining, _coral_population, _target_population, _fishfood_remaining, rewards_total + carryover]
+	progress_label.text = "%s | L%d T:%d F:%d R:%d Match:%d%%" % [
+		_active_menu, _active_level_id, _turns_remaining,
+		_fishfood_remaining, rewards_total + carryover, int(_match_score * 100)
+	]
 
+	# Objective panel: target composition (from image) vs coral grown so far
 	var level_name := str(_level_def.get("name", "Unknown Level"))
-	var target_coral := str(_level_def.get("target_coral", "Unknown"))
-	objective_label.text = "[b]%s[/b] | Target: %s" % [level_name, target_coral]
+	var zone := str(_level_def.get("zone", ""))
+	var header := "[b]%s[/b]" % level_name
+	if not zone.is_empty():
+		header += "  [%s]" % zone
+	header += "  — Match %d%% / need %d%%" % [int(_match_score * 100), int(_match_threshold * 100)]
+	var obj_lines := [header]
+	for species in _target_composition.keys():
+		var target_count := int(_target_composition[species])
+		var actual_count := int(_coral_composition.get(species, 0))
+		obj_lines.append("  %s  %d / %d" % [species, actual_count, target_count])
+	objective_label.text = "\n".join(obj_lines)
 
-	var lines := ["[b]Fish[/b]"]
+	# Fish panel: populations + all coral grown this session
+	var fish_lines := ["[b]Fish[/b]"]
 	for species in _fish_species_order:
-		lines.append("%s:%d" % [species, int(_fish_population.get(species, 0))])
-	fish_label.text = "\n".join(lines)
+		fish_lines.append("  %s: %d" % [species, int(_fish_population.get(species, 0))])
+	fish_lines.append("")
+	fish_lines.append("[b]Coral grown[/b]")
+	if _coral_composition.is_empty():
+		fish_lines.append("  (none yet — advance turn to produce)")
+	else:
+		for species in _coral_composition.keys():
+			fish_lines.append("  %s: %d" % [species, int(_coral_composition[species])])
+	fish_label.text = "\n".join(fish_lines)
 
 	next_turn_button.disabled = _session_over
 	reset_button.disabled = _active_level_id <= 0
@@ -417,6 +519,53 @@ func _on_supabase_sync_status(payload_json: String) -> void:
 	var parsed = JSON.parse_string(payload_json)
 	if typeof(parsed) != TYPE_DICTIONARY:
 		return
-	var message := str(parsed.get("message", ""))
-	var kind := str(parsed.get("kind", ""))
-	status_label.text = "%s: %s" % [kind.to_upper(), message]
+	status_label.text = "%s: %s" % [str(parsed.get("kind", "")).to_upper(), str(parsed.get("message", ""))]
+
+
+#region Species lookup
+
+func _get_fish_data(species_name: String) -> Dictionary:
+	for entry in _species_reference.get("fish_species", []):
+		if str(entry.get("name", "")) == species_name:
+			return entry
+	return {}
+
+
+func _get_stressor_data(species_name: String) -> Dictionary:
+	for entry in _species_reference.get("stressors", []):
+		if str(entry.get("name", "")) == species_name:
+			return entry
+	return {}
+
+#endregion
+
+
+#region Match scoring
+
+# Intersection score: sum of min(actual_frac, target_frac) across all target species.
+# Reaches 1.0 when the grown composition perfectly matches the target fractions.
+func _calculate_match_score() -> float:
+	if _target_composition.is_empty():
+		return 0.0
+
+	var target_total := 0
+	for v in _target_composition.values():
+		target_total += int(v)
+	if target_total == 0:
+		return 0.0
+
+	var actual_total := 0
+	for v in _coral_composition.values():
+		actual_total += int(v)
+	if actual_total == 0:
+		return 0.0
+
+	var overlap := 0.0
+	for species in _target_composition.keys():
+		var t_frac := float(int(_target_composition[species])) / float(target_total)
+		var a_frac := float(int(_coral_composition.get(species, 0))) / float(actual_total)
+		overlap += minf(t_frac, a_frac)
+
+	return clampf(overlap, 0.0, 1.0)
+
+#endregion

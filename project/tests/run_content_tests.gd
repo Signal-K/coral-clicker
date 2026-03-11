@@ -27,8 +27,26 @@ func _init() -> void:
 
 	for idx in range(levels.size()):
 		var level: Dictionary = levels[idx]
-		if not level.has("target_coral") or not level.has("starting_fishfood") or not level.has("reward_fishfood"):
-			_fail("Level %d missing required fields" % int(level.get("id", idx + 1)))
+		var level_id := int(level.get("id", idx + 1))
+
+		# Required fields
+		if not level.has("target_composition") or not level.has("starting_fishfood") or not level.has("reward_fishfood"):
+			_fail("Level %d missing required fields (target_composition, starting_fishfood, reward_fishfood)" % level_id)
+			return
+		if typeof(level.get("target_composition")) != TYPE_DICTIONARY or level["target_composition"].is_empty():
+			_fail("Level %d target_composition must be a non-empty dictionary" % level_id)
+			return
+		if not level.has("match_threshold"):
+			_fail("Level %d missing match_threshold" % level_id)
+			return
+		if not level.has("zone") or str(level.get("zone", "")).is_empty():
+			_fail("Level %d missing zone" % level_id)
+			return
+		if not level.has("available_fish"):
+			_fail("Level %d missing available_fish" % level_id)
+			return
+		if not level.has("placement_constraints"):
+			_fail("Level %d missing placement_constraints" % level_id)
 			return
 
 	var species_doc = JSON.parse_string(FileAccess.get_file_as_string(species_path))
@@ -38,9 +56,28 @@ func _init() -> void:
 	if species_doc.get("corals", []).size() < 12:
 		_fail("Expected at least 12 coral entries")
 		return
-	if species_doc.get("fish_species", []).size() < 5:
+
+	var fish_list: Array = species_doc.get("fish_species", [])
+	if fish_list.size() < 5:
 		_fail("Expected at least 5 fish species entries")
 		return
+
+	# Validate each fish has production rules
+	for fish in fish_list:
+		var name := str(fish.get("name", ""))
+		if not fish.has("produces") or typeof(fish.get("produces")) != TYPE_DICTIONARY:
+			_fail("Fish '%s' missing produces dictionary" % name)
+			return
+		if not fish.has("produces_rate"):
+			_fail("Fish '%s' missing produces_rate" % name)
+			return
+
+	var stressor_list: Array = species_doc.get("stressors", [])
+	for stressor in stressor_list:
+		var name := str(stressor.get("name", ""))
+		if not stressor.has("suppresses_rate"):
+			_fail("Stressor '%s' missing suppresses_rate" % name)
+			return
 
 	var app_controller_script = load("res://app_controller.gd")
 	var app_controller = app_controller_script.new()
@@ -60,11 +97,12 @@ func _init() -> void:
 	if typeof(state) != TYPE_DICTIONARY:
 		_fail("AppController state JSON is invalid")
 		return
-	if int(state.get("current_level_available_fishfood", 0)) < 64:
-		# Not a strict gameplay rule, but ensures carryover+level provisioning is non-trivial.
-		# Default is level1(12)+carryover(20)=32 before progression.
-		# We avoid hard-failing low economy values if game design changes.
-		pass
+
+	# Verify level 1 definition has the new format
+	var level_def = state.get("current_level_definition", {})
+	if typeof(level_def) != TYPE_DICTIONARY or not level_def.has("target_composition"):
+		_fail("Level 1 definition missing target_composition in state")
+		return
 
 	print("Godot content tests passed")
 	quit(0)

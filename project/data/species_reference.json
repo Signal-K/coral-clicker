@@ -18,43 +18,76 @@
       "name": "Blue Chromis",
       "scientific_name": "Chromis cyanea",
       "habitat": "Caribbean reef slopes",
-      "effect": "supports branching and fan corals"
+      "effect": "supports branching and fan corals",
+      "produces": {
+        "Madracis Sp.": 0.50,
+        "Muricea pendula": 0.30,
+        "Ellisellidae": 0.20
+      },
+      "produces_rate": 0.40
     },
     {
       "name": "French Angelfish",
       "scientific_name": "Pomacanthus paru",
       "habitat": "Western Atlantic reef and sponge habitats",
-      "effect": "supports sponge and sea-whip coral balance"
+      "effect": "supports sponge and sea-whip coral balance",
+      "produces": {
+        "Sponge": 0.45,
+        "Thesea nivea": 0.40,
+        "Swiftia exserta": 0.15
+      },
+      "produces_rate": 0.35
     },
     {
       "name": "Creole Wrasse",
       "scientific_name": "Clepticus parrae",
       "habitat": "Caribbean outer reef and drop-offs",
-      "effect": "supports deep-water black coral scenarios"
+      "effect": "supports deep-water black coral scenarios",
+      "produces": {
+        "Antipathes atlantica": 0.40,
+        "Antipathes furcata": 0.35,
+        "Stichopathes": 0.25
+      },
+      "produces_rate": 0.45
     },
     {
       "name": "Sergeant Major",
       "scientific_name": "Abudefduf saxatilis",
       "habitat": "Shallow to mid-depth Atlantic reefs",
-      "effect": "fast breeder that stabilizes early levels"
+      "effect": "fast breeder that stabilizes early levels",
+      "produces": {
+        "Madracis Sp.": 0.60,
+        "Bebryce Sp.": 0.40
+      },
+      "produces_rate": 0.50
     },
     {
       "name": "Parrotfish",
       "scientific_name": "Sparisoma viride",
       "habitat": "Caribbean reef flats and slopes",
-      "effect": "controls algae pressure and helps coral recruitment"
+      "effect": "controls algae pressure and helps coral recruitment",
+      "produces": {
+        "Acanthogorgiidae": 0.40,
+        "Madrepora Sp.": 0.35,
+        "Bebryce Sp.": 0.25
+      },
+      "produces_rate": 0.40
     }
   ],
   "stressors": [
     {
       "name": "Red Lionfish",
       "scientific_name": "Pterois volitans",
-      "effect": "predation pressure reduces beneficial fish"
+      "effect": "predation pressure reduces beneficial fish production",
+      "suppresses_rate": 0.25,
+      "suppresses_threshold": 0
     },
     {
       "name": "Longspine Sea Urchin",
       "scientific_name": "Diadema antillarum",
-      "effect": "overgrazing at high population harms some coral species"
+      "effect": "overgrazing at high population harms coral growth",
+      "suppresses_rate": 0.15,
+      "suppresses_threshold": 3
     }
   ]
 }

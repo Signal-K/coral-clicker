@@ -1,0 +1,2 @@
+# Full subject manifest can be very large — regenerate with fetch_subjects.py
+subjects_manifest.json

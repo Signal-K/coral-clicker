@@ -7,122 +7,394 @@
     {
       "id": 1,
       "name": "Nursery Reef",
-      "target_coral": "Madracis Sp.",
-      "target_population": 8,
+      "description": "A sheltered shallow reef dominated by branching Madracis. Identify the coral mix in the image, then breed your starting fish to replicate it.",
+      "zone": "shallow",
+      "target_composition": {
+        "Madracis Sp.": 5,
+        "Muricea pendula": 2,
+        "Bebryce Sp.": 1
+      },
+      "match_threshold": 0.7,
       "turn_limit": 6,
       "starting_fishfood": 12,
-      "positive_fish": ["Blue Chromis", "Sergeant Major"],
-      "negative_fish": ["Longspine Sea Urchin"],
-      "starting_fish": {"Blue Chromis": 3, "Sergeant Major": 2, "Longspine Sea Urchin": 1},
-      "reward_fishfood": 8
+      "starting_fish": {
+        "Blue Chromis": 3,
+        "Sergeant Major": 2,
+        "Longspine Sea Urchin": 1
+      },
+      "positive_fish": [
+        "Blue Chromis",
+        "Sergeant Major"
+      ],
+      "negative_fish": [
+        "Longspine Sea Urchin"
+      ],
+      "available_fish": [],
+      "placement_constraints": {},
+      "reward_fishfood": 8,
+      "source_subject_id": "105090202",
+      "source_image_url": "https://panoptes-uploads.zooniverse.org/subject_location/bddf9aa2-af96-49ab-b42f-d60cbd391fd7.png",
+      "source_image_path": "res://assets/reef_images/subject_105090202.png"
     },
     {
       "id": 2,
       "name": "Fan Coral Current",
-      "target_coral": "Muricea pendula",
-      "target_population": 7,
+      "description": "A mid-slope fan coral zone where Chromis and Wrasse compete with Lionfish pressure. Recruit extra Chromis to tilt the composition.",
+      "zone": "shallow",
+      "target_composition": {
+        "Muricea pendula": 4,
+        "Ellisellidae": 3,
+        "Antipathes atlantica": 2
+      },
+      "match_threshold": 0.72,
       "turn_limit": 7,
       "starting_fishfood": 10,
-      "positive_fish": ["Blue Chromis", "Creole Wrasse"],
-      "negative_fish": ["Red Lionfish"],
-      "starting_fish": {"Blue Chromis": 2, "Creole Wrasse": 3, "Red Lionfish": 1},
-      "reward_fishfood": 9
+      "starting_fish": {
+        "Blue Chromis": 2,
+        "Creole Wrasse": 3,
+        "Red Lionfish": 1
+      },
+      "positive_fish": [
+        "Blue Chromis",
+        "Creole Wrasse"
+      ],
+      "negative_fish": [
+        "Red Lionfish"
+      ],
+      "available_fish": [
+        "Blue Chromis"
+      ],
+      "placement_constraints": {
+        "max_fish_per_species": 4
+      },
+      "reward_fishfood": 9,
+      "source_subject_id": "104997319",
+      "source_image_url": "https://panoptes-uploads.zooniverse.org/subject_location/3a04117f-eb2d-4620-ac90-c01a5aeaede6.png",
+      "source_image_path": "res://assets/reef_images/subject_104997319.png"
     },
     {
       "id": 3,
       "name": "Black Coral Slope",
-      "target_coral": "Antipathes atlantica",
-      "target_population": 6,
+      "description": "A deeper slope thick with black coral. Creole Wrasse are your primary producers here \u2014 keep Lionfish under control.",
+      "zone": "mid",
+      "target_composition": {
+        "Antipathes atlantica": 4,
+        "Antipathes furcata": 3,
+        "Stichopathes": 2
+      },
+      "match_threshold": 0.73,
       "turn_limit": 8,
       "starting_fishfood": 11,
-      "positive_fish": ["Creole Wrasse", "French Angelfish"],
-      "negative_fish": ["Red Lionfish"],
-      "starting_fish": {"Creole Wrasse": 3, "French Angelfish": 1, "Red Lionfish": 2},
-      "reward_fishfood": 11
+      "starting_fish": {
+        "Creole Wrasse": 3,
+        "French Angelfish": 1,
+        "Red Lionfish": 2
+      },
+      "positive_fish": [
+        "Creole Wrasse",
+        "French Angelfish"
+      ],
+      "negative_fish": [
+        "Red Lionfish"
+      ],
+      "available_fish": [
+        "Creole Wrasse"
+      ],
+      "placement_constraints": {
+        "max_fish_per_species": 4
+      },
+      "reward_fishfood": 11,
+      "source_subject_id": "104357394",
+      "source_image_url": "https://panoptes-uploads.zooniverse.org/subject_location/f78f3252-7086-4055-b087-e7e31ef9624e.png",
+      "source_image_path": "res://assets/reef_images/subject_104357394.png"
     },
     {
       "id": 4,
       "name": "Branching Spire",
-      "target_coral": "Stichopathes",
-      "target_population": 9,
+      "description": "A complex spire community. Parrotfish and Chromis produce distinct coral types \u2014 balance them carefully to hit the target mix.",
+      "zone": "mid",
+      "target_composition": {
+        "Acanthogorgiidae": 3,
+        "Madrepora Sp.": 3,
+        "Madracis Sp.": 2,
+        "Ellisellidae": 2
+      },
+      "match_threshold": 0.74,
       "turn_limit": 8,
       "starting_fishfood": 12,
-      "positive_fish": ["Parrotfish", "Blue Chromis"],
-      "negative_fish": ["Longspine Sea Urchin"],
-      "starting_fish": {"Parrotfish": 2, "Blue Chromis": 2, "Longspine Sea Urchin": 2},
-      "reward_fishfood": 12
+      "starting_fish": {
+        "Parrotfish": 2,
+        "Blue Chromis": 2,
+        "Longspine Sea Urchin": 2
+      },
+      "positive_fish": [
+        "Parrotfish",
+        "Blue Chromis"
+      ],
+      "negative_fish": [
+        "Longspine Sea Urchin"
+      ],
+      "available_fish": [
+        "Parrotfish",
+        "Blue Chromis"
+      ],
+      "placement_constraints": {
+        "max_fish_per_species": 5
+      },
+      "reward_fishfood": 12,
+      "source_subject_id": "105090218",
+      "source_image_url": "https://panoptes-uploads.zooniverse.org/subject_location/608331ed-cd9e-49f2-96c4-431f7a1a43f0.png",
+      "source_image_path": "res://assets/reef_images/subject_105090218.png"
     },
     {
       "id": 5,
       "name": "Ellisellidae Ridge",
-      "target_coral": "Ellisellidae",
-      "target_population": 10,
+      "description": "Fan and whip coral dominate this ridge. Creole Wrasse can only be recruited from turn 3 onwards \u2014 plan your early turns around Chromis.",
+      "zone": "deep",
+      "target_composition": {
+        "Ellisellidae": 4,
+        "Muricea pendula": 3,
+        "Stichopathes": 2,
+        "Antipathes atlantica": 1
+      },
+      "match_threshold": 0.75,
       "turn_limit": 9,
       "starting_fishfood": 14,
-      "positive_fish": ["Blue Chromis", "Creole Wrasse"],
-      "negative_fish": ["Red Lionfish", "Longspine Sea Urchin"],
-      "starting_fish": {"Blue Chromis": 4, "Creole Wrasse": 2, "Red Lionfish": 1, "Longspine Sea Urchin": 1},
-      "reward_fishfood": 14
+      "starting_fish": {
+        "Blue Chromis": 4,
+        "Creole Wrasse": 2,
+        "Red Lionfish": 1,
+        "Longspine Sea Urchin": 1
+      },
+      "positive_fish": [
+        "Blue Chromis",
+        "Creole Wrasse"
+      ],
+      "negative_fish": [
+        "Red Lionfish",
+        "Longspine Sea Urchin"
+      ],
+      "available_fish": [
+        "Blue Chromis",
+        "Creole Wrasse"
+      ],
+      "placement_constraints": {
+        "max_fish_per_species": 5,
+        "turn_unlock": {
+          "Creole Wrasse": 3
+        }
+      },
+      "reward_fishfood": 14,
+      "source_subject_id": "104997361",
+      "source_image_url": "https://panoptes-uploads.zooniverse.org/subject_location/6bc91476-24c0-4818-81d9-fcf67a13ebcd.png",
+      "source_image_path": "res://assets/reef_images/subject_104997361.png"
     },
     {
       "id": 6,
       "name": "Sea Whip Channel",
-      "target_coral": "Thesea nivea",
-      "target_population": 11,
+      "description": "Angelfish and Sergeant Major dominate this sea-whip channel. Total fish population is capped \u2014 every placement counts.",
+      "zone": "deep",
+      "target_composition": {
+        "Thesea nivea": 4,
+        "Sponge": 3,
+        "Bebryce Sp.": 2,
+        "Madracis Sp.": 1
+      },
+      "match_threshold": 0.75,
       "turn_limit": 10,
       "starting_fishfood": 14,
-      "positive_fish": ["Sergeant Major", "French Angelfish"],
-      "negative_fish": ["Red Lionfish"],
-      "starting_fish": {"Sergeant Major": 3, "French Angelfish": 2, "Red Lionfish": 1},
-      "reward_fishfood": 15
+      "starting_fish": {
+        "Sergeant Major": 3,
+        "French Angelfish": 2,
+        "Red Lionfish": 1
+      },
+      "positive_fish": [
+        "Sergeant Major",
+        "French Angelfish"
+      ],
+      "negative_fish": [
+        "Red Lionfish"
+      ],
+      "available_fish": [
+        "Sergeant Major",
+        "French Angelfish"
+      ],
+      "placement_constraints": {
+        "max_total_fish": 8
+      },
+      "reward_fishfood": 15,
+      "source_subject_id": "104997357",
+      "source_image_url": "https://panoptes-uploads.zooniverse.org/subject_location/c881643d-237f-453b-be9d-9c4e87b6350a.png",
+      "source_image_path": "res://assets/reef_images/subject_104997357.png"
     },
     {
       "id": 7,
       "name": "Deep Spur Wall",
-      "target_coral": "Madrepora Sp.",
-      "target_population": 12,
+      "description": "A sheer wall at depth where Wrasse and Parrotfish drive two distinct coral communities. Manage stressors carefully.",
+      "zone": "shelf",
+      "target_composition": {
+        "Madrepora Sp.": 4,
+        "Acanthogorgiidae": 3,
+        "Antipathes atlantica": 2,
+        "Stichopathes": 2
+      },
+      "match_threshold": 0.76,
       "turn_limit": 10,
       "starting_fishfood": 15,
-      "positive_fish": ["Creole Wrasse", "Parrotfish"],
-      "negative_fish": ["Longspine Sea Urchin"],
-      "starting_fish": {"Creole Wrasse": 3, "Parrotfish": 2, "Longspine Sea Urchin": 2},
-      "reward_fishfood": 16
+      "starting_fish": {
+        "Creole Wrasse": 3,
+        "Parrotfish": 2,
+        "Longspine Sea Urchin": 2
+      },
+      "positive_fish": [
+        "Creole Wrasse",
+        "Parrotfish"
+      ],
+      "negative_fish": [
+        "Longspine Sea Urchin"
+      ],
+      "available_fish": [
+        "Creole Wrasse",
+        "Parrotfish"
+      ],
+      "placement_constraints": {
+        "max_fish_per_species": 5
+      },
+      "reward_fishfood": 16,
+      "source_subject_id": "104997354",
+      "source_image_url": "https://panoptes-uploads.zooniverse.org/subject_location/ffbc4975-7b62-45f8-8191-f44d08f866bc.png",
+      "source_image_path": "res://assets/reef_images/subject_104997354.png"
     },
     {
       "id": 8,
       "name": "Sponge Garden",
-      "target_coral": "Sponge",
-      "target_population": 12,
+      "description": "A sponge-dominant garden where Angelfish and Chromis must cooperate. Fish population is capped \u2014 the mix matters as much as the count.",
+      "zone": "shelf",
+      "target_composition": {
+        "Sponge": 5,
+        "Thesea nivea": 3,
+        "Muricea pendula": 2,
+        "Ellisellidae": 1
+      },
+      "match_threshold": 0.76,
       "turn_limit": 11,
       "starting_fishfood": 16,
-      "positive_fish": ["French Angelfish", "Blue Chromis"],
-      "negative_fish": ["Red Lionfish"],
-      "starting_fish": {"French Angelfish": 3, "Blue Chromis": 2, "Red Lionfish": 1},
-      "reward_fishfood": 18
+      "starting_fish": {
+        "French Angelfish": 3,
+        "Blue Chromis": 2,
+        "Red Lionfish": 1
+      },
+      "positive_fish": [
+        "French Angelfish",
+        "Blue Chromis"
+      ],
+      "negative_fish": [
+        "Red Lionfish"
+      ],
+      "available_fish": [
+        "French Angelfish",
+        "Blue Chromis"
+      ],
+      "placement_constraints": {
+        "max_fish_per_species": 5,
+        "max_total_fish": 10
+      },
+      "reward_fishfood": 18,
+      "source_subject_id": "104997324",
+      "source_image_url": "https://panoptes-uploads.zooniverse.org/subject_location/3227ea63-9cdc-47a9-a2ca-0632aab4bfc7.png",
+      "source_image_path": "res://assets/reef_images/subject_104997324.png"
     },
     {
       "id": 9,
       "name": "Antipathes Crest",
-      "target_coral": "Antipathes furcata",
-      "target_population": 13,
+      "description": "A deep black-coral crest where stressor pressure is amplified. Wrasse and Angelfish must overcome intensified Lionfish and Urchin suppression.",
+      "zone": "bed",
+      "target_composition": {
+        "Antipathes furcata": 4,
+        "Antipathes atlantica": 3,
+        "Stichopathes": 3,
+        "Sponge": 2
+      },
+      "match_threshold": 0.78,
       "turn_limit": 11,
       "starting_fishfood": 17,
-      "positive_fish": ["Creole Wrasse", "French Angelfish"],
-      "negative_fish": ["Red Lionfish", "Longspine Sea Urchin"],
-      "starting_fish": {"Creole Wrasse": 3, "French Angelfish": 2, "Red Lionfish": 1, "Longspine Sea Urchin": 1},
-      "reward_fishfood": 19
+      "starting_fish": {
+        "Creole Wrasse": 3,
+        "French Angelfish": 2,
+        "Red Lionfish": 1,
+        "Longspine Sea Urchin": 1
+      },
+      "positive_fish": [
+        "Creole Wrasse",
+        "French Angelfish"
+      ],
+      "negative_fish": [
+        "Red Lionfish",
+        "Longspine Sea Urchin"
+      ],
+      "available_fish": [
+        "Creole Wrasse",
+        "French Angelfish"
+      ],
+      "placement_constraints": {
+        "max_fish_per_species": 6,
+        "stressor_multiplier": 1.5
+      },
+      "reward_fishfood": 19,
+      "source_subject_id": "104997320",
+      "source_image_url": "https://panoptes-uploads.zooniverse.org/subject_location/9c9b4d34-b22e-42c4-91e1-72e6f1e46110.png",
+      "source_image_path": "res://assets/reef_images/subject_104997320.png"
     },
     {
       "id": 10,
       "name": "Biodiversity Gauntlet",
-      "target_coral": "Acanthogorgiidae",
-      "target_population": 14,
+      "description": "The full reef ecosystem. All five fish species are in play. Match the diverse target composition \u2014 every coral species in the image matters.",
+      "zone": "bed",
+      "target_composition": {
+        "Acanthogorgiidae": 3,
+        "Madrepora Sp.": 3,
+        "Thesea nivea": 2,
+        "Bebryce Sp.": 2,
+        "Muricea pendula": 2,
+        "Swiftia exserta": 2
+      },
+      "match_threshold": 0.8,
       "turn_limit": 12,
       "starting_fishfood": 18,
-      "positive_fish": ["Blue Chromis", "Sergeant Major", "Parrotfish"],
-      "negative_fish": ["Red Lionfish", "Longspine Sea Urchin"],
-      "starting_fish": {"Blue Chromis": 3, "Sergeant Major": 3, "Parrotfish": 2, "Red Lionfish": 1, "Longspine Sea Urchin": 1},
-      "reward_fishfood": 24
+      "starting_fish": {
+        "Blue Chromis": 3,
+        "Sergeant Major": 3,
+        "Parrotfish": 2,
+        "Red Lionfish": 1,
+        "Longspine Sea Urchin": 1
+      },
+      "positive_fish": [
+        "Blue Chromis",
+        "Sergeant Major",
+        "Parrotfish",
+        "Creole Wrasse",
+        "French Angelfish"
+      ],
+      "negative_fish": [
+        "Red Lionfish",
+        "Longspine Sea Urchin"
+      ],
+      "available_fish": [
+        "Blue Chromis",
+        "Sergeant Major",
+        "Parrotfish",
+        "Creole Wrasse",
+        "French Angelfish"
+      ],
+      "placement_constraints": {
+        "max_fish_per_species": 5,
+        "max_total_fish": 12,
+        "stressor_multiplier": 1.3
+      },
+      "reward_fishfood": 24,
+      "source_subject_id": "105090215",
+      "source_image_url": "https://panoptes-uploads.zooniverse.org/subject_location/af19091e-191c-4eb2-b552-cf74f1756329.png",
+      "source_image_path": "res://assets/reef_images/subject_105090215.png"
     }
   ]
 }

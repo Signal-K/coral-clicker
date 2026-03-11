@@ -1,1 +1,9 @@
 .godot
+
+# Downloaded reef images — regenerate with tools/panoptes/fetch_subjects.py
+# The .import files Godot generates are also excluded (re-created on editor open)
+assets/reef_images/*.jpg
+assets/reef_images/*.jpeg
+assets/reef_images/*.png
+assets/reef_images/*.webp
+assets/reef_images/*.import
