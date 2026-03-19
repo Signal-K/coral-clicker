@@ -34,7 +34,6 @@
 const fs = require("fs");
 const path = require("path");
 const os = require("os");
-const https = require("https"); // kept for potential future use, not used directly now
 const crypto = require("crypto");
 const { execSync, execFile } = require("child_process");
 

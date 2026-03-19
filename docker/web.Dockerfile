@@ -6,4 +6,4 @@ RUN apk add --no-cache bash
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "npm install && npm run dev"]
+CMD ["sh", "-c", "yarn install && yarn dev"]

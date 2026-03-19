@@ -1,0 +1,13 @@
+{
+  "slug": "madrepora_sp",
+  "style": "egg",
+  "name": "Madrepora Sp.",
+  "category": "coral",
+  "shape": "zigzag_coral",
+  "width": 248,
+  "height": 248,
+  "frames": 8,
+  "columns": 4,
+  "sheet": "sheets/madrepora_sp_egg_sheet.png",
+  "transparent_background": true
+}

@@ -1,60 +1,744 @@
 {
   "corals": [
-    "Antipathes atlantica",
-    "Antipathes furcata",
-    "Bebryce Sp.",
-    "Ellisellidae",
-    "Madracis Sp.",
-    "Madrepora Sp.",
-    "Muricea pendula",
-    "Acanthogorgiidae",
-    "Stichopathes",
-    "Swiftia exserta",
-    "Thesea nivea",
-    "Sponge"
+    {
+      "name": "Antipathes atlantica",
+      "common_name": "Black coral",
+      "classification": {
+        "order": "Antipatharia",
+        "family": "Antipathidae",
+        "genus": "Antipathes"
+      },
+      "environment": {
+        "temperature_c": [
+          22,
+          28
+        ],
+        "salinity_psu": [
+          34,
+          37
+        ],
+        "depth_m": [
+          30,
+          300
+        ],
+        "light": "low"
+      },
+      "strengths": [
+        "deep-water conditions",
+        "high water flow"
+      ],
+      "weaknesses": [
+        "sediment loading",
+        "rapid warming"
+      ]
+    },
+    {
+      "name": "Antipathes furcata",
+      "common_name": "Forked black coral",
+      "classification": {
+        "order": "Antipatharia",
+        "family": "Antipathidae",
+        "genus": "Antipathes"
+      },
+      "environment": {
+        "temperature_c": [
+          22,
+          28
+        ],
+        "salinity_psu": [
+          34,
+          37
+        ],
+        "depth_m": [
+          20,
+          250
+        ],
+        "light": "low"
+      },
+      "strengths": [
+        "stable salinity",
+        "deep slopes"
+      ],
+      "weaknesses": [
+        "physical disturbance",
+        "heat stress"
+      ]
+    },
+    {
+      "name": "Bebryce Sp.",
+      "common_name": "Gorgonian coral",
+      "classification": {
+        "order": "Alcyonacea",
+        "family": "Plexauridae",
+        "genus": "Bebryce"
+      },
+      "environment": {
+        "temperature_c": [
+          24,
+          29
+        ],
+        "salinity_psu": [
+          34,
+          37
+        ],
+        "depth_m": [
+          20,
+          150
+        ],
+        "light": "medium"
+      },
+      "strengths": [
+        "moderate current",
+        "reef slopes"
+      ],
+      "weaknesses": [
+        "suspended sediment",
+        "pollution pulses"
+      ]
+    },
+    {
+      "name": "Ellisellidae",
+      "common_name": "Sea whip",
+      "classification": {
+        "order": "Alcyonacea",
+        "family": "Ellisellidae",
+        "genus": "Various"
+      },
+      "environment": {
+        "temperature_c": [
+          23,
+          29
+        ],
+        "salinity_psu": [
+          34,
+          37
+        ],
+        "depth_m": [
+          15,
+          120
+        ],
+        "light": "medium"
+      },
+      "strengths": [
+        "steady current",
+        "outer reef edges"
+      ],
+      "weaknesses": [
+        "storm breakage",
+        "eutrophication"
+      ]
+    },
+    {
+      "name": "Madracis Sp.",
+      "common_name": "Branching stony coral",
+      "classification": {
+        "order": "Scleractinia",
+        "family": "Pocilloporidae",
+        "genus": "Madracis"
+      },
+      "environment": {
+        "temperature_c": [
+          24,
+          29
+        ],
+        "salinity_psu": [
+          34,
+          37
+        ],
+        "depth_m": [
+          3,
+          60
+        ],
+        "light": "high"
+      },
+      "strengths": [
+        "clear water",
+        "high light"
+      ],
+      "weaknesses": [
+        "thermal bleaching",
+        "macroalgae competition"
+      ]
+    },
+    {
+      "name": "Madrepora Sp.",
+      "common_name": "Stony cup coral",
+      "classification": {
+        "order": "Scleractinia",
+        "family": "Oculinidae",
+        "genus": "Madrepora"
+      },
+      "environment": {
+        "temperature_c": [
+          20,
+          27
+        ],
+        "salinity_psu": [
+          34,
+          37
+        ],
+        "depth_m": [
+          40,
+          1000
+        ],
+        "light": "low"
+      },
+      "strengths": [
+        "cooler deep reefs",
+        "high oxygen flow"
+      ],
+      "weaknesses": [
+        "trawling damage",
+        "acidification"
+      ]
+    },
+    {
+      "name": "Muricea pendula",
+      "common_name": "Sea fan",
+      "classification": {
+        "order": "Alcyonacea",
+        "family": "Plexauridae",
+        "genus": "Muricea"
+      },
+      "environment": {
+        "temperature_c": [
+          24,
+          30
+        ],
+        "salinity_psu": [
+          34,
+          37
+        ],
+        "depth_m": [
+          5,
+          80
+        ],
+        "light": "medium"
+      },
+      "strengths": [
+        "moderate flow",
+        "stable salinity"
+      ],
+      "weaknesses": [
+        "overgrowth by algae",
+        "sediment smothering"
+      ]
+    },
+    {
+      "name": "Acanthogorgiidae",
+      "common_name": "Gorgonian corals",
+      "classification": {
+        "order": "Alcyonacea",
+        "family": "Acanthogorgiidae",
+        "genus": "Various"
+      },
+      "environment": {
+        "temperature_c": [
+          22,
+          28
+        ],
+        "salinity_psu": [
+          34,
+          37
+        ],
+        "depth_m": [
+          20,
+          300
+        ],
+        "light": "low"
+      },
+      "strengths": [
+        "deeper habitats",
+        "consistent current"
+      ],
+      "weaknesses": [
+        "physical breakage",
+        "hypoxia"
+      ]
+    },
+    {
+      "name": "Stichopathes",
+      "common_name": "Wire coral",
+      "classification": {
+        "order": "Antipatharia",
+        "family": "Antipathidae",
+        "genus": "Stichopathes"
+      },
+      "environment": {
+        "temperature_c": [
+          23,
+          29
+        ],
+        "salinity_psu": [
+          34,
+          37
+        ],
+        "depth_m": [
+          20,
+          250
+        ],
+        "light": "low"
+      },
+      "strengths": [
+        "drop-off walls",
+        "high current"
+      ],
+      "weaknesses": [
+        "heat anomalies",
+        "anchor damage"
+      ]
+    },
+    {
+      "name": "Swiftia exserta",
+      "common_name": "Purple sea plume",
+      "classification": {
+        "order": "Alcyonacea",
+        "family": "Swiftiidae",
+        "genus": "Swiftia"
+      },
+      "environment": {
+        "temperature_c": [
+          20,
+          27
+        ],
+        "salinity_psu": [
+          34,
+          37
+        ],
+        "depth_m": [
+          20,
+          700
+        ],
+        "light": "low"
+      },
+      "strengths": [
+        "cool moderate depths",
+        "plankton-rich flow"
+      ],
+      "weaknesses": [
+        "sediment load",
+        "trawl abrasion"
+      ]
+    },
+    {
+      "name": "Thesea nivea",
+      "common_name": "White sea fan",
+      "classification": {
+        "order": "Alcyonacea",
+        "family": "Plexauridae",
+        "genus": "Thesea"
+      },
+      "environment": {
+        "temperature_c": [
+          24,
+          29
+        ],
+        "salinity_psu": [
+          34,
+          37
+        ],
+        "depth_m": [
+          10,
+          120
+        ],
+        "light": "medium"
+      },
+      "strengths": [
+        "warm clear reefs",
+        "steady flow"
+      ],
+      "weaknesses": [
+        "storm snap",
+        "pollution spikes"
+      ]
+    },
+    {
+      "name": "Sponge",
+      "common_name": "Marine sponge",
+      "classification": {
+        "phylum": "Porifera",
+        "family": "Various",
+        "genus": "Various"
+      },
+      "environment": {
+        "temperature_c": [
+          22,
+          30
+        ],
+        "salinity_psu": [
+          34,
+          37
+        ],
+        "depth_m": [
+          1,
+          150
+        ],
+        "light": "any"
+      },
+      "strengths": [
+        "filter feeding",
+        "nutrient-rich flow"
+      ],
+      "weaknesses": [
+        "siltation",
+        "disease outbreaks"
+      ]
+    }
   ],
+  "coral_specs": {
+    "Madracis Sp.": {
+      "preferred_temperature": "warm",
+      "preferred_salinity": "high",
+      "notes": "Branching coral with bleaching sensitivity"
+    },
+    "Muricea pendula": {
+      "preferred_temperature": "warm",
+      "preferred_salinity": "high",
+      "notes": "Gorgonian sea fan needing steady flow"
+    },
+    "Antipathes atlantica": {
+      "preferred_temperature": "moderate",
+      "preferred_salinity": "high",
+      "notes": "Black coral associated with deeper, lower-light habitats"
+    },
+    "Stichopathes": {
+      "preferred_temperature": "moderate",
+      "preferred_salinity": "high",
+      "notes": "Wire coral usually found on high-energy walls"
+    },
+    "Ellisellidae": {
+      "preferred_temperature": "warm",
+      "preferred_salinity": "high",
+      "notes": "Sea whip forms sensitive to breakage"
+    },
+    "Thesea nivea": {
+      "preferred_temperature": "warm",
+      "preferred_salinity": "high",
+      "notes": "Sea fan with moderate growth in stable reefs"
+    },
+    "Madrepora Sp.": {
+      "preferred_temperature": "cool",
+      "preferred_salinity": "high",
+      "notes": "Deeper-water stony coral"
+    },
+    "Sponge": {
+      "preferred_temperature": "warm",
+      "preferred_salinity": "high",
+      "notes": "Filter-feeding habitat former"
+    },
+    "Antipathes furcata": {
+      "preferred_temperature": "moderate",
+      "preferred_salinity": "high",
+      "notes": "Forked black coral vulnerable to disturbance"
+    },
+    "Acanthogorgiidae": {
+      "preferred_temperature": "moderate",
+      "preferred_salinity": "high",
+      "notes": "Gorgonian family in deeper offshore habitats"
+    },
+    "Bebryce Sp.": {
+      "preferred_temperature": "warm",
+      "preferred_salinity": "high",
+      "notes": "Plexaurid gorgonian"
+    },
+    "Swiftia exserta": {
+      "preferred_temperature": "cool",
+      "preferred_salinity": "high",
+      "notes": "Sea plume often in deeper cooler sites"
+    }
+  },
   "fish_species": [
     {
       "name": "Blue Chromis",
       "scientific_name": "Chromis cyanea",
       "habitat": "Caribbean reef slopes",
-      "effect": "supports branching and fan corals"
+      "effect": "supports branching and fan corals",
+      "strengths": [
+        "zooplankton control",
+        "schooling stability"
+      ],
+      "weaknesses": [
+        "lionfish predation"
+      ],
+      "temperature_pref": "warm",
+      "salinity_pref": "high",
+      "breed_cost": 1,
+      "breed_success_chance": 0.72,
+      "offspring_weights": {
+        "Blue Chromis": 6,
+        "Sergeant Major": 2,
+        "Creole Wrasse": 1
+      },
+      "coral_effects": {
+        "Madracis Sp.": 0.42,
+        "Muricea pendula": 0.34,
+        "Thesea nivea": 0.28,
+        "Sponge": 0.15
+      }
     },
     {
       "name": "French Angelfish",
       "scientific_name": "Pomacanthus paru",
       "habitat": "Western Atlantic reef and sponge habitats",
-      "effect": "supports sponge and sea-whip coral balance"
+      "effect": "supports sponge and sea-whip coral balance",
+      "strengths": [
+        "sponge-grazer",
+        "reef cleaning behavior"
+      ],
+      "weaknesses": [
+        "slow maturation",
+        "juvenile predation"
+      ],
+      "temperature_pref": "warm",
+      "salinity_pref": "high",
+      "breed_cost": 2,
+      "breed_success_chance": 0.58,
+      "offspring_weights": {
+        "French Angelfish": 6,
+        "Blue Chromis": 1,
+        "Parrotfish": 1
+      },
+      "coral_effects": {
+        "Sponge": 0.5,
+        "Thesea nivea": 0.22,
+        "Antipathes atlantica": 0.18,
+        "Antipathes furcata": 0.16
+      }
     },
     {
       "name": "Creole Wrasse",
       "scientific_name": "Clepticus parrae",
       "habitat": "Caribbean outer reef and drop-offs",
-      "effect": "supports deep-water black coral scenarios"
+      "effect": "supports deep-water black coral scenarios",
+      "strengths": [
+        "planktivore schools",
+        "drop-off habitat fit"
+      ],
+      "weaknesses": [
+        "temperature spikes",
+        "predation pressure"
+      ],
+      "temperature_pref": "moderate",
+      "salinity_pref": "high",
+      "breed_cost": 1,
+      "breed_success_chance": 0.65,
+      "offspring_weights": {
+        "Creole Wrasse": 5,
+        "Blue Chromis": 2,
+        "French Angelfish": 1
+      },
+      "coral_effects": {
+        "Antipathes atlantica": 0.44,
+        "Antipathes furcata": 0.42,
+        "Stichopathes": 0.4,
+        "Madrepora Sp.": 0.3
+      }
     },
     {
       "name": "Sergeant Major",
       "scientific_name": "Abudefduf saxatilis",
       "habitat": "Shallow to mid-depth Atlantic reefs",
-      "effect": "fast breeder that stabilizes early levels"
+      "effect": "fast breeder that stabilizes early levels",
+      "strengths": [
+        "high reproductive output",
+        "hardy in shallow reefs"
+      ],
+      "weaknesses": [
+        "territorial stress"
+      ],
+      "temperature_pref": "warm",
+      "salinity_pref": "high",
+      "breed_cost": 1,
+      "breed_success_chance": 0.75,
+      "offspring_weights": {
+        "Sergeant Major": 6,
+        "Blue Chromis": 2,
+        "Parrotfish": 1
+      },
+      "coral_effects": {
+        "Madracis Sp.": 0.33,
+        "Thesea nivea": 0.2,
+        "Sponge": 0.2
+      }
     },
     {
       "name": "Parrotfish",
       "scientific_name": "Sparisoma viride",
       "habitat": "Caribbean reef flats and slopes",
-      "effect": "controls algae pressure and helps coral recruitment"
+      "effect": "controls algae pressure and helps coral recruitment",
+      "strengths": [
+        "algae grazing",
+        "bioerosion-driven substrate reset"
+      ],
+      "weaknesses": [
+        "overfishing",
+        "slow replacement"
+      ],
+      "temperature_pref": "warm",
+      "salinity_pref": "high",
+      "breed_cost": 2,
+      "breed_success_chance": 0.54,
+      "offspring_weights": {
+        "Parrotfish": 5,
+        "Sergeant Major": 1,
+        "French Angelfish": 1
+      },
+      "coral_effects": {
+        "Madracis Sp.": 0.52,
+        "Stichopathes": 0.22,
+        "Madrepora Sp.": 0.1,
+        "Sponge": -0.08
+      }
     }
   ],
   "stressors": [
     {
       "name": "Red Lionfish",
       "scientific_name": "Pterois volitans",
-      "effect": "predation pressure reduces beneficial fish"
+      "effect": "predation pressure reduces beneficial fish",
+      "temperature_pref": "warm",
+      "salinity_pref": "high",
+      "harm_scale": 0.6
     },
     {
       "name": "Longspine Sea Urchin",
       "scientific_name": "Diadema antillarum",
-      "effect": "overgrazing at high population harms some coral species"
+      "effect": "overgrazing at high population harms some coral species",
+      "temperature_pref": "warm",
+      "salinity_pref": "high",
+      "harm_scale": 0.45
     }
+  ],
+  "taxonomy_aliases": {
+    "antipathes atlantica": [
+      "antipathes",
+      "black coral"
+    ],
+    "antipathes furcata": [
+      "antipathes",
+      "black coral"
+    ],
+    "bebryce sp": [
+      "bebryce",
+      "gorgonian"
+    ],
+    "ellisellidae": [
+      "sea whip",
+      "gorgonian"
+    ],
+    "madracis sp": [
+      "madracis",
+      "branching coral",
+      "stony coral"
+    ],
+    "madrepora sp": [
+      "madrepora",
+      "stony coral"
+    ],
+    "muricea pendula": [
+      "muricea",
+      "sea fan",
+      "gorgonian"
+    ],
+    "acanthogorgiidae": [
+      "gorgonian"
+    ],
+    "stichopathes": [
+      "wire coral",
+      "black coral"
+    ],
+    "swiftia exserta": [
+      "swiftia",
+      "sea plume",
+      "sea fan"
+    ],
+    "thesea nivea": [
+      "thesea",
+      "sea fan",
+      "sea plume"
+    ],
+    "sponge": [
+      "sponges",
+      "porifera"
+    ]
+  },
+  "trait_definitions": {
+    "fast_breeder": {
+      "description": "Breeds quickly and cheaply",
+      "breed_cost_delta": -1,
+      "breed_success_delta": 0.10
+    },
+    "reef_cleaner": {
+      "description": "Keeps the reef pristine — boosts all coral",
+      "support_bonus": 0.15
+    },
+    "algae_control": {
+      "description": "Grazes algae — more space for coral growth",
+      "support_bonus": 0.12
+    },
+    "schooling": {
+      "description": "Schooling fish are more effective in groups (3+)",
+      "schooling_threshold": 3,
+      "schooling_bonus": 0.08
+    },
+    "cold_resistant": {
+      "description": "Thrives in cooler, deeper conditions",
+      "cold_support_bonus": 0.12
+    },
+    "warm_tolerant": {
+      "description": "Extra comfortable in warm shallow water",
+      "warm_support_bonus": 0.10
+    },
+    "deep_adapted": {
+      "description": "Suited to deep reef drop-offs",
+      "cold_support_bonus": 0.10
+    },
+    "bioerosion": {
+      "description": "Bioerosion resets substrate — mild sponge penalty",
+      "sponge_penalty": 0.08
+    },
+    "slow_breeder": {
+      "description": "Breeds carefully — slightly lower success rate",
+      "breed_success_delta": -0.05
+    }
+  },
+  "species_traits": {
+    "Blue Chromis": ["schooling", "warm_tolerant"],
+    "French Angelfish": ["reef_cleaner", "warm_tolerant"],
+    "Creole Wrasse": ["cold_resistant", "deep_adapted"],
+    "Sergeant Major": ["fast_breeder", "schooling"],
+    "Parrotfish": ["algae_control", "bioerosion"],
+    "Red Lionfish": [],
+    "Longspine Sea Urchin": []
+  },
+  "interactions": {
+    "fish_aids_coral": {
+      "Blue Chromis": ["Madracis Sp.", "Muricea pendula", "Thesea nivea"],
+      "Sergeant Major": ["Madracis Sp.", "Thesea nivea", "Sponge"],
+      "Creole Wrasse": ["Antipathes atlantica", "Antipathes furcata", "Stichopathes", "Madrepora Sp."],
+      "French Angelfish": ["Sponge", "Thesea nivea", "Antipathes atlantica", "Antipathes furcata"],
+      "Parrotfish": ["Madracis Sp.", "Stichopathes"]
+    },
+    "fish_harms_coral": {
+      "Red Lionfish": ["Muricea pendula", "Ellisellidae", "Thesea nivea"],
+      "Longspine Sea Urchin": ["Madracis Sp.", "Sponge", "Thesea nivea"],
+      "Parrotfish": ["Sponge", "Madrepora Sp."]
+    },
+    "hints": {
+      "Blue Chromis": "Schooling stabilises branching coral growth",
+      "Sergeant Major": "Hardy in shallows, quick to establish reef structure",
+      "Creole Wrasse": "Planktivore schools benefit deep black corals",
+      "French Angelfish": "Sponge-grazing keeps competition down for sea fans",
+      "Parrotfish": "Bioerosion resets substrate — use carefully near sponges",
+      "Red Lionfish": "Invasive predator; decimates beneficial fish populations",
+      "Longspine Sea Urchin": "Overgrazing at high density erodes coral substrate"
+    }
+  },
+  "sources": [
+    "https://www.fisheries.noaa.gov",
+    "https://www.floridamuseum.ufl.edu/discover-fish/species-profiles/",
+    "https://www.marinespecies.org",
+    "https://reefguide.org/carib/",
+    "https://www.zooniverse.org/projects/jordan-pierce/click-a-coral"
   ]
 }

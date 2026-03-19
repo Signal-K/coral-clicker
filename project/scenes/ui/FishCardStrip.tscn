@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3]
+
+[node name="FishCardStrip" type="ScrollContainer"]
+custom_minimum_size = Vector2(0, 180)
+offset_right = 400.0
+offset_bottom = 180.0
+vertical_scroll_mode = 0
+
+[node name="FishActionsBox" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 12

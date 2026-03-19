@@ -3,12 +3,12 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/ResourceStat.tscn" id="1_res_stat"]
 
 [sub_resource type="StyleBoxFlat" id="1"]
-bg_color = Color(0.0470588, 0.101961, 0.192157, 1)
+bg_color = Color(0.11, 0.21, 0.38, 1)
 border_width_left = 3
 border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
-border_color = Color(0.101961, 0.317647, 0.611765, 1)
+border_color = Color(0.17, 0.44, 0.76, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
@@ -28,28 +28,29 @@ theme_override_constants/margin_bottom = 4
 
 [node name="BottomRow" type="HBoxContainer" parent="BottomMargin"]
 layout_mode = 2
-theme_override_constants/separation = 14
+theme_override_constants/separation = 18
+alignment = 1
 
 [node name="ResA" parent="BottomMargin/BottomRow" instance=ExtResource("1_res_stat")]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.937255, 0.835294, 0.682353, 1)
 theme_override_font_sizes/font_size = 18
-text = "Shells x120"
+text = "Nutrients: 0"
 
 [node name="ResB" parent="BottomMargin/BottomRow" instance=ExtResource("1_res_stat")]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.972549, 0.901961, 0.458824, 1)
 theme_override_font_sizes/font_size = 18
-text = "Stars x85"
+text = "Coins: 0"
 
 [node name="ResC" parent="BottomMargin/BottomRow" instance=ExtResource("1_res_stat")]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.560784, 0.819608, 1, 1)
+theme_override_colors/font_color = Color(0.768627, 0.905882, 0.976471, 1)
 theme_override_font_sizes/font_size = 18
-text = "Crystals x45"
+text = "Turn: 0/0"
 
 [node name="ResD" parent="BottomMargin/BottomRow" instance=ExtResource("1_res_stat")]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.960784, 0.788235, 0.372549, 1)
+theme_override_colors/font_color = Color(0.733333, 0.964706, 0.784314, 1)
 theme_override_font_sizes/font_size = 18
-text = "Coins 1320"
+text = "Reef: 0%"

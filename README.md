@@ -2,6 +2,7 @@
 
 This repo now includes:
 - A Godot level system (10 levels, completion rewards, level selector, progression state)
+- Species ecology/breeding specs and post-level classification bonuses persisted in game state
 - Cross-runtime hosts:
   - React Native + Expo + `@borndotcom/react-native-godot`
   - Next.js browser host (`web/`)
@@ -54,6 +55,17 @@ Common commands:
   - `python3 -m venv .venv && source .venv/bin/activate`
   - `pip install -r tools/sprites/requirements.txt`
   - `npm run sprites:gen`
+
+## Click-A-Coral asset sync
+
+- Sync anomalies + dictionary representatives from Click-A-Coral collections:
+  - `npm run click-a-coral:sync`
+- Optional flags:
+  - `npm run click-a-coral:sync -- --dry-run`
+  - `npm run click-a-coral:sync -- --limit=25`
+- Output:
+  - Images in `project/assets/click_a_coral/anomalies` and `project/assets/click_a_coral/dictionary`
+  - Metadata in `project/data/click_a_coral_subjects.json`
 
 ## Supabase endpoints
 

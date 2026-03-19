@@ -35,8 +35,8 @@ export default function Page() {
     const payload = {
       player_id: playerId,
       current_level: 1,
-      completed_levels: [1],
-      rewards_total: 100,
+      completed_levels: [],
+      rewards_total: 0,
       metadata: { source: "nextjs" },
     };
     const response = await fetch("/api/progress", {

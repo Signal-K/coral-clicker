@@ -1,0 +1,67 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://level_system.gd" id="1_play"]
+[ext_resource type="PackedScene" path="res://scenes/ui/ObjectiveCard.tscn" id="2_obj"]
+[ext_resource type="PackedScene" path="res://scenes/layout/ReefViewport.tscn" id="3_reef"]
+[ext_resource type="PackedScene" path="res://scenes/ui/TurnFlowStrip.tscn" id="4_flow"]
+[ext_resource type="PackedScene" path="res://scenes/ui/FishCardStrip.tscn" id="5_fish"]
+[ext_resource type="PackedScene" path="res://scenes/layout/BottomResourceBar.tscn" id="6_bottom"]
+
+[node name="GameScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_play")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.07, 0.15, 0.27, 1)
+
+[node name="UIMargin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="PortraitVBox" type="VBoxContainer" parent="UIMargin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TopRow" type="HBoxContainer" parent="UIMargin/PortraitVBox"]
+layout_mode = 2
+
+[node name="HomeButton" type="Button" parent="UIMargin/PortraitVBox/TopRow"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+text = "H"
+
+[node name="ObjectiveCard" parent="UIMargin/PortraitVBox/TopRow" instance=ExtResource("2_obj")]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ReefViewport" parent="UIMargin/PortraitVBox" instance=ExtResource("3_reef")]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TurnFlowStrip" parent="UIMargin/PortraitVBox" instance=ExtResource("4_flow")]
+layout_mode = 2
+
+[node name="FishCardStrip" parent="UIMargin/PortraitVBox" instance=ExtResource("5_fish")]
+layout_mode = 2
+
+[node name="BottomResourceBar" parent="UIMargin/PortraitVBox" instance=ExtResource("6_bottom")]
+layout_mode = 2

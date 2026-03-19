@@ -20,14 +20,32 @@ describe("starter puzzle content", () => {
       expect(level.id).toBeLessThanOrEqual(10);
 
       expect(typeof level.target_coral).toBe("string");
-      expect(typeof level.starting_fishfood).toBe("number");
-      expect(typeof level.reward_fishfood).toBe("number");
-      expect(level.reward_fishfood).toBeGreaterThan(0);
+      expect(typeof level.starting_nutrients).toBe("number");
+      expect(level.starting_nutrients).toBeGreaterThan(0);
+      expect(typeof level.reward_coins).toBe("number");
+      expect(level.reward_coins).toBeGreaterThan(0);
+      expect(level.starting_fishfood).toBeUndefined();
+      expect(level.reward_fishfood).toBeUndefined();
 
       expect(Array.isArray(level.positive_fish)).toBe(true);
       expect(Array.isArray(level.negative_fish)).toBe(true);
       expect(typeof level.starting_fish).toBe("object");
     }
+  });
+
+  test("economy and resource-bar defaults match the nutrients/coins model", () => {
+    expect(levelsDoc.economy?.completion_bonus_currency).toBe("coins");
+
+    const resourceBarPath = path.join(
+      process.cwd(),
+      "project/scenes/layout/BottomResourceBar.tscn",
+    );
+    const resourceBar = fs.readFileSync(resourceBarPath, "utf8");
+
+    expect(resourceBar).toContain('text = "Nutrients: 0"');
+    expect(resourceBar).toContain('text = "Coins: 0"');
+    expect(resourceBar).toContain('text = "Turn: 0/0"');
+    expect(resourceBar).toContain('text = "Reef: 0%"');
   });
 
   test("species reference has 12 corals and 5 fish species", () => {

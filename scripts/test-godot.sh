@@ -21,4 +21,8 @@ if [ -z "$GODOT_BIN" ] || [ ! -x "$GODOT_BIN" ]; then
 fi
 
 mkdir -p /tmp/godot /tmp/godot-home /tmp/godot-home/Library/Application\ Support/Godot
+echo "Running Godot content tests..."
 HOME=/tmp/godot-home GODOT_USER_DIR=/tmp/godot "$GODOT_BIN" --headless --path project --script res://tests/run_content_tests.gd
+
+echo "Running Godot E2E tests..."
+HOME=/tmp/godot-home GODOT_USER_DIR=/tmp/godot "$GODOT_BIN" --headless --path project res://tests/e2e.tscn

@@ -1,30 +1,30 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/ui/StatMeter.tscn" id="1_stat_meter"]
 [ext_resource type="PackedScene" path="res://scenes/ui/LevelButton.tscn" id="2_level_btn"]
-[ext_resource type="Texture2D" path="res://assets/sprites/blue_chromis_frame_00.png" id="3_fish1"]
-[ext_resource type="Texture2D" path="res://assets/sprites/creole_wrasse_frame_00.png" id="4_fish2"]
-[ext_resource type="Texture2D" path="res://assets/sprites/parrotfish_frame_00.png" id="5_fish3"]
+[ext_resource type="SpriteFrames" path="res://assets/sprites/blue_chromis.tres" id="3_fish1"]
+[ext_resource type="SpriteFrames" path="res://assets/sprites/creole_wrasse.tres" id="4_fish2"]
+[ext_resource type="SpriteFrames" path="res://assets/sprites/parrotfish.tres" id="5_fish3"]
 
 [sub_resource type="StyleBoxFlat" id="1"]
-bg_color = Color(0.0470588, 0.101961, 0.192157, 1)
+bg_color = Color(0.11, 0.21, 0.38, 1)
 border_width_left = 3
 border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
-border_color = Color(0.101961, 0.317647, 0.611765, 1)
+border_color = Color(0.17, 0.44, 0.76, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxFlat" id="2"]
-bg_color = Color(0.101961, 0.160784, 0.270588, 1)
+bg_color = Color(0.14, 0.24, 0.40, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.172549, 0.364706, 0.631373, 1)
+border_color = Color(0.22, 0.46, 0.74, 1)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
@@ -41,6 +41,18 @@ corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="4"]
+bg_color = Color(0.13, 0.22, 0.37, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.24, 0.46, 0.76, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
 [node name="TopFlowBar" type="PanelContainer"]
 layout_mode = 2
@@ -59,6 +71,7 @@ layout_mode = 2
 theme_override_constants/separation = 5
 
 [node name="SceneMenuRow" type="HBoxContainer" parent="TopMargin/TopVBox"]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 4
 
@@ -87,6 +100,58 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Map"
 
+[node name="PuzzleFlowRow" type="HBoxContainer" parent="TopMargin/TopVBox"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="FlowStep1" type="PanelContainer" parent="TopMargin/TopVBox/PuzzleFlowRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("4")
+
+[node name="StepLabel" type="Label" parent="TopMargin/TopVBox/PuzzleFlowRow/FlowStep1"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.858824, 0.933333, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "1. Breed"
+horizontal_alignment = 1
+
+[node name="FlowStep2" type="PanelContainer" parent="TopMargin/TopVBox/PuzzleFlowRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("4")
+
+[node name="StepLabel" type="Label" parent="TopMargin/TopVBox/PuzzleFlowRow/FlowStep2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.858824, 0.933333, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "2. Feed/Net"
+horizontal_alignment = 1
+
+[node name="FlowStep3" type="PanelContainer" parent="TopMargin/TopVBox/PuzzleFlowRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("4")
+
+[node name="StepLabel" type="Label" parent="TopMargin/TopVBox/PuzzleFlowRow/FlowStep3"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.858824, 0.933333, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "3. End Turn"
+horizontal_alignment = 1
+
+[node name="FlowStep4" type="PanelContainer" parent="TopMargin/TopVBox/PuzzleFlowRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("4")
+
+[node name="StepLabel" type="Label" parent="TopMargin/TopVBox/PuzzleFlowRow/FlowStep4"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.858824, 0.933333, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "4. Coral Growth"
+horizontal_alignment = 1
+
 [node name="BreedRow" type="HBoxContainer" parent="TopMargin/TopVBox"]
 layout_mode = 2
 theme_override_constants/separation = 8
@@ -94,11 +159,16 @@ theme_override_constants/separation = 8
 [node name="FishAGroup" type="VBoxContainer" parent="TopMargin/TopVBox/BreedRow"]
 layout_mode = 2
 
-[node name="FishA" type="TextureRect" parent="TopMargin/TopVBox/BreedRow/FishAGroup"]
+[node name="FishADisplay" type="Control" parent="TopMargin/TopVBox/BreedRow/FishAGroup"]
 custom_minimum_size = Vector2(56, 56)
 layout_mode = 2
-texture = ExtResource("3_fish1")
-stretch_mode = 5
+
+[node name="FishA" type="AnimatedSprite2D" parent="TopMargin/TopVBox/BreedRow/FishAGroup/FishADisplay"]
+position = Vector2(28, 28)
+scale = Vector2(0.44, 0.44)
+sprite_frames = ExtResource("3_fish1")
+animation = &"default"
+autoplay = "default"
 
 [node name="FishAName" type="Label" parent="TopMargin/TopVBox/BreedRow/FishAGroup"]
 layout_mode = 2
@@ -117,11 +187,16 @@ vertical_alignment = 1
 [node name="FishBGroup" type="VBoxContainer" parent="TopMargin/TopVBox/BreedRow"]
 layout_mode = 2
 
-[node name="FishB" type="TextureRect" parent="TopMargin/TopVBox/BreedRow/FishBGroup"]
+[node name="FishBDisplay" type="Control" parent="TopMargin/TopVBox/BreedRow/FishBGroup"]
 custom_minimum_size = Vector2(56, 56)
 layout_mode = 2
-texture = ExtResource("4_fish2")
-stretch_mode = 5
+
+[node name="FishB" type="AnimatedSprite2D" parent="TopMargin/TopVBox/BreedRow/FishBGroup/FishBDisplay"]
+position = Vector2(28, 28)
+scale = Vector2(0.44, 0.44)
+sprite_frames = ExtResource("4_fish2")
+animation = &"default"
+autoplay = "default"
 
 [node name="FishBName" type="Label" parent="TopMargin/TopVBox/BreedRow/FishBGroup"]
 layout_mode = 2
@@ -140,11 +215,16 @@ vertical_alignment = 1
 [node name="FishCGroup" type="VBoxContainer" parent="TopMargin/TopVBox/BreedRow"]
 layout_mode = 2
 
-[node name="FishC" type="TextureRect" parent="TopMargin/TopVBox/BreedRow/FishCGroup"]
+[node name="FishCDisplay" type="Control" parent="TopMargin/TopVBox/BreedRow/FishCGroup"]
 custom_minimum_size = Vector2(56, 56)
 layout_mode = 2
-texture = ExtResource("5_fish3")
-stretch_mode = 5
+
+[node name="FishC" type="AnimatedSprite2D" parent="TopMargin/TopVBox/BreedRow/FishCGroup/FishCDisplay"]
+position = Vector2(28, 28)
+scale = Vector2(0.44, 0.44)
+sprite_frames = ExtResource("5_fish3")
+animation = &"default"
+autoplay = "default"
 
 [node name="FishCName" type="Label" parent="TopMargin/TopVBox/BreedRow/FishCGroup"]
 layout_mode = 2
@@ -173,7 +253,7 @@ vertical_alignment = 1
 [node name="BreedButton" type="Button" parent="TopMargin/TopVBox/BreedRow"]
 custom_minimum_size = Vector2(90, 38)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.152941, 0.0901961, 0.0196078, 1)
+theme_override_colors/font_color = Color(0.05, 0.02, 0.0, 1)
 theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource("3")
 theme_override_styles/hover = SubResource("3")
@@ -205,3 +285,67 @@ text = "Temperature"
 [node name="Bar" parent="TopMargin/TopVBox/MetersRow/TemperatureMeter"]
 name = "TempBar"
 value = 51.0
+
+[node name="EnvironmentReadoutRow" type="HBoxContainer" parent="TopMargin/TopVBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="SalinityReadout" type="PanelContainer" parent="TopMargin/TopVBox/EnvironmentReadoutRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("4")
+
+[node name="SalinityReadoutLabel" type="Label" parent="TopMargin/TopVBox/EnvironmentReadoutRow/SalinityReadout"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.843137, 0.92549, 0.996078, 1)
+theme_override_font_sizes/font_size = 12
+text = "Salinity: Medium"
+horizontal_alignment = 1
+
+[node name="TemperatureReadout" type="PanelContainer" parent="TopMargin/TopVBox/EnvironmentReadoutRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("4")
+
+[node name="TemperatureReadoutLabel" type="Label" parent="TopMargin/TopVBox/EnvironmentReadoutRow/TemperatureReadout"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.843137, 0.92549, 0.996078, 1)
+theme_override_font_sizes/font_size = 12
+text = "Temp: Moderate"
+horizontal_alignment = 1
+
+[node name="TurnHint" type="PanelContainer" parent="TopMargin/TopVBox/EnvironmentReadoutRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("4")
+
+[node name="TurnHintLabel" type="Label" parent="TopMargin/TopVBox/EnvironmentReadoutRow/TurnHint"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.964706, 0.862745, 0.643137, 1)
+theme_override_font_sizes/font_size = 12
+text = "Adjust fish then press Turn"
+horizontal_alignment = 1
+
+[node name="EnvironmentControlRow" type="HBoxContainer" parent="TopMargin/TopVBox"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="SalinityDownButton" parent="TopMargin/TopVBox/EnvironmentControlRow" instance=ExtResource("2_level_btn")]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Salinity -"
+
+[node name="SalinityUpButton" parent="TopMargin/TopVBox/EnvironmentControlRow" instance=ExtResource("2_level_btn")]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Salinity +"
+
+[node name="TempDownButton" parent="TopMargin/TopVBox/EnvironmentControlRow" instance=ExtResource("2_level_btn")]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Temp -"
+
+[node name="TempUpButton" parent="TopMargin/TopVBox/EnvironmentControlRow" instance=ExtResource("2_level_btn")]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Temp +"

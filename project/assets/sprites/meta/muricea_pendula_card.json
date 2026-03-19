@@ -1,0 +1,13 @@
+{
+  "slug": "muricea_pendula",
+  "style": "card",
+  "name": "Muricea pendula",
+  "category": "coral",
+  "shape": "pinnate_fan",
+  "width": 248,
+  "height": 248,
+  "frames": 8,
+  "columns": 4,
+  "sheet": "sheets/muricea_pendula_card_sheet.png",
+  "transparent_background": true
+}

@@ -1,0 +1,13 @@
+{
+  "slug": "antipathes_atlantica",
+  "style": "card",
+  "name": "Antipathes atlantica",
+  "category": "coral",
+  "shape": "black_coral_fan",
+  "width": 248,
+  "height": 248,
+  "frames": 8,
+  "columns": 4,
+  "sheet": "sheets/antipathes_atlantica_card_sheet.png",
+  "transparent_background": true
+}

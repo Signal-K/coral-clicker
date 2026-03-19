@@ -1,0 +1,13 @@
+{
+  "slug": "stichopathes",
+  "style": "card",
+  "name": "Stichopathes",
+  "category": "coral",
+  "shape": "wire_coral",
+  "width": 248,
+  "height": 248,
+  "frames": 8,
+  "columns": 4,
+  "sheet": "sheets/stichopathes_card_sheet.png",
+  "transparent_background": true
+}

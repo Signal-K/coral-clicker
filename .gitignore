@@ -8,6 +8,14 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+# Yarn 2+ / 3+ / 4+
+.yarn/*
+!.yarn/releases/
+!.yarn/plugins/
+!.yarn/sdks/
+!.yarn/versions/
+.pnp.*
+
 # Python
 .venv/
 __pycache__/
@@ -17,6 +25,7 @@ __pycache__/
 .env
 .env.*
 !.env.example
+.knowns/.server-port
 
 # Build and runtime outputs
 dist/
@@ -26,6 +35,7 @@ coverage/
 out/
 tmp/
 *.log
+generated-config/
 
 # React Native / Expo derived files
 .expo/
@@ -35,9 +45,24 @@ android/app/build/
 android/build/
 ios/build/
 ios/Pods/
+ios/.xcode.env.local
 
 # Godot derived files
 project/.godot/
 project/.import/
 project/export_presets.cfg.bak
 *.translation
+ios/GodotTest.pck
+ios/Pengu.zip
+
+# Godot Web Exports
+web/public/godot/
+web/public/game/
+
+# Scraped assets (Click-A-Coral)
+project/assets/click_a_coral/
+project/data/click_a_coral_subjects.json
+!project/assets/click_a_coral/**/.gitkeep
+
+# Local tarballs
+borndotcom-react-native-godot-v1.0.1.tgz

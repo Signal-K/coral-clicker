@@ -1,0 +1,13 @@
+{
+  "slug": "sergeant_major",
+  "style": "standard",
+  "name": "Sergeant Major",
+  "category": "fish",
+  "shape": "fish_sergeant",
+  "width": 248,
+  "height": 248,
+  "frames": 8,
+  "columns": 4,
+  "sheet": "sheets/sergeant_major_sheet.png",
+  "transparent_background": true
+}

@@ -16,7 +16,7 @@ services:
       context: .
       dockerfile: docker/web.Dockerfile
     working_dir: /workspace/web
-    command: sh -c "npm install && npm run dev"
+    command: sh -c "yarn install && yarn dev"
     ports:
       - "3000:3000"
     environment:
@@ -47,7 +47,7 @@ services:
       context: .
       dockerfile: docker/native.Dockerfile
     working_dir: /workspace
-    command: sh -c "npm install && npm run start"
+    command: sh -c "yarn install && yarn start"
     ports:
       - "8081:8081"
     environment:
@@ -63,7 +63,7 @@ services:
       context: .
       dockerfile: docker/electron.Dockerfile
     working_dir: /workspace
-    command: sh -c "npm --prefix electron install && npm --prefix electron run dev"
+    command: sh -c "yarn --prefix electron install && yarn --prefix electron dev"
     environment:
       <<: *common-env
       WEB_URL: http://web:3000
@@ -84,6 +84,34 @@ services:
     command: sh -c "pip install --no-cache-dir -r tools/sprites/requirements.txt && python tools/sprites/generate_sprites.py --out-dir tools/sprites/out"
     volumes:
       - ./:/workspace
+
+  godot-test:
+    profiles: ["test"]
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: docker/godot-test.Dockerfile
+    working_dir: /workspace
+    command: ["--script", "res://tests/e2e_runner.gd"]
+    environment:
+      <<: *common-env
+    volumes:
+      - ./:/workspace
+
+  test-suite:
+    profiles: ["test"]
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: docker/tests.Dockerfile
+    working_dir: /workspace
+    command: ["./scripts/test-all.sh"]
+    environment:
+      <<: *common-env
+    volumes:
+      - ./:/workspace
+      - root_node_modules:/workspace/node_modules
+    <<: *common-host
 
 volumes:
   web_node_modules:

@@ -1,0 +1,13 @@
+{
+  "slug": "thesea_nivea",
+  "style": "egg",
+  "name": "Thesea nivea",
+  "category": "coral",
+  "shape": "white_eye_fan",
+  "width": 248,
+  "height": 248,
+  "frames": 8,
+  "columns": 4,
+  "sheet": "sheets/thesea_nivea_egg_sheet.png",
+  "transparent_background": true
+}

@@ -1,0 +1,13 @@
+{
+  "slug": "blue_chromis",
+  "style": "egg",
+  "name": "Blue Chromis",
+  "category": "fish",
+  "shape": "fish_chromis",
+  "width": 248,
+  "height": 248,
+  "frames": 8,
+  "columns": 4,
+  "sheet": "sheets/blue_chromis_egg_sheet.png",
+  "transparent_background": true
+}

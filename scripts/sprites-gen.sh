@@ -8,4 +8,4 @@ fi
 
 . .venv/bin/activate
 pip install -q -r tools/sprites/requirements.txt
-python3 tools/sprites/generate_sprites.py --out-dir tools/sprites/out --sprite-width 64 --sprite-height 64 --frames 8 --sheet-cols 4
+python3 tools/sprites/generate_sprites.py --out-dir project/assets/sprites --sprite-width 248 --sprite-height 248 --frames 8 --sheet-cols 4

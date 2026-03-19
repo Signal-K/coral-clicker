@@ -1,0 +1,13 @@
+{
+  "slug": "acanthogorgiidae",
+  "style": "egg",
+  "name": "Acanthogorgiidae",
+  "category": "coral",
+  "shape": "spiky_gorgonian",
+  "width": 248,
+  "height": 248,
+  "frames": 8,
+  "columns": 4,
+  "sheet": "sheets/acanthogorgiidae_egg_sheet.png",
+  "transparent_background": true
+}

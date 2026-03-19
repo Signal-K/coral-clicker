@@ -1,0 +1,13 @@
+{
+  "slug": "madracis_sp",
+  "style": "standard",
+  "name": "Madracis Sp.",
+  "category": "coral",
+  "shape": "pencil_coral",
+  "width": 248,
+  "height": 248,
+  "frames": 8,
+  "columns": 4,
+  "sheet": "sheets/madracis_sp_sheet.png",
+  "transparent_background": true
+}

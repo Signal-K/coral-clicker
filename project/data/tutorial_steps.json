@@ -1,0 +1,31 @@
+{
+  "steps": {
+    "identify_intro": {
+      "title": "Start Here",
+      "body": "This is a reef puzzle game. First, pick at least one species you can recognise in the image."
+    },
+    "goal_intro": {
+      "title": "Your Goal",
+      "body": "Now rebuild the target reef. Match the objective before you run out of turns.",
+      "button_text": "Show Me"
+    },
+    "feed_action": {
+      "title": "Add Fish",
+      "body": "Tap + on a fish card to add one fish. Feeding costs Nutrients."
+    },
+    "end_turn_action": {
+      "title": "Resolve The Reef",
+      "body": "Press End Turn to see how your reef changes.",
+      "button_text": "Got It"
+    },
+    "results_intro": {
+      "title": "Read The Results",
+      "body": "This panel compares your current reef against the target. Press Continue to keep solving."
+    },
+    "win_outro": {
+      "title": "That Is The Loop",
+      "body": "Identify, adjust the reef, end the turn, and compare the result. The rest of the levels build on that.",
+      "button_text": "Finish Tutorial"
+    }
+  }
+}

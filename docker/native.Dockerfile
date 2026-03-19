@@ -6,4 +6,4 @@ RUN apk add --no-cache bash
 
 EXPOSE 8081
 
-CMD ["sh", "-c", "npm install && npm run start"]
+CMD ["sh", "-c", "yarn install && yarn start"]

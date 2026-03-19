@@ -1,0 +1,162 @@
+{
+  "sprite_width": 248,
+  "sprite_height": 248,
+  "frames": 8,
+  "columns": 4,
+  "transparent_background": true,
+  "species": [
+    {
+      "slug": "antipathes_atlantica",
+      "name": "Antipathes atlantica",
+      "category": "coral",
+      "shape": "black_coral_fan",
+      "sheet": "sheets/antipathes_atlantica_sheet.png",
+      "card_sheet": "sheets/antipathes_atlantica_card_sheet.png",
+      "egg_sheet": "sheets/antipathes_atlantica_egg_sheet.png"
+    },
+    {
+      "slug": "antipathes_furcata",
+      "name": "Antipathes furcata",
+      "category": "coral",
+      "shape": "forked_coral",
+      "sheet": "sheets/antipathes_furcata_sheet.png",
+      "card_sheet": "sheets/antipathes_furcata_card_sheet.png",
+      "egg_sheet": "sheets/antipathes_furcata_egg_sheet.png"
+    },
+    {
+      "slug": "bebryce_sp",
+      "name": "Bebryce Sp.",
+      "category": "coral",
+      "shape": "golden_bush",
+      "sheet": "sheets/bebryce_sp_sheet.png",
+      "card_sheet": "sheets/bebryce_sp_card_sheet.png",
+      "egg_sheet": "sheets/bebryce_sp_egg_sheet.png"
+    },
+    {
+      "slug": "ellisellidae",
+      "name": "Ellisellidae",
+      "category": "coral",
+      "shape": "sea_whip",
+      "sheet": "sheets/ellisellidae_sheet.png",
+      "card_sheet": "sheets/ellisellidae_card_sheet.png",
+      "egg_sheet": "sheets/ellisellidae_egg_sheet.png"
+    },
+    {
+      "slug": "madracis_sp",
+      "name": "Madracis Sp.",
+      "category": "coral",
+      "shape": "pencil_coral",
+      "sheet": "sheets/madracis_sp_sheet.png",
+      "card_sheet": "sheets/madracis_sp_card_sheet.png",
+      "egg_sheet": "sheets/madracis_sp_egg_sheet.png"
+    },
+    {
+      "slug": "madrepora_sp",
+      "name": "Madrepora Sp.",
+      "category": "coral",
+      "shape": "zigzag_coral",
+      "sheet": "sheets/madrepora_sp_sheet.png",
+      "card_sheet": "sheets/madrepora_sp_card_sheet.png",
+      "egg_sheet": "sheets/madrepora_sp_egg_sheet.png"
+    },
+    {
+      "slug": "muricea_pendula",
+      "name": "Muricea pendula",
+      "category": "coral",
+      "shape": "pinnate_fan",
+      "sheet": "sheets/muricea_pendula_sheet.png",
+      "card_sheet": "sheets/muricea_pendula_card_sheet.png",
+      "egg_sheet": "sheets/muricea_pendula_egg_sheet.png"
+    },
+    {
+      "slug": "acanthogorgiidae",
+      "name": "Acanthogorgiidae",
+      "category": "coral",
+      "shape": "spiky_gorgonian",
+      "sheet": "sheets/acanthogorgiidae_sheet.png",
+      "card_sheet": "sheets/acanthogorgiidae_card_sheet.png",
+      "egg_sheet": "sheets/acanthogorgiidae_egg_sheet.png"
+    },
+    {
+      "slug": "stichopathes",
+      "name": "Stichopathes",
+      "category": "coral",
+      "shape": "wire_coral",
+      "sheet": "sheets/stichopathes_sheet.png",
+      "card_sheet": "sheets/stichopathes_card_sheet.png",
+      "egg_sheet": "sheets/stichopathes_egg_sheet.png"
+    },
+    {
+      "slug": "swiftia_exserta",
+      "name": "Swiftia exserta",
+      "category": "coral",
+      "shape": "orange_tree",
+      "sheet": "sheets/swiftia_exserta_sheet.png",
+      "card_sheet": "sheets/swiftia_exserta_card_sheet.png",
+      "egg_sheet": "sheets/swiftia_exserta_egg_sheet.png"
+    },
+    {
+      "slug": "thesea_nivea",
+      "name": "Thesea nivea",
+      "category": "coral",
+      "shape": "white_eye_fan",
+      "sheet": "sheets/thesea_nivea_sheet.png",
+      "card_sheet": "sheets/thesea_nivea_card_sheet.png",
+      "egg_sheet": "sheets/thesea_nivea_egg_sheet.png"
+    },
+    {
+      "slug": "sponge",
+      "name": "Sponge",
+      "category": "coral",
+      "shape": "barrel_sponge",
+      "sheet": "sheets/sponge_sheet.png",
+      "card_sheet": "sheets/sponge_card_sheet.png",
+      "egg_sheet": "sheets/sponge_egg_sheet.png"
+    },
+    {
+      "slug": "blue_chromis",
+      "name": "Blue Chromis",
+      "category": "fish",
+      "shape": "fish_chromis",
+      "sheet": "sheets/blue_chromis_sheet.png",
+      "card_sheet": "sheets/blue_chromis_card_sheet.png",
+      "egg_sheet": "sheets/blue_chromis_egg_sheet.png"
+    },
+    {
+      "slug": "french_angelfish",
+      "name": "French Angelfish",
+      "category": "fish",
+      "shape": "fish_angelfish",
+      "sheet": "sheets/french_angelfish_sheet.png",
+      "card_sheet": "sheets/french_angelfish_card_sheet.png",
+      "egg_sheet": "sheets/french_angelfish_egg_sheet.png"
+    },
+    {
+      "slug": "creole_wrasse",
+      "name": "Creole Wrasse",
+      "category": "fish",
+      "shape": "fish_wrasse",
+      "sheet": "sheets/creole_wrasse_sheet.png",
+      "card_sheet": "sheets/creole_wrasse_card_sheet.png",
+      "egg_sheet": "sheets/creole_wrasse_egg_sheet.png"
+    },
+    {
+      "slug": "sergeant_major",
+      "name": "Sergeant Major",
+      "category": "fish",
+      "shape": "fish_sergeant",
+      "sheet": "sheets/sergeant_major_sheet.png",
+      "card_sheet": "sheets/sergeant_major_card_sheet.png",
+      "egg_sheet": "sheets/sergeant_major_egg_sheet.png"
+    },
+    {
+      "slug": "parrotfish",
+      "name": "Parrotfish",
+      "category": "fish",
+      "shape": "fish_parrot",
+      "sheet": "sheets/parrotfish_sheet.png",
+      "card_sheet": "sheets/parrotfish_card_sheet.png",
+      "egg_sheet": "sheets/parrotfish_egg_sheet.png"
+    }
+  ]
+}

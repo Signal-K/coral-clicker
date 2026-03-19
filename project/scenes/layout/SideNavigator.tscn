@@ -5,19 +5,19 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/FishActionRow.tscn" id="3_fish_row"]
 
 [sub_resource type="StyleBoxFlat" id="1"]
-bg_color = Color(0.0470588, 0.101961, 0.192157, 1)
+bg_color = Color(0.11, 0.21, 0.38, 1)
 border_width_left = 3
 border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
-border_color = Color(0.101961, 0.317647, 0.611765, 1)
+border_color = Color(0.17, 0.44, 0.76, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
 [node name="SideNavigator" type="PanelContainer"]
-custom_minimum_size = Vector2(318, 0)
+custom_minimum_size = Vector2(295, 0)
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("1")
@@ -35,24 +35,29 @@ size_flags_vertical = 3
 theme_override_constants/separation = 4
 
 [node name="HubTitle" type="Label" parent="SideMargin/SideVBox"]
+visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0.937255, 0.905882, 0.713726, 1)
 theme_override_font_sizes/font_size = 22
 text = "Sanctuary Hub"
 
 [node name="Hub1" parent="SideMargin/SideVBox" instance=ExtResource("1_nav_btn")]
+visible = false
 layout_mode = 2
 text = "Coral Lab"
 
 [node name="Hub2" parent="SideMargin/SideVBox" instance=ExtResource("1_nav_btn")]
+visible = false
 layout_mode = 2
 text = "Fish Hatchery"
 
 [node name="Hub3" parent="SideMargin/SideVBox" instance=ExtResource("1_nav_btn")]
+visible = false
 layout_mode = 2
 text = "Upgrade Workshop"
 
 [node name="Hub4" parent="SideMargin/SideVBox" instance=ExtResource("1_nav_btn")]
+visible = false
 layout_mode = 2
 text = "Quest Log"
 
@@ -154,14 +159,28 @@ theme_override_colors/font_color = Color(0.87451, 0.901961, 0.952941, 1)
 theme_override_font_sizes/font_size = 12
 text = "L1 Turns:6 Coral:2/8 Food:0"
 
+[node name="ObjectiveTitle" type="Label" parent="SideMargin/SideVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.933333, 0.913725, 0.768627, 1)
+theme_override_font_sizes/font_size = 15
+text = "Objective"
+
 [node name="ObjectiveLabel" type="RichTextLabel" parent="SideMargin/SideVBox"]
-visible = false
 layout_mode = 2
 custom_minimum_size = Vector2(0, 60)
 bbcode_enabled = true
+scroll_active = false
+fit_content = true
+
+[node name="FishStateTitle" type="Label" parent="SideMargin/SideVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.933333, 0.913725, 0.768627, 1)
+theme_override_font_sizes/font_size = 15
+text = "Current Populations"
 
 [node name="FishLabel" type="RichTextLabel" parent="SideMargin/SideVBox"]
-visible = false
 layout_mode = 2
 custom_minimum_size = Vector2(0, 80)
 bbcode_enabled = true
+scroll_active = false
+fit_content = true

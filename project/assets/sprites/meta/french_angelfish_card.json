@@ -1,0 +1,13 @@
+{
+  "slug": "french_angelfish",
+  "style": "card",
+  "name": "French Angelfish",
+  "category": "fish",
+  "shape": "fish_angelfish",
+  "width": 248,
+  "height": 248,
+  "frames": 8,
+  "columns": 4,
+  "sheet": "sheets/french_angelfish_card_sheet.png",
+  "transparent_background": true
+}

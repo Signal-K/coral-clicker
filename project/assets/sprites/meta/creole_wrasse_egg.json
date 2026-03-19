@@ -1,0 +1,13 @@
+{
+  "slug": "creole_wrasse",
+  "style": "egg",
+  "name": "Creole Wrasse",
+  "category": "fish",
+  "shape": "fish_wrasse",
+  "width": 248,
+  "height": 248,
+  "frames": 8,
+  "columns": 4,
+  "sheet": "sheets/creole_wrasse_egg_sheet.png",
+  "transparent_background": true
+}

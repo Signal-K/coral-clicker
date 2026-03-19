@@ -1,0 +1,13 @@
+{
+  "slug": "bebryce_sp",
+  "style": "standard",
+  "name": "Bebryce Sp.",
+  "category": "coral",
+  "shape": "golden_bush",
+  "width": 248,
+  "height": 248,
+  "frames": 8,
+  "columns": 4,
+  "sheet": "sheets/bebryce_sp_sheet.png",
+  "transparent_background": true
+}

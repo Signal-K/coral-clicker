@@ -21,6 +21,7 @@
     "infra:down": "./scripts/dev-down.sh",
     "supabase:schema": "./scripts/apply-supabase-schema.sh",
     "sprites:gen": "./scripts/sprites-gen.sh",
+    "click-a-coral:sync": "node scripts/sync-click-a-coral.js",
     "knowns:bootstrap": "npm run template:generate && npm run web:install && npm run electron:install",
     "test:all": "./scripts/test-all.sh",
     "godot:export:ios": "GODOT_EDITOR=\"/Applications/Godot4.5.app/Contents/MacOS/Godot\" ./export_godot_GodotTest.sh ios",

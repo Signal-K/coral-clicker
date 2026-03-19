@@ -1,0 +1,13 @@
+{
+  "slug": "sponge",
+  "style": "standard",
+  "name": "Sponge",
+  "category": "coral",
+  "shape": "barrel_sponge",
+  "width": 248,
+  "height": 248,
+  "frames": 8,
+  "columns": 4,
+  "sheet": "sheets/sponge_sheet.png",
+  "transparent_background": true
+}

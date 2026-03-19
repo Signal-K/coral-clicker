@@ -151,9 +151,9 @@ const LoadingScreen = ({ navigation }: any) => {
   return (
     <SafeAreaView style={styles.loadingContainer}>
       <ActivityIndicator size="large" color="#0a7ea4" />
-      <Text style={styles.loadingText}>Godot host is ready.</Text>
+      <Text style={styles.loadingText}>Coral</Text>
       <View style={styles.openButton}>
-        <Button title="Open Game" onPress={() => navigation.navigate("Game")} />
+        <Button title="Play" onPress={() => navigation.navigate("Game")} />
       </View>
     </SafeAreaView>
   );
@@ -164,21 +164,7 @@ const GameScreen = () => {
 
   useEffect(() => {
     initGodot("GodotTest");
-
-    const timer = setInterval(() => {
-      runOnGodotThread(() => {
-        "worklet";
-        const controller = getController();
-        if (!controller) {
-          return;
-        }
-        const raw = controller.get_level_state_json();
-        console.log("level_state", raw);
-      });
-    }, 5000);
-
     return () => {
-      clearInterval(timer);
       destroyGodot();
     };
   }, []);
