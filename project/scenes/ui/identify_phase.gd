@@ -4,44 +4,47 @@ signal submitted(species: Array[String])
 signal skipped
 signal identify_ready(is_ready: bool)
 
-@onready var intro_label: RichTextLabel = $Control/Margin/VBox/IntroLabel
-@onready var identify_image: TextureRect = $Control/Margin/VBox/ImageContainer/IdentifyImage
-@onready var source_label: Label = $Control/Margin/VBox/SourceLabel
-@onready var grid: GridContainer = $Control/Margin/VBox/Scroll/Grid
-@onready var submit_button: Button = $Control/Margin/VBox/Actions/SubmitButton
-@onready var skip_button: Button = $Control/Margin/VBox/Actions/SkipButton
+@onready var title_label: Label = $Control/Margin/Shell/Margin/VBox/Header/Title
+@onready var intro_label: RichTextLabel = $Control/Margin/Shell/Margin/VBox/Header/IntroLabel
+@onready var identify_image: TextureRect = $Control/Margin/Shell/Margin/VBox/Content/ReferencePanel/Margin/VBox/ImageAspect/ImageFrame/IdentifyImage
+@onready var source_label: Label = $Control/Margin/Shell/Margin/VBox/Content/ReferencePanel/Margin/VBox/SourceLabel
+@onready var prompt_label: Label = $Control/Margin/Shell/Margin/VBox/Content/ChoiceColumn/PromptLabel
+@onready var grid: GridContainer = $Control/Margin/Shell/Margin/VBox/Content/ChoiceColumn/OptionsGrid
+@onready var helper_label: Label = $Control/Margin/Shell/Margin/VBox/Content/ChoiceColumn/HelperLabel
+@onready var submit_button: Button = $Control/Margin/Shell/Margin/VBox/Actions/SubmitButton
+@onready var skip_button: Button = $Control/Margin/Shell/Margin/VBox/Actions/SkipButton
 
-var species_chip_scene: PackedScene = preload("res://scenes/ui/SpeciesChip.tscn")
-var marker_scene: PackedScene = preload("res://scenes/ui/IdentifyMarker.tscn")
+var choice_card_scene: PackedScene = preload("res://scenes/ui/IdentifyChoiceCard.tscn")
 var chips: Array[Button] = []
-var _markers: Dictionary = {} # species_name -> Control
-var _active_species_for_marking: String = ""
+var _choice_group: ButtonGroup = ButtonGroup.new()
+var _selected_species_name := ""
 
 func _ready() -> void:
 	submit_button.pressed.connect(submit_identification)
 	skip_button.pressed.connect(func(): skipped.emit())
-	identify_image.gui_input.connect(_on_image_gui_input)
 	_update_submit_state()
 
-func setup(intro_text: String, texture: Texture, source_text: String, choices: Array[String], sprite_frames_map: Dictionary) -> void:
+func setup(intro_text: String, texture: Texture2D, source_text: String, choices: Array[String], choice_texture_map: Dictionary, allow_skip: bool = true) -> void:
+	title_label.text = "Identify the Reef"
 	intro_label.text = intro_text
 	identify_image.texture = texture
 	source_label.text = source_text
+	skip_button.visible = allow_skip
+	prompt_label.text = "Choose the closest coral match"
 	
 	for child in grid.get_children():
 		child.queue_free()
 	chips.clear()
-	
-	for marker in _markers.values():
-		marker.queue_free()
-	_markers.clear()
-	_active_species_for_marking = ""
+	_choice_group = ButtonGroup.new()
+	_selected_species_name = ""
+	grid.columns = 2 if choices.size() > 2 else max(1, choices.size())
 	
 	for species in choices:
-		var chip = species_chip_scene.instantiate()
+		var chip = choice_card_scene.instantiate()
 		grid.add_child(chip)
-		var frames = sprite_frames_map.get(species)
-		chip.setup(species, frames)
+		chip.button_group = _choice_group
+		var choice_texture: Texture2D = choice_texture_map.get(species)
+		chip.setup(species, choice_texture)
 		chip.toggled.connect(_on_chip_toggled.bind(species))
 		chips.append(chip)
 	
@@ -49,60 +52,29 @@ func setup(intro_text: String, texture: Texture, source_text: String, choices: A
 
 func _on_chip_toggled(pressed: bool, species: String) -> void:
 	if pressed:
-		_active_species_for_marking = species
-		# If already has a marker, just show it
-		if _markers.has(species):
-			_markers[species].visible = true
+		_selected_species_name = species
 	else:
-		if _active_species_for_marking == species:
-			_active_species_for_marking = ""
-		if _markers.has(species):
-			_markers[species].queue_free()
-			_markers.erase(species)
-	
-	_update_submit_state()
-
-func _on_image_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		if _active_species_for_marking.is_empty():
-			return
-		
-		var pos = event.position
-		_place_marker(_active_species_for_marking, pos)
-
-func _place_marker(species: String, pos: Vector2) -> void:
-	if _markers.has(species):
-		_markers[species].position = pos
-	else:
-		var marker = marker_scene.instantiate()
-		identify_image.add_child(marker)
-		marker.position = pos
-		marker.get_node("Label").text = species
-		_markers[species] = marker
-	
+		if _selected_species_name == species:
+			_selected_species_name = ""
 	_update_submit_state()
 
 func _update_submit_state() -> void:
-	var selected = _selected_species()
-	var has_markers = _markers.size() > 0
-	var is_ready := not selected.is_empty() and has_markers
+	var is_ready := not _selected_species_name.is_empty()
 	
 	submit_button.disabled = not is_ready
 	identify_ready.emit(is_ready)
 	
-	if selected.is_empty():
-		submit_button.text = "Select species below"
-	elif not has_markers:
-		submit_button.text = "Click image to place indicator"
+	if _selected_species_name.is_empty():
+		submit_button.text = "Choose a coral"
+		helper_label.text = "Select one option, then confirm."
 	else:
-		submit_button.text = "Confirm Identification (+5 coins)"
+		submit_button.text = "Confirm %s" % _selected_species_name
+		helper_label.text = "Selected: %s" % _selected_species_name
 
 func _selected_species() -> Array[String]:
-	var result: Array[String] = []
-	for chip in chips:
-		if chip.button_pressed:
-			result.append(chip.species_name)
-	return result
+	if _selected_species_name.is_empty():
+		return []
+	return [_selected_species_name]
 
 func submit_identification() -> void:
 	submitted.emit(_selected_species())

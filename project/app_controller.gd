@@ -50,16 +50,13 @@ var state := {
 }
 
 @onready var _http := HTTPRequest.new()
-@onready var _classification_http := HTTPRequest.new()
 @onready var _asset_http := HTTPRequest.new()
 
 func _ready() -> void:
 	_load_content_data()
 	add_child(_http)
-	add_child(_classification_http)
 	add_child(_asset_http)
 	_http.request_completed.connect(_on_request_completed)
-	_classification_http.request_completed.connect(_on_classification_request_completed)
 	_asset_http.request_completed.connect(_on_asset_request_completed)
 	_load_local_state()
 	_emit_state()

@@ -394,14 +394,12 @@ func _show_identify_phase() -> void:
 	var choices := _identify_choices_for_subject(canonical_name)
 	var texture := _identify_subject_texture(_identify_subject, canonical_name)
 	var source_text := _identify_source_caption(texture, canonical_name)
-	var sprite_frames_map := _get_sprite_frames_map(choices)
+	var choice_texture_map := _get_species_card_textures_map(choices)
 
-	_identify_phase_scene.setup(intro_text, texture, source_text, choices, sprite_frames_map)
+	_identify_phase_scene.setup(intro_text, texture, source_text, choices, choice_texture_map, not _tutorial_active)
 	_identify_phase_scene.visible = true
 	
 	_set_turn_hint("Identify the reef first — or skip to start")
-	if _tutorial_active and _tutorial_step_id.is_empty():
-		_show_tutorial_step("identify_intro")
 
 
 func _on_identify_skipped() -> void:
@@ -476,6 +474,27 @@ func _get_sprite_frames_map(choices: Array[String]) -> Dictionary:
 		if ResourceLoader.exists(sprite_frames_path):
 			result[species] = load(sprite_frames_path)
 	return result
+
+
+func _get_species_card_textures_map(choices: Array[String]) -> Dictionary:
+	var result := {}
+	for species in choices:
+		var texture := _load_species_card_texture(species)
+		if texture != null:
+			result[species] = texture
+	return result
+
+
+func _load_species_card_texture(species_name: String) -> Texture2D:
+	var slug := _normalize_label(species_name).replace(" ", "_")
+	if slug.is_empty():
+		return _load_species_sprite_texture(species_name)
+	var frames_path := "res://assets/sprites/%s_card.tres" % slug
+	if ResourceLoader.exists(frames_path):
+		var frames := load(frames_path)
+		if frames is SpriteFrames and frames.has_animation("default") and frames.get_frame_count("default") > 0:
+			return frames.get_frame_texture("default", 0)
+	return _load_species_sprite_texture(species_name)
 
 
 func _load_identify_reference_texture(species_name: String) -> Texture2D:
