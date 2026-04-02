@@ -2,24 +2,30 @@ extends PanelContainer
 
 signal feed_pressed
 signal net_pressed
+signal egg_pressed
 signal starvation_animation_finished
 
 @onready var anim_sprite: AnimatedSprite2D = $Margin/VBox/SpriteContainer/AnimatedSprite2D
 @onready var species_label: Label = $Margin/VBox/SpeciesLabel
+@onready var role_label: Label = $Margin/VBox/RoleLabel
 @onready var pop_label: Label = $Margin/VBox/SpriteContainer/PopBadge/PopLabel
 @onready var trigger_label: Label = $Margin/VBox/TriggerLabel
+@onready var egg_button: Button = $Margin/VBox/EggButton
 @onready var extinct_label: Label = $Margin/VBox/ExtinctLabel
 @onready var feed_button: Button = $Margin/VBox/ActionRow/FeedButton
 @onready var net_button: Button = $Margin/VBox/ActionRow/NetButton
+@onready var action_row: HBoxContainer = $Margin/VBox/ActionRow
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 var species: String = ""
 var is_extinct := false
+var _tutorial_mode := false
 var _extinct_flash_tween: Tween = null
 
 func _ready() -> void:
 	feed_button.pressed.connect(func(): feed_pressed.emit())
 	net_button.pressed.connect(func(): net_pressed.emit())
+	egg_button.pressed.connect(func(): egg_pressed.emit())
 	_ensure_starvation_animation()
 	animation_player.animation_finished.connect(_on_animation_finished)
 
@@ -39,21 +45,49 @@ func setup(p_species: String, frames: SpriteFrames) -> void:
 func update_pop(pop: int) -> void:
 	pop_label.text = str(pop)
 
+
+func set_role_hint(text: String, tone: String = "neutral") -> void:
+	role_label.text = text
+	match tone:
+		"positive":
+			role_label.add_theme_color_override("font_color", Color(0.803922, 0.980392, 0.894118, 1))
+			role_label.add_theme_stylebox_override("normal", _chip_style(Color(0.0627451, 0.2, 0.121569, 1), Color(0.368627, 0.85098, 0.623529, 0.5)))
+		"negative":
+			role_label.add_theme_color_override("font_color", Color(0.988235, 0.858824, 0.847059, 1))
+			role_label.add_theme_stylebox_override("normal", _chip_style(Color(0.364706, 0.105882, 0.117647, 1), Color(0.94902, 0.505882, 0.470588, 0.55)))
+		_:
+			role_label.add_theme_color_override("font_color", Color(0.87451, 0.945098, 0.992157, 1))
+			role_label.add_theme_stylebox_override("normal", _chip_style(Color(0.239216, 0.239216, 0.282353, 1), Color(0.792157, 0.839216, 0.894118, 0.28)))
+
 func set_disabled(disabled: bool) -> void:
 	feed_button.disabled = disabled
-	net_button.disabled = disabled
+	net_button.disabled = disabled or _tutorial_mode
+	egg_button.disabled = disabled
+
+
+func set_egg_state(disabled: bool, cost: int) -> void:
+	egg_button.disabled = disabled
+	egg_button.text = "Egg %d coins" % cost
 
 
 func set_net_state(disabled: bool, triggers_remaining: int, max_triggers: int) -> void:
-	net_button.disabled = disabled
+	net_button.disabled = disabled or _tutorial_mode
 	trigger_label.text = "Net %d/%d" % [triggers_remaining, max_triggers]
-	trigger_label.modulate = Color(1, 1, 1, 0.5) if disabled else Color(1, 1, 1, 1)
+	trigger_label.modulate = Color(1, 1, 1, 0.5) if disabled or _tutorial_mode else Color(1, 1, 1, 1)
+
+
+func set_tutorial_mode(enabled: bool) -> void:
+	_tutorial_mode = enabled
+	net_button.visible = not enabled
+	trigger_label.visible = not enabled
+	action_row.alignment = BoxContainer.ALIGNMENT_CENTER
 
 
 func set_extinct_state(extinct: bool) -> void:
 	is_extinct = extinct
 	feed_button.disabled = feed_button.disabled or extinct
 	net_button.disabled = net_button.disabled or extinct
+	egg_button.disabled = egg_button.disabled or extinct
 	modulate = Color(0.55, 0.55, 0.55, 0.9) if extinct else Color(1, 1, 1, 1)
 	if not extinct:
 		extinct_label.visible = false
@@ -114,6 +148,21 @@ func _ensure_starvation_animation() -> void:
 	animation.track_insert_key(pos_track, 1.6, Vector2(52, 58))
 
 	library.add_animation("starve_death", animation)
+
+
+func _chip_style(fill: Color, border: Color) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = fill
+	style.border_color = border
+	style.border_width_left = 1
+	style.border_width_top = 1
+	style.border_width_right = 1
+	style.border_width_bottom = 1
+	style.corner_radius_top_left = 12
+	style.corner_radius_top_right = 12
+	style.corner_radius_bottom_right = 12
+	style.corner_radius_bottom_left = 12
+	return style
 
 
 func _on_animation_finished(animation_name: StringName) -> void:

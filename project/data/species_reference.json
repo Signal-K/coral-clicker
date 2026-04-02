@@ -703,6 +703,18 @@
     }
   },
   "species_traits": {
+    "Antipathes atlantica": ["deep_adapted", "cold_resistant"],
+    "Antipathes furcata": ["deep_adapted", "cold_resistant"],
+    "Bebryce Sp.": ["reef_cleaner"],
+    "Ellisellidae": ["schooling"],
+    "Madracis Sp.": ["warm_tolerant", "reef_cleaner"],
+    "Madrepora Sp.": ["deep_adapted", "slow_breeder"],
+    "Muricea pendula": ["reef_cleaner", "schooling"],
+    "Acanthogorgiidae": ["deep_adapted"],
+    "Stichopathes": ["deep_adapted", "cold_resistant"],
+    "Swiftia exserta": ["deep_adapted", "schooling"],
+    "Thesea nivea": ["reef_cleaner", "warm_tolerant"],
+    "Sponge": ["fast_breeder"],
     "Blue Chromis": ["schooling", "warm_tolerant"],
     "French Angelfish": ["reef_cleaner", "warm_tolerant"],
     "Creole Wrasse": ["cold_resistant", "deep_adapted"],

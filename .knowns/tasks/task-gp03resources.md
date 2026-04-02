@@ -1,14 +1,14 @@
 ---
 id: gp03resources
 title: "Resource system simplification"
-status: todo
+status: done
 priority: medium
 labels:
   - gameplay
   - economy
   - ui
 createdAt: '2026-03-15T00:00:00Z'
-updatedAt: '2026-03-15T00:00:00Z'
+updatedAt: '2026-03-20T13:29:03Z'
 ---
 
 # Resource system simplification
@@ -17,7 +17,7 @@ updatedAt: '2026-03-15T00:00:00Z'
 
 | Resource | Scope | Earned by | Spent on |
 |---|---|---|---|
-| Nutrients | Level-local | Level start allotment | Feed fish (+pop), adjust environment |
+| Nutrients | Level-local | Level start allotment | Feed fish (+pop) |
 | Coins | Global (persists across game) | Completing levels (fewer turns = more) | Buy fish eggs mid-level |
 
 ## Hidden resources (defer to v0.3)

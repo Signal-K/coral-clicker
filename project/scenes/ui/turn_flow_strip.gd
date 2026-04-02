@@ -13,9 +13,9 @@ func _ready() -> void:
 
 func set_step(step: int) -> void:
 	if step == 1:
-		step_label.text = "① Adjust Fish"
+		step_label.text = "Reef Loop: Choose your fish"
 	elif step == 2:
-		step_label.text = "② End Turn"
+		step_label.text = "Reef Loop: Resolve the reef"
 
 func set_disabled(disabled: bool) -> void:
 	next_turn_button.disabled = disabled

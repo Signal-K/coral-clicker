@@ -1,13 +1,13 @@
 ---
 id: onb02-tutorial-copy
 title: "Tutorial copy guardrails"
-status: in_progress
+status: done
 priority: medium
 labels:
   - onboarding
   - ux-writing
 createdAt: '2026-03-19T00:00:00Z'
-updatedAt: '2026-03-19T00:00:00Z'
+updatedAt: '2026-03-20T22:51:30Z'
 ---
 
 # Tutorial copy guardrails

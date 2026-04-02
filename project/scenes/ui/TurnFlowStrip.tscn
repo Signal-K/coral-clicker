@@ -12,16 +12,16 @@ script = ExtResource("1_script")
 
 [node name="StepLabel" type="Label" parent="."]
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0.898039, 1, 1)
+theme_override_colors/font_color = Color(0.992157, 0.913725, 0.647059, 1)
 theme_override_font_sizes/font_size = 18
-text = "① Adjust Fish"
+text = "Reef Loop: Choose your fish"
 
 [node name="ShopButton" type="Button" parent="."]
 custom_minimum_size = Vector2(100, 44)
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_font_sizes/font_size = 18
-text = "Shop"
+text = "Hatchery"
 
 [node name="VSeparator" type="VSeparator" parent="."]
 layout_mode = 2
@@ -31,4 +31,4 @@ custom_minimum_size = Vector2(140, 44)
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_font_sizes/font_size = 18
-text = "End Turn"
+text = "Resolve Reef"

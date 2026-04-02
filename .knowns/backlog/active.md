@@ -142,10 +142,11 @@ All 10 open design questions answered on 2026-03-17. Docs updated; task files cr
 
 ---
 
-### gp11 — Extinct card + essential species level end
-**Priority:** Medium | **Labels:** gameplay, ui
+### ux02 — Identify Phase scene
+**Status:** Done | **Labels:** ui, ux, identify-phase
 
-- Tap grey card → "Extinct" label
-- Essential species extinct → immediate level end with fail reason
+- Convert the current `AcceptDialog` popup in `level_system.gd` into a dedicated, full-screen UI.
+- Ensure the reef image is prominent and supports the "full-screen citizen science" vision.
+- Transition from world map/level start should lead directly into this full-screen analysis mode.
 
-**Full spec:** [tasks/task-gp11extinct-card.md](../tasks/task-gp11extinct-card.md)
+**Full spec:** [tasks/task-ux02identify-phase-scene.md](../tasks/task-ux02identify-phase-scene.md) | [docs/identify-phase.md](../docs/identify-phase.md)

@@ -1,0 +1,71 @@
+{
+  "events": [
+    {
+      "id": "spawning_season",
+      "name": "Spawning Season",
+      "duration_hours": 48,
+      "water_tint_override": null,
+      "visual_effect": "particle_eggs",
+      "mechanics": {
+        "breeding_interval_multiplier": 0.5,
+        "nutrient_drain_multiplier": 1.25
+      },
+      "description": "Spawning season is underway. Breeding events fire twice as often — eggs fill the reef. Managing nutrients becomes critical.",
+      "entry_copy": "Spawning season is active. Eggs will appear constantly — hatch them fast and keep nutrients in check."
+    },
+    {
+      "id": "bleaching_event",
+      "name": "Bleaching Event",
+      "duration_hours": 48,
+      "water_tint_override": "#D6EAF8",
+      "visual_effect": "coral_desaturate",
+      "mechanics": {
+        "temperature_drift_per_turn": 1,
+        "temperature_drift_direction": "warm",
+        "stony_coral_damage_bonus": -1
+      },
+      "description": "Ocean temperatures are rising. Stony corals take additional damage while temperature is at the warm threshold. Counter by spending coins on the temperature dial.",
+      "entry_copy": "A bleaching event is active. Temperature will drift warm each turn unless you spend coins to hold it back. Stony corals are at risk."
+    },
+    {
+      "id": "storm_surge",
+      "name": "Storm Surge",
+      "duration_hours": 48,
+      "water_tint_override": "#1C2833",
+      "visual_effect": "particle_storm",
+      "mechanics": {
+        "random_fish_pop_loss_per_turn": 1,
+        "salinity_fluctuation": true
+      },
+      "description": "A storm is battering the reef. One random fish population loses a member at the start of each turn. Salinity is unstable — watch the dial.",
+      "entry_copy": "Storm conditions are active. Fish populations are at risk each turn and salinity is fluctuating."
+    },
+    {
+      "id": "cold_upwelling",
+      "name": "Cold Upwelling",
+      "duration_hours": 48,
+      "water_tint_override": "#1ABC9C",
+      "visual_effect": "tint_blue_green",
+      "mechanics": {
+        "temperature_baseline_offset": -1,
+        "deep_water_species_aid_bonus": 1,
+        "tropical_fish_cold_damage": -1
+      },
+      "description": "Cold water is rising from depth. Deep-water species thrive but tropical fish are taking cold damage. Strategy shifts toward cold-tolerant species.",
+      "entry_copy": "Cold upwelling is active. Tropical fish take cold damage this level. Favour cold-tolerant or deep-water species."
+    },
+    {
+      "id": "algae_bloom",
+      "name": "Algae Bloom",
+      "duration_hours": 48,
+      "water_tint_override": "#1E8449",
+      "visual_effect": "tint_green",
+      "mechanics": {
+        "coral_damage_per_turn_if_herbivores_low": -1,
+        "herbivore_threshold": 3
+      },
+      "description": "Algae is spreading across the reef. All corals take -1 per turn unless at least 3 herbivore fish are present. Parrotfish and Sergeant Major count.",
+      "entry_copy": "Algae bloom is active. Keep at least 3 herbivore fish (Parrotfish or Sergeant Major) in your reef or corals will suffer."
+    }
+  ]
+}

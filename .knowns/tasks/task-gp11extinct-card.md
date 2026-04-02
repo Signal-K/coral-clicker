@@ -1,13 +1,13 @@
 ---
 id: gp11extinct-card
 title: "Extinct card — tap behaviour and essential species level end"
-status: todo
+status: done
 priority: medium
 labels:
   - gameplay
   - ui
 createdAt: '2026-03-17T00:00:00Z'
-updatedAt: '2026-03-17T00:00:00Z'
+updatedAt: '2026-03-20T00:00:00Z'
 ---
 
 # Extinct card — tap behaviour and essential species level end

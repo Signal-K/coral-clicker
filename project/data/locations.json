@@ -1,0 +1,136 @@
+{
+  "locations": [
+    {
+      "id": "the_nursery",
+      "name": "The Nursery",
+      "depth_label": "Shallow",
+      "depth_range": "<5m",
+      "water_tint": "#1DE9B6",
+      "env_baseline": { "temperature": 0, "salinity": 0 },
+      "unlock_type": "tutorial",
+      "species_note": "Madracis sp. only",
+      "mechanic_introduced": "Tutorial — identify, breed, end turn",
+      "levels": [0]
+    },
+    {
+      "id": "florida_keys",
+      "name": "Florida Keys",
+      "depth_label": "Shallow",
+      "depth_range": "5–15m",
+      "water_tint": "#1A7FBF",
+      "env_baseline": { "temperature": 1, "salinity": 0 },
+      "unlock_type": "progression",
+      "species_note": "Madracis sp., Blue Chromis, Creole Wrasse",
+      "mechanic_introduced": "Nutrients, basic environment",
+      "levels": [1]
+    },
+    {
+      "id": "belize_barrier",
+      "name": "Belize Barrier Reef",
+      "depth_label": "Mid",
+      "depth_range": "15–30m",
+      "water_tint": "#0D7B74",
+      "env_baseline": { "temperature": 0, "salinity": 0 },
+      "unlock_type": "progression",
+      "species_note": "Add gorgonians",
+      "mechanic_introduced": "Temperature dial matters",
+      "levels": [2]
+    },
+    {
+      "id": "cayman_islands",
+      "name": "Cayman Islands",
+      "depth_label": "Mid-deep",
+      "depth_range": "30–50m",
+      "water_tint": "#4A6D8C",
+      "env_baseline": { "temperature": -1, "salinity": 0 },
+      "unlock_type": "progression",
+      "species_note": "Cold-preferring species",
+      "mechanic_introduced": "Cold specialist mechanic",
+      "levels": [3]
+    },
+    {
+      "id": "bahamas_ledge",
+      "name": "The Bahamas Ledge",
+      "depth_label": "Mid",
+      "depth_range": "20–40m",
+      "water_tint": "#1565C0",
+      "env_baseline": { "temperature": 0, "salinity": 1 },
+      "unlock_type": "progression",
+      "species_note": "Stressor introduced",
+      "mechanic_introduced": "First urchin — Creole Wrasse counter",
+      "levels": [4]
+    },
+    {
+      "id": "turks_caicos",
+      "name": "Turks & Caicos",
+      "depth_label": "Mid",
+      "depth_range": "15–35m",
+      "water_tint": "#1976D2",
+      "env_baseline": { "temperature": 1, "salinity": 1 },
+      "unlock_type": "progression",
+      "species_note": "Stressor + environment mismatch",
+      "mechanic_introduced": "Combined stressor and environment pressure",
+      "levels": [5]
+    },
+    {
+      "id": "bonaire_wall",
+      "name": "Bonaire Wall",
+      "depth_label": "Deep",
+      "depth_range": "50–80m",
+      "water_tint": "#1A237E",
+      "env_baseline": { "temperature": -1, "salinity": 0 },
+      "unlock_type": "progression",
+      "species_note": "Two competing corals",
+      "mechanic_introduced": "Kill-a-coral chain",
+      "levels": [6]
+    },
+    {
+      "id": "curacao_deep",
+      "name": "Curaçao Deep",
+      "depth_label": "Deep",
+      "depth_range": "60–100m",
+      "water_tint": "#0D1B4B",
+      "env_baseline": { "temperature": -1, "salinity": 0 },
+      "unlock_type": "progression",
+      "species_note": "Full stressor + environment pressure",
+      "mechanic_introduced": "Multi-step deduction",
+      "levels": [7]
+    },
+    {
+      "id": "los_roques",
+      "name": "Los Roques",
+      "depth_label": "Deep",
+      "depth_range": "40–70m",
+      "water_tint": "#162B5B",
+      "env_baseline": { "temperature": -1, "salinity": 0 },
+      "unlock_type": "progression",
+      "species_note": "Tight constraints, large target",
+      "mechanic_introduced": "Time pressure",
+      "levels": [8]
+    },
+    {
+      "id": "fernando_noronha",
+      "name": "Fernando de Noronha",
+      "depth_label": "Deep",
+      "depth_range": "40–80m",
+      "water_tint": "#1B3A6B",
+      "env_baseline": { "temperature": 1, "salinity": 0 },
+      "unlock_type": "progression",
+      "species_note": "Escalating bleaching pressure",
+      "mechanic_introduced": "Spreading stressor",
+      "levels": [9]
+    },
+    {
+      "id": "trinidad_tobago",
+      "name": "Trinidad & Tobago",
+      "depth_label": "Deep",
+      "depth_range": "50–100m",
+      "water_tint": "#0D1635",
+      "env_baseline": { "temperature": 0, "salinity": 0 },
+      "unlock_type": "progression",
+      "species_note": "Full complexity, max stressors",
+      "mechanic_introduced": "Multi-coral, multi-stressor",
+      "levels": [10]
+    }
+  ]
+}

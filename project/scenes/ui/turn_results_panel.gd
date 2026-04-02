@@ -7,6 +7,7 @@ signal continued
 @onready var nutrients_label: Label = $PanelContainer/Margin/VBox/StatsVBox/NutrientsLabel
 @onready var health_bar: ProgressBar = $PanelContainer/Margin/VBox/StatsVBox/HealthRow/HealthBar
 @onready var health_value_label: Label = $PanelContainer/Margin/VBox/StatsVBox/HealthRow/HealthValue
+@onready var summary_label: RichTextLabel = $PanelContainer/Margin/VBox/StatsVBox/SummaryLabel
 @onready var continue_button: Button = $PanelContainer/Margin/VBox/ContinueButton
 @onready var panel_container: PanelContainer = $PanelContainer
 @onready var dim_bg: ColorRect = $DimBG
@@ -18,20 +19,23 @@ func _ready() -> void:
 	hide_panel()
 
 func show_results(turn_num: int, total_turns: int, current_populations: Dictionary, target_populations: Dictionary, turns_remaining: int) -> void:
-	title_label.text = "Turn %d of %d — Results" % [turn_num, total_turns]
+	title_label.text = "Turn %d of %d — Reef Check" % [turn_num, total_turns]
 	if turns_remaining <= 0:
-		nutrients_label.text = "Last turn"
+		nutrients_label.text = "Final chance to finish this reef"
 	else:
-		nutrients_label.text = "%d turns remaining" % turns_remaining
+		nutrients_label.text = "%d reef turns remaining" % turns_remaining
 	var coral_target := 0
 	var coral_current := 0
+	var coral_name := "target coral"
 	for species in target_populations.keys():
 		if int(target_populations.get(species, 0)) > coral_target:
 			coral_target = int(target_populations.get(species, 0))
 			coral_current = int(current_populations.get(species, 0))
+			coral_name = str(species)
 	var reef_ratio := 0.0 if coral_target <= 0 else float(coral_current) / float(coral_target)
 	health_bar.value = reef_ratio * 100.0
 	health_value_label.text = "%d%%" % int(reef_ratio * 100.0)
+	summary_label.text = _summary_copy(coral_name, coral_current, coral_target, turns_remaining)
 	
 	# Clear existing rows
 	for child in rows_vbox.get_children():
@@ -79,11 +83,11 @@ func show_results(turn_num: int, total_turns: int, current_populations: Dictiona
 			delta_label.add_theme_color_override("font_color", Color.GREEN)
 			arrow_label.add_theme_color_override("font_color", Color.GREEN)
 		elif current_value > target_value:
-			arrow_label.text = "Over"
+			arrow_label.text = "Healthy surplus"
 			delta_label.add_theme_color_override("font_color", Color.GREEN)
 			arrow_label.add_theme_color_override("font_color", Color.GREEN)
 		else:
-			arrow_label.text = "Below"
+			arrow_label.text = "Needs growth"
 			delta_label.add_theme_color_override("font_color", Color(0.92, 0.92, 0.92))
 			arrow_label.add_theme_color_override("font_color", Color(0.82, 0.82, 0.82))
 			
@@ -108,3 +112,16 @@ func hide_panel() -> void:
 func _on_continue_pressed() -> void:
 	continued.emit()
 	hide_panel()
+
+
+func _summary_copy(coral_name: String, coral_current: int, coral_target: int, turns_remaining: int) -> String:
+	if coral_target <= 0:
+		return "[b]No target data available.[/b]"
+	var missing := maxi(0, coral_target - coral_current)
+	if missing <= 0:
+		if turns_remaining > 0:
+			return "[b]%s is on pace.[/b]\nYou can protect this lead or improve the rest of the reef before the mission ends." % coral_name
+		return "[b]%s reached the target.[/b]\nThis reef is ready for the mission result." % coral_name
+	if missing == 1:
+		return "[b]%s needs one more growth step.[/b]\nFeed a helper species and resolve another turn to close the gap." % coral_name
+	return "[b]%s is %d short of the target.[/b]\nKeep adding helper fish and avoid threat species until the reef check starts trending upward." % [coral_name, missing]

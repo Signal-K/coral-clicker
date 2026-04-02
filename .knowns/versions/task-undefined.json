@@ -1,0 +1,39 @@
+{
+  "id": "qp0w5k",
+  "versions": [
+    {
+      "id": "vNaN",
+      "taskId": "qp0w5k",
+      "version": null,
+      "timestamp": "2026-03-26T09:17:48.388Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "newValue": "kanban: uw3lor"
+        }
+      ],
+      "snapshot": {
+        "title": "Sketch the bleaching and restoration event UI",
+        "description": "Bleaching events and restoration milestones are key game moments. Sketch the UI for both — what appears on screen, how severity is communicated, and what player action is prompted.",
+        "status": "todo",
+        "priority": "medium",
+        "labels": [
+          "sketch",
+          "design"
+        ],
+        "acceptanceCriteria": [
+          {
+            "completed": false,
+            "text": "Bleaching event UI sketch complete"
+          },
+          {
+            "completed": false,
+            "text": "Restoration event UI sketch complete"
+          }
+        ],
+        "implementationNotes": "kanban: uw3lor"
+      }
+    }
+  ],
+  "currentVersion": null
+}

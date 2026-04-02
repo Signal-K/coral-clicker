@@ -14,6 +14,7 @@ var _collect_btn: Button = null
 var _tank_info_label: RichTextLabel = null
 var _status_label: Label = null
 var _fish_rows_container: VBoxContainer = null
+var _hero_label: RichTextLabel = null
 
 # Timer for refreshing pending coins display
 var _refresh_timer: float = 0.0
@@ -65,15 +66,44 @@ func _build_ui() -> void:
 
 	var title := Label.new()
 	title.text = "The Tank"
-	title.add_theme_font_size_override("font_size", 28)
+	title.add_theme_font_size_override("font_size", 32)
 	title.add_theme_color_override("font_color", Color(0.94, 0.91, 0.71))
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	title_row.add_child(title)
 
 	var levels_btn := Button.new()
-	levels_btn.text = "Select Levels"
+	levels_btn.text = "Back To Route"
 	levels_btn.pressed.connect(_go_to_levels)
 	title_row.add_child(levels_btn)
+
+	var hero_panel := PanelContainer.new()
+	vbox.add_child(hero_panel)
+
+	var hero_style := StyleBoxFlat.new()
+	hero_style.bg_color = Color(0.06, 0.16, 0.24, 0.94)
+	hero_style.border_color = Color(0.27, 0.68, 0.8, 0.6)
+	hero_style.border_width_left = 2
+	hero_style.border_width_top = 2
+	hero_style.border_width_right = 2
+	hero_style.border_width_bottom = 2
+	hero_style.corner_radius_top_left = 24
+	hero_style.corner_radius_top_right = 24
+	hero_style.corner_radius_bottom_right = 24
+	hero_style.corner_radius_bottom_left = 24
+	hero_panel.add_theme_stylebox_override("panel", hero_style)
+
+	var hero_margin := MarginContainer.new()
+	hero_margin.add_theme_constant_override("margin_left", 20)
+	hero_margin.add_theme_constant_override("margin_right", 20)
+	hero_margin.add_theme_constant_override("margin_top", 16)
+	hero_margin.add_theme_constant_override("margin_bottom", 16)
+	hero_panel.add_child(hero_margin)
+
+	_hero_label = RichTextLabel.new()
+	_hero_label.fit_content = true
+	_hero_label.bbcode_enabled = true
+	_hero_label.scroll_active = false
+	hero_margin.add_child(_hero_label)
 
 	# ── Coins banner ──
 	var coins_panel := PanelContainer.new()
@@ -97,12 +127,12 @@ func _build_ui() -> void:
 	coins_row.add_child(_coins_label)
 
 	_pending_label = Label.new()
-	_pending_label.text = "Pending: 0"
+	_pending_label.text = "Ready: 0"
 	_pending_label.add_theme_color_override("font_color", Color(1.0, 0.85, 0.3))
 	coins_row.add_child(_pending_label)
 
 	_collect_btn = Button.new()
-	_collect_btn.text = "Collect"
+	_collect_btn.text = "Harvest Coins"
 	_collect_btn.pressed.connect(_on_collect_pressed)
 	coins_row.add_child(_collect_btn)
 
@@ -137,7 +167,7 @@ func _build_ui() -> void:
 	info_vbox.add_child(sep)
 
 	var fish_title := Label.new()
-	fish_title.text = "Fish Populations (tap +/- to adjust)"
+	fish_title.text = "Caretaker Roster"
 	info_vbox.add_child(fish_title)
 
 	_fish_rows_container = VBoxContainer.new()
@@ -146,7 +176,7 @@ func _build_ui() -> void:
 
 	# ── Status ──
 	_status_label = Label.new()
-	_status_label.text = "Your tank earns coins while you play levels."
+	_status_label.text = "Grow a lively reef here, then harvest the coins between missions."
 	_status_label.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
 	_status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	vbox.add_child(_status_label)
@@ -165,18 +195,17 @@ func _refresh_display() -> void:
 		pending = controller.call("get_tank_pending_coins")
 
 	if _coins_label:
-		_coins_label.text = "Coins: %d" % coins
+		_coins_label.text = "Reef Bank: %d" % coins
 	if _pending_label:
-		_pending_label.text = "Pending: +%d" % pending
+		_pending_label.text = "Ready To Harvest: +%d" % pending
 	if _collect_btn:
 		_collect_btn.disabled = pending < COIN_COLLECT_MIN
 
 	var tank_json := "{}"
 	if controller.has_method("get_tank_state_json"):
 		tank_json = controller.call("get_tank_state_json")
-	var tank := JSON.parse_string(tank_json)
-	if typeof(tank) != TYPE_DICTIONARY:
-		tank = {}
+	var parsed_tank: Variant = JSON.parse_string(tank_json)
+	var tank: Dictionary = parsed_tank if typeof(parsed_tank) == TYPE_DICTIONARY else {}
 
 	# Tank info
 	if _tank_info_label:
@@ -188,7 +217,9 @@ func _refresh_display() -> void:
 			fish_total += int(fish_pops[sp])
 
 		var rate_per_hour := float(coral_pop) * 1.0 + float(fish_total) * 0.3
-		_tank_info_label.text = "Coral: [b]%s[/b] × %d\nFish: %d total\nRate: [b]%.1f coins/hour[/b]" % [target_coral, coral_pop, fish_total, rate_per_hour]
+		_tank_info_label.text = "Signature coral: [b]%s[/b] × %d\nSchool size: [b]%d fish[/b]\nSanctuary yield: [b]%.1f coins/hour[/b]" % [target_coral, coral_pop, fish_total, rate_per_hour]
+		if _hero_label:
+			_hero_label.text = "[b]Your private sanctuary[/b]\nRaise a showpiece reef between missions. Bigger coral stands and healthier fish schools spin up a steadier coin harvest."
 
 	# Fish population rows
 	_refresh_fish_rows(tank.get("fish_populations", {}))
@@ -215,7 +246,7 @@ func _refresh_fish_rows(fish_pops: Variant) -> void:
 		_fish_rows_container.add_child(row)
 
 		var lbl := Label.new()
-		lbl.text = "%s: %d" % [species, pop]
+		lbl.text = "%s  x%d" % [species, pop]
 		lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		row.add_child(lbl)
 
@@ -238,7 +269,7 @@ func _on_collect_pressed() -> void:
 		return
 	var collected: int = controller.call("collect_tank_rewards")
 	if _status_label:
-		_status_label.text = "Collected %d coins! Keep growing your reef." % collected
+		_status_label.text = "Harvested %d coins from the sanctuary. Let it keep growing between missions." % collected
 	_refresh_display()
 
 

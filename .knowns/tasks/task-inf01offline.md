@@ -1,7 +1,7 @@
 ---
 id: inf01offline
 title: "Offline-first play + Supabase classification sync"
-status: todo
+status: in_progress
 priority: medium
 labels:
   - infra
@@ -9,7 +9,7 @@ labels:
   - offline
   - citizen-science
 createdAt: '2026-03-15T00:00:00Z'
-updatedAt: '2026-03-15T00:00:00Z'
+updatedAt: '2026-03-21T00:00:00Z'
 ---
 
 # Offline-first play + Supabase sync

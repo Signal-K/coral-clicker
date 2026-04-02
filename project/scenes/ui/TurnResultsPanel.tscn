@@ -112,6 +112,15 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "0%"
 
+[node name="SummaryLabel" type="RichTextLabel" parent="PanelContainer/Margin/VBox/StatsVBox"]
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+theme_override_colors/default_color = Color(0.854902, 0.941176, 0.984314, 1)
+text = "Summary"
+
 [node name="HSeparator3" type="HSeparator" parent="PanelContainer/Margin/VBox"]
 layout_mode = 2
 

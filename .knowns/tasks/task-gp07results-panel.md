@@ -1,13 +1,13 @@
 ---
 id: gp07results-panel
 title: "Results panel — per-species population vs target"
-status: todo
+status: done
 priority: high
 labels:
   - gameplay
   - ui
 createdAt: '2026-03-17T00:00:00Z'
-updatedAt: '2026-03-17T00:00:00Z'
+updatedAt: '2026-03-20T00:00:00Z'
 ---
 
 # Results panel — per-species population vs target

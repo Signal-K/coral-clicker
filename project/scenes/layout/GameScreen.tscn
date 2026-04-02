@@ -45,9 +45,10 @@ theme_override_constants/separation = 12
 layout_mode = 2
 
 [node name="HomeButton" type="Button" parent="UIMargin/PortraitVBox/TopRow"]
-custom_minimum_size = Vector2(48, 48)
+custom_minimum_size = Vector2(86, 48)
 layout_mode = 2
-text = "H"
+theme_override_font_sizes/font_size = 15
+text = "Route"
 
 [node name="ObjectiveCard" parent="UIMargin/PortraitVBox/TopRow" instance=ExtResource("2_obj")]
 layout_mode = 2

@@ -58,6 +58,23 @@ func _init() -> void:
 		if not fish.has("name") or not fish.has("coral_effects") or not fish.has("offspring_weights"):
 			_fail("fish species entry missing ecology/breeding fields")
 			return
+	var trait_definitions: Variant = species_doc.get("trait_definitions", {})
+	if typeof(trait_definitions) != TYPE_DICTIONARY or trait_definitions.is_empty():
+		_fail("species_reference.json is missing trait_definitions")
+		return
+	var species_traits: Variant = species_doc.get("species_traits", {})
+	if typeof(species_traits) != TYPE_DICTIONARY:
+		_fail("species_reference.json is missing species_traits")
+		return
+	for coral in species_doc.get("corals", []):
+		if typeof(coral) != TYPE_DICTIONARY:
+			continue
+		var coral_name := str(coral.get("name", ""))
+		if coral_name.is_empty():
+			continue
+		if not species_traits.has(coral_name):
+			_fail("species_traits missing coral entry for %s" % coral_name)
+			return
 
 	var tutorial_steps_path := "res://data/tutorial_steps.json"
 	if not FileAccess.file_exists(tutorial_steps_path):
@@ -71,7 +88,7 @@ func _init() -> void:
 	if typeof(tutorial_steps) != TYPE_DICTIONARY:
 		_fail("tutorial_steps.json is missing steps")
 		return
-	for required_step in ["identify_intro", "goal_intro", "feed_action", "end_turn_action", "results_intro", "win_outro"]:
+	for required_step in ["identify_intro", "goal_intro", "feed_action", "end_turn_action", "results_intro", "egg_intro", "win_outro"]:
 		if not tutorial_steps.has(required_step):
 			_fail("tutorial_steps.json is missing %s" % required_step)
 			return
@@ -104,6 +121,9 @@ func _init() -> void:
 	if typeof(loaded_species) != TYPE_DICTIONARY:
 		_fail("AppController did not expose species reference")
 		return
+	if app_controller.get_cached_subject_image_path("missing-subject") != "":
+		_fail("Expected empty cache path for unknown subject id")
+		return
 
 	var spent: bool = app_controller.spend_coins(1)
 	if spent:
@@ -113,6 +133,17 @@ func _init() -> void:
 	app_controller.add_coins(12)
 	if app_controller.get_coins() != 12:
 		_fail("Expected coins to accumulate after add_coins")
+		return
+
+	app_controller.add_carryover_triggers(2)
+	if app_controller.get_carryover_triggers() != 2:
+		_fail("Expected carryover triggers to accumulate")
+		return
+	if app_controller.consume_carryover_triggers(1) != 1:
+		_fail("Expected one carryover trigger to be consumed")
+		return
+	if app_controller.get_carryover_triggers() != 1:
+		_fail("Carryover trigger total did not decrease after consume")
 		return
 
 	if not app_controller.spend_coins(5):
@@ -162,6 +193,9 @@ func _init() -> void:
 	if not state.has("global_coins"):
 		_fail("global_coins missing from AppController state")
 		return
+	if int(state.get("carryover_triggers", -1)) != 1:
+		_fail("carryover_triggers missing or incorrect in AppController state")
+		return
 
 	# Verify tank state is present
 	if not state.has("tank"):
@@ -183,6 +217,15 @@ func _init() -> void:
 		_fail("Failed to instantiate BottomResourceBar scene")
 		return
 
+	var reef_viewport_scene := load("res://scenes/layout/ReefViewport.tscn")
+	if reef_viewport_scene == null:
+		_fail("Failed to load ReefViewport scene")
+		return
+	var reef_viewport: Node = reef_viewport_scene.instantiate()
+	if reef_viewport == null:
+		_fail("Failed to instantiate ReefViewport scene")
+		return
+
 	var tutorial_overlay: Node = tutorial_overlay_scene.instantiate()
 	if tutorial_overlay == null:
 		_fail("Failed to instantiate TutorialOverlay scene")
@@ -191,8 +234,8 @@ func _init() -> void:
 	var expected_defaults := {
 		"ResA": "Nutrients: 0",
 		"ResB": "Coins: 0",
-		"ResC": "Turn: 0/0",
-		"ResD": "Reef: 0%",
+		"ResC": "Turn 0/0",
+		"ResD": "Actions: 0/2",
 	}
 	for node_name in expected_defaults.keys():
 		var label := resource_bar.get_node_or_null("BottomMargin/BottomRow/%s" % node_name) as Label
@@ -202,6 +245,18 @@ func _init() -> void:
 		if label.text != str(expected_defaults[node_name]):
 			_fail("%s default text mismatch: expected '%s', got '%s'" % [node_name, str(expected_defaults[node_name]), label.text])
 			return
+	for button_path in [
+		"ReefMargin/ReefLayer/WaterHud/HudMargin/HudVBox/SalinityDialRow/SalinityLowButton",
+		"ReefMargin/ReefLayer/WaterHud/HudMargin/HudVBox/SalinityDialRow/SalinityMediumButton",
+		"ReefMargin/ReefLayer/WaterHud/HudMargin/HudVBox/SalinityDialRow/SalinityHighButton",
+		"ReefMargin/ReefLayer/WaterHud/HudMargin/HudVBox/TempDialRow/TempColdButton",
+		"ReefMargin/ReefLayer/WaterHud/HudMargin/HudVBox/TempDialRow/TempModerateButton",
+		"ReefMargin/ReefLayer/WaterHud/HudMargin/HudVBox/TempDialRow/TempWarmButton",
+	]:
+		if reef_viewport.get_node_or_null(button_path) == null:
+			_fail("ReefViewport is missing environment dial control %s" % button_path)
+			return
+	reef_viewport.free()
 	resource_bar.free()
 	tutorial_overlay.free()
 	level_system.free()

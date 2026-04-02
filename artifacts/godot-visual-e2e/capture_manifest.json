@@ -1,0 +1,99 @@
+{
+	"steps": [
+		{
+			"name": "01_home_fresh",
+			"scene": "Home",
+			"timestamp": "2026-03-20T08:22:16"
+		},
+		{
+			"name": "02_level1_identify",
+			"scene": "GameScreen",
+			"timestamp": "2026-03-20T08:22:18"
+		},
+		{
+			"name": "03_level1_goal",
+			"scene": "GameScreen",
+			"timestamp": "2026-03-20T08:22:20"
+		},
+		{
+			"name": "04_level1_feed",
+			"scene": "GameScreen",
+			"timestamp": "2026-03-20T08:22:22"
+		},
+		{
+			"name": "05_level1_turn_ready",
+			"scene": "GameScreen",
+			"timestamp": "2026-03-20T08:22:23"
+		},
+		{
+			"name": "06_level1_results",
+			"scene": "GameScreen",
+			"timestamp": "2026-03-20T08:22:26"
+		},
+		{
+			"name": "07_level1_win",
+			"scene": "GameScreen",
+			"timestamp": "2026-03-20T08:22:28"
+		},
+		{
+			"name": "08_home_after_tutorial",
+			"scene": "Home",
+			"timestamp": "2026-03-20T08:22:30"
+		},
+		{
+			"name": "09_home_midroute",
+			"scene": "Home",
+			"timestamp": "2026-03-20T08:22:32"
+		},
+		{
+			"name": "10_level4_board",
+			"scene": "GameScreen",
+			"timestamp": "2026-03-20T08:22:35"
+		},
+		{
+			"name": "11_level4_stressor",
+			"scene": "GameScreen",
+			"timestamp": "2026-03-20T08:22:37"
+		},
+		{
+			"name": "12_level4_results",
+			"scene": "GameScreen",
+			"timestamp": "2026-03-20T08:22:39"
+		},
+		{
+			"name": "13_home_frontier",
+			"scene": "Home",
+			"timestamp": "2026-03-20T08:22:42"
+		},
+		{
+			"name": "14_level5_board",
+			"scene": "GameScreen",
+			"timestamp": "2026-03-20T08:22:45"
+		},
+		{
+			"name": "15_level5_annotator",
+			"scene": "GameScreen",
+			"timestamp": "2026-03-20T08:22:47"
+		},
+		{
+			"name": "16_level5_win",
+			"scene": "GameScreen",
+			"timestamp": "2026-03-20T08:22:49"
+		},
+		{
+			"name": "17_tank_overview",
+			"scene": "TheTank",
+			"timestamp": "2026-03-20T08:22:52"
+		},
+		{
+			"name": "18_tank_after_collect",
+			"scene": "TheTank",
+			"timestamp": "2026-03-20T08:22:54"
+		},
+		{
+			"name": "19_home_return",
+			"scene": "Home",
+			"timestamp": "2026-03-20T08:22:56"
+		}
+	]
+}

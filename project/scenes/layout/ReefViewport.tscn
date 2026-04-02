@@ -231,8 +231,8 @@ custom_minimum_size = Vector2(190, 52)
 layout_mode = 0
 offset_left = 16.0
 offset_top = 16.0
-offset_right = 206.0
-offset_bottom = 68.0
+offset_right = 258.0
+offset_bottom = 148.0
 theme_override_styles/panel = SubResource("2")
 
 [node name="HudMargin" type="MarginContainer" parent="ReefMargin/ReefLayer/WaterHud"]
@@ -244,7 +244,7 @@ theme_override_constants/margin_bottom = 6
 
 [node name="HudVBox" type="VBoxContainer" parent="ReefMargin/ReefLayer/WaterHud/HudMargin"]
 layout_mode = 2
-theme_override_constants/separation = 2
+theme_override_constants/separation = 6
 
 [node name="SalinityLabel" type="Label" parent="ReefMargin/ReefLayer/WaterHud/HudMargin/HudVBox"]
 layout_mode = 2
@@ -257,6 +257,72 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.94902, 0.905882, 0.745098, 1)
 theme_override_font_sizes/font_size = 12
 text = "Temp: Moderate"
+
+[node name="ControlHint" type="Label" parent="ReefMargin/ReefLayer/WaterHud/HudMargin/HudVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.705882, 0.827451, 0.913725, 0.95)
+theme_override_font_sizes/font_size = 11
+text = "Each water step costs 5 coins and 1 action"
+
+[node name="SalinityDialRow" type="HBoxContainer" parent="ReefMargin/ReefLayer/WaterHud/HudMargin/HudVBox"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="SalinityTag" type="Label" parent="ReefMargin/ReefLayer/WaterHud/HudMargin/HudVBox/SalinityDialRow"]
+custom_minimum_size = Vector2(52, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.807843, 0.92549, 1, 0.95)
+theme_override_font_sizes/font_size = 11
+text = "Salt"
+vertical_alignment = 1
+
+[node name="SalinityLowButton" type="Button" parent="ReefMargin/ReefLayer/WaterHud/HudMargin/HudVBox/SalinityDialRow"]
+custom_minimum_size = Vector2(44, 26)
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "Low"
+
+[node name="SalinityMediumButton" type="Button" parent="ReefMargin/ReefLayer/WaterHud/HudMargin/HudVBox/SalinityDialRow"]
+custom_minimum_size = Vector2(58, 26)
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "Med"
+
+[node name="SalinityHighButton" type="Button" parent="ReefMargin/ReefLayer/WaterHud/HudMargin/HudVBox/SalinityDialRow"]
+custom_minimum_size = Vector2(46, 26)
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "High"
+
+[node name="TempDialRow" type="HBoxContainer" parent="ReefMargin/ReefLayer/WaterHud/HudMargin/HudVBox"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="TempTag" type="Label" parent="ReefMargin/ReefLayer/WaterHud/HudMargin/HudVBox/TempDialRow"]
+custom_minimum_size = Vector2(52, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.901961, 0.760784, 0.95)
+theme_override_font_sizes/font_size = 11
+text = "Temp"
+vertical_alignment = 1
+
+[node name="TempColdButton" type="Button" parent="ReefMargin/ReefLayer/WaterHud/HudMargin/HudVBox/TempDialRow"]
+custom_minimum_size = Vector2(44, 26)
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "Cold"
+
+[node name="TempModerateButton" type="Button" parent="ReefMargin/ReefLayer/WaterHud/HudMargin/HudVBox/TempDialRow"]
+custom_minimum_size = Vector2(58, 26)
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "Mid"
+
+[node name="TempWarmButton" type="Button" parent="ReefMargin/ReefLayer/WaterHud/HudMargin/HudVBox/TempDialRow"]
+custom_minimum_size = Vector2(46, 26)
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "Warm"
 
 [node name="Coral1" type="AnimatedSprite2D" parent="ReefMargin/ReefLayer"]
 position = Vector2(184, 258)

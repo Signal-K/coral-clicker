@@ -1,5 +1,9 @@
 # Coral Clicker — Project Memory
 
+- [Creative tasks context](project_creative_tasks.md) — where to find open creative tasks; read before kanban/planning sessions (localhost:4444)
+- [Creative task scoping preferences](feedback_creative_task_scoping.md) — what the user enjoys (layout/grid/spatial design) vs. avoids (prose writing, open-ended from-scratch tasks)
+
+
 ## What this project is
 Relaxed puzzle game (Godot 4.5 + React Native PWA). Player identifies coral in Zooniverse images, then replicates the reef makeup using fish breeding & environment controls. 10 levels + Tank hub. v0.1 + v0.2 features implemented as of 2026-03-15.
 

@@ -1,14 +1,14 @@
 ---
 id: onb01-first-run-tutorial
 title: "First-run interactive tutorial"
-status: in_progress
+status: done
 priority: high
 labels:
   - onboarding
   - gameplay
   - tutorial
 createdAt: '2026-03-19T00:00:00Z'
-updatedAt: '2026-03-19T00:00:00Z'
+updatedAt: '2026-03-20T22:51:30Z'
 ---
 
 # First-run interactive tutorial

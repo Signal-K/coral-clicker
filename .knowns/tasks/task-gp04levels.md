@@ -1,14 +1,14 @@
 ---
 id: gp04levels
 title: "10-level content design & difficulty curve"
-status: todo
+status: done
 priority: high
 labels:
   - content
   - gameplay
   - levels
 createdAt: '2026-03-15T00:00:00Z'
-updatedAt: '2026-03-15T00:00:00Z'
+updatedAt: '2026-03-20T22:51:30Z'
 ---
 
 # 10-level content design

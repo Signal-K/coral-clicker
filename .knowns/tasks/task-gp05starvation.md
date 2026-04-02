@@ -1,14 +1,14 @@
 ---
 id: gp05starvation
 title: "Starvation mechanic — death targeting and animation"
-status: todo
+status: done
 priority: medium
 labels:
   - gameplay
   - animation
   - fish
 createdAt: '2026-03-17T00:00:00Z'
-updatedAt: '2026-03-17T00:00:00Z'
+updatedAt: '2026-03-20T00:00:00Z'
 ---
 
 # Starvation mechanic — death targeting and animation

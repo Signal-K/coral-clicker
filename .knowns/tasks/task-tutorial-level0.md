@@ -1,14 +1,14 @@
 ---
 id: tutorial-level0
 title: "Tutorial Mission (Level 0)"
-status: todo
+status: done
 priority: high
 labels:
   - gameplay
   - onboarding
   - tutorial
 createdAt: '2026-03-16T00:00:00Z'
-updatedAt: '2026-03-16T00:00:00Z'
+updatedAt: '2026-03-20T22:51:30Z'
 ---
 
 # Tutorial Mission — Level 0

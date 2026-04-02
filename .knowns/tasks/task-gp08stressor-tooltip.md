@@ -1,14 +1,14 @@
 ---
 id: gp08stressor-tooltip
 title: "Stressor tooltip — Level 4 first encounter"
-status: todo
+status: done
 priority: medium
 labels:
   - gameplay
   - ui
   - onboarding
 createdAt: '2026-03-17T00:00:00Z'
-updatedAt: '2026-03-17T00:00:00Z'
+updatedAt: '2026-03-20T00:00:00Z'
 ---
 
 # Stressor tooltip — Level 4 first encounter

@@ -5,10 +5,13 @@
   "levels": [
     {
       "id": 1,
+      "location_id": "florida_keys",
       "name": "Nursery Reef",
+      "site": "Florida Keys, USA",
+      "new_mechanic": "Identify + replicate 1 coral",
       "target_coral": "Madracis Sp.",
       "target_population": 8,
-      "turn_limit": 6,
+      "turn_limit": 8,
       "population_cap": 5,
       "starting_nutrients": 12,
       "positive_fish": [
@@ -27,7 +30,10 @@
     },
     {
       "id": 2,
-      "name": "Fan Coral Current",
+      "location_id": "belize_barrier",
+      "name": "Shallow Flats",
+      "site": "Belize Barrier Reef",
+      "new_mechanic": "Replicate 2 corals, basic environment",
       "target_coral": "Muricea pendula",
       "target_population": 7,
       "turn_limit": 7,
@@ -45,14 +51,17 @@
         "Creole Wrasse": 1,
         "Red Lionfish": 1
       },
-      "reward_coins": 12
+      "reward_coins": 20
     },
     {
       "id": 3,
-      "name": "Black Coral Slope",
+      "location_id": "cayman_islands",
+      "name": "Branching Garden",
+      "site": "Cayman Islands",
+      "new_mechanic": "Environment matters",
       "target_coral": "Antipathes atlantica",
       "target_population": 6,
-      "turn_limit": 8,
+      "turn_limit": 7,
       "population_cap": 5,
       "starting_nutrients": 11,
       "positive_fish": [
@@ -67,14 +76,17 @@
         "French Angelfish": 1,
         "Red Lionfish": 2
       },
-      "reward_coins": 15
+      "reward_coins": 30
     },
     {
       "id": 4,
-      "name": "Branching Spire",
+      "location_id": "bahamas_ledge",
+      "name": "The Ledge",
+      "site": "Bahamas",
+      "new_mechanic": "First stressor encounter",
       "target_coral": "Stichopathes",
       "target_population": 9,
-      "turn_limit": 8,
+      "turn_limit": 6,
       "population_cap": 6,
       "starting_nutrients": 12,
       "positive_fish": [
@@ -89,14 +101,17 @@
         "Blue Chromis": 2,
         "Longspine Sea Urchin": 2
       },
-      "reward_coins": 18
+      "reward_coins": 40
     },
     {
       "id": 5,
-      "name": "Ellisellidae Ridge",
+      "location_id": "turks_caicos",
+      "name": "Coral Nursery",
+      "site": "Turks & Caicos",
+      "new_mechanic": "Stressor + environment mismatch",
       "target_coral": "Ellisellidae",
       "target_population": 10,
-      "turn_limit": 9,
+      "turn_limit": 6,
       "population_cap": 7,
       "starting_nutrients": 14,
       "positive_fish": [
@@ -113,14 +128,17 @@
         "Red Lionfish": 1,
         "Longspine Sea Urchin": 1
       },
-      "reward_coins": 22
+      "reward_coins": 50
     },
     {
       "id": 6,
-      "name": "Sea Whip Channel",
+      "location_id": "bonaire_wall",
+      "name": "Overgrowth",
+      "site": "Bonaire",
+      "new_mechanic": "Competing reef outcomes",
       "target_coral": "Thesea nivea",
       "target_population": 11,
-      "turn_limit": 10,
+      "turn_limit": 6,
       "population_cap": 6,
       "starting_nutrients": 14,
       "positive_fish": [
@@ -135,14 +153,17 @@
         "French Angelfish": 2,
         "Red Lionfish": 1
       },
-      "reward_coins": 26
+      "reward_coins": 60
     },
     {
       "id": 7,
-      "name": "Deep Spur Wall",
+      "location_id": "curacao_deep",
+      "name": "Mid-Water Column",
+      "site": "Curacao",
+      "new_mechanic": "Salinity and temperature both matter",
       "target_coral": "Madrepora Sp.",
       "target_population": 12,
-      "turn_limit": 10,
+      "turn_limit": 5,
       "population_cap": 7,
       "starting_nutrients": 15,
       "positive_fish": [
@@ -157,14 +178,17 @@
         "Parrotfish": 2,
         "Longspine Sea Urchin": 2
       },
-      "reward_coins": 30
+      "reward_coins": 70
     },
     {
       "id": 8,
-      "name": "Sponge Garden",
+      "location_id": "los_roques",
+      "name": "The Deep Wall",
+      "site": "Los Roques, Venezuela",
+      "new_mechanic": "Tight turn limit, larger target",
       "target_coral": "Sponge",
       "target_population": 12,
-      "turn_limit": 11,
+      "turn_limit": 5,
       "population_cap": 6,
       "starting_nutrients": 16,
       "positive_fish": [
@@ -179,14 +203,17 @@
         "Blue Chromis": 2,
         "Red Lionfish": 1
       },
-      "reward_coins": 35
+      "reward_coins": 80
     },
     {
       "id": 9,
-      "name": "Antipathes Crest",
+      "location_id": "fernando_noronha",
+      "name": "Bleaching Event",
+      "site": "Fernando de Noronha, Brazil",
+      "new_mechanic": "Escalating stress pressure",
       "target_coral": "Antipathes furcata",
       "target_population": 13,
-      "turn_limit": 11,
+      "turn_limit": 5,
       "population_cap": 7,
       "starting_nutrients": 17,
       "positive_fish": [
@@ -203,14 +230,17 @@
         "Red Lionfish": 1,
         "Longspine Sea Urchin": 1
       },
-      "reward_coins": 40
+      "reward_coins": 90
     },
     {
       "id": 10,
-      "name": "Biodiversity Gauntlet",
+      "location_id": "trinidad_tobago",
+      "name": "The Reef Summit",
+      "site": "Trinidad & Tobago",
+      "new_mechanic": "Full reef complexity",
       "target_coral": "Acanthogorgiidae",
       "target_population": 14,
-      "turn_limit": 12,
+      "turn_limit": 4,
       "population_cap": 8,
       "starting_nutrients": 18,
       "positive_fish": [
@@ -229,7 +259,7 @@
         "Red Lionfish": 1,
         "Longspine Sea Urchin": 1
       },
-      "reward_coins": 50
+      "reward_coins": 100
     }
   ]
 }

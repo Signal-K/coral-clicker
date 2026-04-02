@@ -17,6 +17,7 @@ Game: relaxed puzzle + citizen science. Identify reef in Zooniverse photo → re
 | [docs/identify-phase.md](docs/identify-phase.md) | Identify phase flow, citizen science queue, offline, classification accuracy |
 | [docs/ui-layout.md](docs/ui-layout.md) | Mobile-first constraints, card strip, viewport, HUD, palette |
 | [docs/world-progression.md](docs/world-progression.md) | World map, linear unlock, Tank hub, reef sites, replay gallery |
+| [docs/world-progression-v2.md](docs/world-progression-v2.md) | **Agreed v2 direction**: location-based structure, daily events, tutorial restructure, species field guide |
 | [docs/triggers.md](docs/triggers.md) | Per-turn trigger budget: net uses, env dial cost, carryover, feedback loops |
 
 ## Content (what's in the game)

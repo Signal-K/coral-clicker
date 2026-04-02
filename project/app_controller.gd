@@ -6,8 +6,10 @@ signal supabase_sync_status(payload_json: String)
 const LEVEL_COUNT := 10
 const STARTER_LEVELS_PATH := "res://data/starter_levels.json"
 const SPECIES_REFERENCE_PATH := "res://data/species_reference.json"
+const CLICK_A_CORAL_DATA_PATH := "res://data/click_a_coral_subjects.json"
 const SAVE_PATH := "user://save.json"
 const PENDING_CLASSIFICATIONS_PATH := "user://pending_classifications.json"
+const SUBJECT_CACHE_DIR := "user://subject_cache"
 
 var _supabase_url: String = "http://127.0.0.1:54321"
 var _supabase_anon_key: String = "sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH"
@@ -15,13 +17,17 @@ var _supabase_table: String = "player_progress"
 var _player_id: String = "local-player"
 
 var _pending_request_kind := ""
+var _pending_asset_subject_id := ""
 var _levels: Array = []
 var _species_reference: Dictionary = {}
+var _subject_entries_by_id: Dictionary = {}
+var _asset_prefetch_queue: Array[String] = []
 
 var state := {
 	"current_level": 1,
 	"completed_levels": [],
 	"global_coins": 0,
+	"carryover_triggers": 0,
 	"last_coins_earned": 0,
 	"pending_rewards": [],
 	"classification_bonus_total": 0,
@@ -44,13 +50,20 @@ var state := {
 }
 
 @onready var _http := HTTPRequest.new()
+@onready var _classification_http := HTTPRequest.new()
+@onready var _asset_http := HTTPRequest.new()
 
 func _ready() -> void:
 	_load_content_data()
 	add_child(_http)
+	add_child(_classification_http)
+	add_child(_asset_http)
 	_http.request_completed.connect(_on_request_completed)
+	_classification_http.request_completed.connect(_on_classification_request_completed)
+	_asset_http.request_completed.connect(_on_asset_request_completed)
 	_load_local_state()
 	_emit_state()
+	call_deferred("_retry_online_work")
 
 func _load_content_data() -> void:
 	var levels_raw: Variant = _read_json_file(STARTER_LEVELS_PATH)
@@ -62,6 +75,18 @@ func _load_content_data() -> void:
 	var species_raw: Variant = _read_json_file(SPECIES_REFERENCE_PATH)
 	if typeof(species_raw) == TYPE_DICTIONARY:
 		_species_reference = species_raw
+
+	var subjects_raw: Variant = _read_json_file(CLICK_A_CORAL_DATA_PATH)
+	if typeof(subjects_raw) == TYPE_DICTIONARY:
+		var entries: Variant = subjects_raw.get("entries", [])
+		if typeof(entries) == TYPE_ARRAY:
+			for entry in entries:
+				if typeof(entry) != TYPE_DICTIONARY:
+					continue
+				var subject_id := str(entry.get("subject_id", ""))
+				if subject_id.is_empty():
+					continue
+				_subject_entries_by_id[subject_id] = entry
 
 func _read_json_file(path: String) -> Variant:
 	if not FileAccess.file_exists(path):
@@ -98,6 +123,11 @@ func _persist_local_state() -> void:
 func _persist_pending_classifications() -> void:
 	_write_json_file(PENDING_CLASSIFICATIONS_PATH, state.get("pending_offline_classifications", []))
 
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_APPLICATION_FOCUS_IN:
+		call_deferred("_retry_online_work")
+
 #region Level System API
 func get_level_state_json() -> String:
 	return JSON.stringify(_sanitized_state())
@@ -124,6 +154,11 @@ func select_level(level_number: int) -> bool:
 		return false
 	if level_number > _max_unlocked_level():
 		return false
+	if level_number == 1 and not is_tutorial_complete():
+		state["current_level"] = 0
+		_touch_state()
+		_emit_state()
+		return true
 	state["current_level"] = level_number
 	_touch_state()
 	_emit_state()
@@ -132,6 +167,16 @@ func select_level(level_number: int) -> bool:
 
 func complete_current_level(coins_earned: int = 0) -> Dictionary:
 	var current_level := int(state.get("current_level", 1))
+	if current_level == 0:
+		var tutorial_reward := maxi(0, coins_earned)
+		if tutorial_reward > 0:
+			state["global_coins"] = int(state.get("global_coins", 0)) + tutorial_reward
+			state["last_coins_earned"] = tutorial_reward
+		state["tutorial_complete"] = true
+		state["current_level"] = 1
+		_touch_state()
+		_emit_state()
+		return _sanitized_state()
 	var completed_levels: Array = state.get("completed_levels", []).duplicate(true)
 	if not completed_levels.has(current_level):
 		completed_levels.append(current_level)
@@ -160,6 +205,29 @@ func add_coins(amount: int) -> void:
 	state["global_coins"] = int(state.get("global_coins", 0)) + maxi(0, amount)
 	_touch_state()
 	_emit_state()
+
+
+func get_carryover_triggers() -> int:
+	return maxi(0, int(state.get("carryover_triggers", 0)))
+
+
+func add_carryover_triggers(amount: int) -> void:
+	if amount <= 0:
+		return
+	state["carryover_triggers"] = get_carryover_triggers() + amount
+	_touch_state()
+	_emit_state()
+
+
+func consume_carryover_triggers(amount: int) -> int:
+	var available := get_carryover_triggers()
+	var spent := mini(available, maxi(0, amount))
+	if spent <= 0:
+		return 0
+	state["carryover_triggers"] = available - spent
+	_touch_state()
+	_emit_state()
+	return spent
 
 
 func spend_coins(amount: int) -> bool:
@@ -375,6 +443,19 @@ func flush_offline_classifications() -> void:
 	sync_progress_to_supabase()
 
 
+func get_cached_subject_image_path(subject_id: String) -> String:
+	if subject_id.is_empty():
+		return ""
+	var entry: Dictionary = _subject_entries_by_id.get(subject_id, {})
+	if entry.is_empty():
+		return ""
+	var image_url := str(entry.get("image_url", ""))
+	var ext := image_url.get_extension().to_lower()
+	if ext.is_empty():
+		ext = "jpg"
+	return "%s/%s.%s" % [SUBJECT_CACHE_DIR, subject_id, ext]
+
+
 func set_level_state_json(raw_json: String) -> bool:
 	var parsed = JSON.parse_string(raw_json)
 	if typeof(parsed) != TYPE_DICTIONARY:
@@ -410,6 +491,9 @@ func set_external_message(raw_json: String) -> bool:
 			return true
 		"load_from_supabase":
 			load_progress_from_supabase()
+			return true
+		"prefetch_subject_images":
+			prefetch_unlocked_subject_images()
 			return true
 		"flush_offline_classifications":
 			flush_offline_classifications()
@@ -476,12 +560,15 @@ func sync_progress_to_supabase() -> bool:
 			"metadata": {
 				"updated_at": str(state.get("updated_at", "")),
 				"global_coins": projected_coins,
+				"carryover_triggers": get_carryover_triggers(),
 				"last_coins_earned": int(state.get("last_coins_earned", 0)),
 				"pending_rewards": state.get("pending_rewards", []).duplicate(true),
 				"classification_bonus_total": int(state.get("classification_bonus_total", 0)),
 				"unlocked_corals": state.get("unlocked_corals", []).duplicate(true),
 				"classification_history": state.get("classification_history", []).duplicate(true),
 				"pending_offline_classifications": state.get("pending_offline_classifications", []).duplicate(true),
+				"tutorial_complete": bool(state.get("tutorial_complete", false)),
+				"stressor_tooltip_shown": state.get("stressor_tooltip_shown", {}).duplicate(true),
 				"tank": _get_tank().duplicate(true),
 			},
 		}
@@ -497,6 +584,24 @@ func sync_progress_to_supabase() -> bool:
 	if err != OK:
 		_emit_sync_status("error", "Failed to start sync request")
 	return err == OK
+
+
+func prefetch_unlocked_subject_images() -> void:
+	var max_unlocked := _max_unlocked_level()
+	for level in _levels:
+		if typeof(level) != TYPE_DICTIONARY:
+			continue
+		var level_id := int(level.get("id", 0))
+		if level_id <= 0 or level_id > max_unlocked:
+			continue
+		var subject_id := str(level.get("subject_id", ""))
+		if subject_id.is_empty():
+			continue
+		var cache_path := get_cached_subject_image_path(subject_id)
+		if cache_path.is_empty() or FileAccess.file_exists(cache_path) or _asset_prefetch_queue.has(subject_id):
+			continue
+		_asset_prefetch_queue.append(subject_id)
+	_start_next_asset_prefetch()
 
 
 func load_progress_from_supabase() -> bool:
@@ -521,6 +626,32 @@ func load_progress_from_supabase() -> bool:
 	if err != OK:
 		_emit_sync_status("error", "Failed to start load request")
 	return err == OK
+
+
+func _retry_online_work() -> void:
+	prefetch_unlocked_subject_images()
+	if not state.get("pending_offline_classifications", []).is_empty() or get_pending_reward_total() > 0:
+		sync_progress_to_supabase()
+
+
+func _start_next_asset_prefetch() -> void:
+	if _asset_http == null:
+		return
+	if _asset_http.get_http_client_status() != HTTPClient.STATUS_DISCONNECTED:
+		return
+	if _asset_prefetch_queue.is_empty():
+		return
+	_pending_asset_subject_id = _asset_prefetch_queue.pop_front()
+	var entry: Dictionary = _subject_entries_by_id.get(_pending_asset_subject_id, {})
+	var image_url := str(entry.get("image_url", ""))
+	if image_url.is_empty():
+		_pending_asset_subject_id = ""
+		_start_next_asset_prefetch()
+		return
+	var err := _asset_http.request(image_url)
+	if err != OK:
+		_pending_asset_subject_id = ""
+		_start_next_asset_prefetch()
 
 
 func _on_request_completed(_result: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
@@ -549,6 +680,18 @@ func _on_request_completed(_result: int, response_code: int, _headers: PackedStr
 	_pending_request_kind = ""
 
 
+func _on_asset_request_completed(_result: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
+	if response_code >= 200 and response_code <= 299 and not _pending_asset_subject_id.is_empty():
+		DirAccess.make_dir_recursive_absolute(SUBJECT_CACHE_DIR)
+		var cache_path := get_cached_subject_image_path(_pending_asset_subject_id)
+		if not cache_path.is_empty():
+			var file := FileAccess.open(cache_path, FileAccess.WRITE)
+			if file != null:
+				file.store_buffer(body)
+	_pending_asset_subject_id = ""
+	_start_next_asset_prefetch()
+
+
 func _apply_loaded_response(response_text: String) -> void:
 	var parsed = JSON.parse_string(response_text)
 	if typeof(parsed) != TYPE_ARRAY:
@@ -564,12 +707,15 @@ func _apply_loaded_response(response_text: String) -> void:
 		"current_level": int(row.get("current_level", 1)),
 		"completed_levels": row.get("completed_levels", []),
 		"global_coins": int(metadata.get("global_coins", row.get("rewards_total", 0))),
+		"carryover_triggers": int(metadata.get("carryover_triggers", 0)),
 		"last_coins_earned": int(metadata.get("last_coins_earned", 0)),
 		"pending_rewards": metadata.get("pending_rewards", []),
 		"classification_bonus_total": int(metadata.get("classification_bonus_total", 0)),
 		"unlocked_corals": metadata.get("unlocked_corals", []),
 		"classification_history": metadata.get("classification_history", []),
 		"pending_offline_classifications": metadata.get("pending_offline_classifications", []),
+		"tutorial_complete": bool(metadata.get("tutorial_complete", false)),
+		"stressor_tooltip_shown": metadata.get("stressor_tooltip_shown", {}),
 		"tank": metadata.get("tank", {}),
 		"updated_at": str(metadata.get("updated_at", "")),
 	}
@@ -579,6 +725,25 @@ func _apply_loaded_response(response_text: String) -> void:
 
 #region Helpers
 func _get_level_definition(level_number: int) -> Dictionary:
+	if level_number == 0:
+		return {
+			"id": 0,
+			"name": "Tutorial Mission",
+			"is_tutorial": true,
+			"target_coral": "Madracis Sp.",
+			"target_population": 5,
+			"turn_limit": 10,
+			"population_cap": 5,
+			"starting_nutrients": 18,
+			"positive_fish": ["Blue Chromis"],
+			"negative_fish": [],
+			"starting_fish": {"Blue Chromis": 2},
+			"reward_coins": 20,
+			"subject_id": "tutorial-madracis",
+			"identify_image_path": "",
+			"breeding_interval_min": 2.0,
+			"breeding_interval_max": 4.0
+		}
 	if level_number <= 0:
 		return {}
 	for level in _levels:
@@ -603,8 +768,9 @@ func _apply_external_state(incoming: Dictionary) -> void:
 	completed_levels.sort()
 
 	state["completed_levels"] = completed_levels
-	state["current_level"] = clampi(int(incoming.get("current_level", 1)), 1, LEVEL_COUNT)
+	state["current_level"] = clampi(int(incoming.get("current_level", 1)), 0, LEVEL_COUNT)
 	state["global_coins"] = maxi(0, int(incoming.get("global_coins", 0)))
+	state["carryover_triggers"] = maxi(0, int(incoming.get("carryover_triggers", 0)))
 	state["last_coins_earned"] = maxi(0, int(incoming.get("last_coins_earned", 0)))
 	var incoming_pending_rewards: Variant = incoming.get("pending_rewards", [])
 	var pending_rewards: Array = []
@@ -666,6 +832,7 @@ func _sanitized_state() -> Dictionary:
 		"current_level": current_level,
 		"completed_levels": state.get("completed_levels", []).duplicate(true),
 		"global_coins": int(state.get("global_coins", 0)),
+		"carryover_triggers": get_carryover_triggers(),
 		"last_coins_earned": int(state.get("last_coins_earned", 0)),
 		"pending_rewards": state.get("pending_rewards", []).duplicate(true),
 		"pending_reward_total": get_pending_reward_total(),

@@ -10,7 +10,9 @@ const TUTORIAL_STEPS_PATH := "res://data/tutorial_steps.json"
 var EggNodeScene = preload("res://scenes/ui/EggNode.tscn")
 var TurnResultsPanelScene = preload("res://scenes/ui/TurnResultsPanel.tscn")
 var FishCardScene = preload("res://scenes/ui/FishCard.tscn")
-var TutorialOverlayScene = preload("res://scenes/ui/TutorialOverlay.tscn")
+const TutorialOverlayScene = preload("res://scenes/ui/TutorialOverlay.tscn")
+const IdentifyPhaseScene = preload("res://scenes/ui/IdentifyPhase.tscn")
+
 
 # Shop/environment costs in coins
 const SHOP_FISH_EGG_COST := 5
@@ -62,10 +64,12 @@ var temp_bar: ProgressBar = null
 var salinity_readout_label: Label = null
 var temperature_readout_label: Label = null
 var turn_hint_label: Label = null
-var salinity_down_button: Button = null
-var salinity_up_button: Button = null
-var temp_down_button: Button = null
-var temp_up_button: Button = null
+var salinity_low_button: Button = null
+var salinity_medium_button: Button = null
+var salinity_high_button: Button = null
+var temp_cold_button: Button = null
+var temp_moderate_button: Button = null
+var temp_warm_button: Button = null
 
 # Bottom resource bar
 @onready var _bottom_nutrients_label: Label = _first_node(["UIMargin/PortraitVBox/BottomResourceBar/BottomMargin/BottomRow/ResA", "Background/Margin/FramePanel/FrameMargin/RootVBox/BottomResourceBar/BottomMargin/BottomRow/ResA"]) as Label
@@ -74,8 +78,6 @@ var temp_up_button: Button = null
 @onready var _bottom_reef_label: Label = _first_node(["UIMargin/PortraitVBox/BottomResourceBar/BottomMargin/BottomRow/ResD", "Background/Margin/FramePanel/FrameMargin/RootVBox/BottomResourceBar/BottomMargin/BottomRow/ResD"]) as Label
 
 @onready var home_button: Button = _first_node(["UIMargin/PortraitVBox/TopRow/HomeButton", "Background/Margin/FramePanel/FrameMargin/RootVBox/MidRow/SideNavigator/SideMargin/SideVBox/HomeButton"]) as Button
-
-# Environment (moved to hidden or integrated later, pointing to null for now if missing)
 
 var _active_level_id := -1
 var _level_state: Dictionary = {}
@@ -120,25 +122,16 @@ var _breeding_timers: Dictionary = {}
 var _active_eggs: Array = []
 
 var _classification_entries: Array = []
-var _pending_classification: Dictionary = {}
 var _classification_bonus_coins := 5
 var _tutorial_steps: Dictionary = {}
 var _tutorial_active := false
 var _tutorial_step_id := ""
-var _tutorial_results_seen := false
+var _carryover_trigger_boost := 0
+var _tutorial_egg_prompt_shown := false
 
 # Dialogs and overlays (built programmatically)
-var _classification_dialog: AcceptDialog = null
-var _classification_prompt_label: RichTextLabel = null
-var _classification_image: TextureRect = null
-var _classification_guess_option: OptionButton = null
-
-var _identify_dialog: AcceptDialog = null
+var _identify_phase_scene: CanvasLayer = null
 var _identify_subject: Dictionary = {}
-var _identify_image: TextureRect = null
-var _identify_choice_list: VBoxContainer = null
-var _identify_choice_checks: Array[CheckBox] = []
-var _identify_skip_label: Label = null
 var _stressor_tooltip_dialog: AcceptDialog = null
 var _resume_turn_after_stressor_tooltip := false
 
@@ -156,7 +149,6 @@ var _level_fail_stats_label: RichTextLabel = null
 
 var _shop_overlay: CanvasLayer = null
 var _shop_coins_label: Label = null
-var _shop_button: Button = null
 
 var _turn_results_overlay: CanvasLayer = null
 var _turn_results_title_label: Label = null
@@ -179,7 +171,6 @@ func _ready() -> void:
 	_load_species_reference()
 	_load_classification_entries()
 	_load_tutorial_steps()
-	_build_classification_dialog()
 	_build_identify_dialog()
 	_build_stressor_tooltip_dialog()
 	_build_breed_preview_dialog()
@@ -188,7 +179,6 @@ func _ready() -> void:
 	_build_level_end_overlay()
 	_build_level_fail_overlay()
 	_build_tutorial_overlay()
-	_add_shop_button()
 	_prime_level_state_if_needed()
 	if controller and controller.has_method("emit_level_state"):
 		controller.call("emit_level_state")
@@ -199,14 +189,18 @@ func _wire_scene_signals() -> void:
 		turn_flow_strip.turn_pressed.connect(_advance_turn)
 	if turn_flow_strip and turn_flow_strip.has_signal("shop_pressed"):
 		turn_flow_strip.shop_pressed.connect(_show_shop)
-	if salinity_down_button:
-		salinity_down_button.pressed.connect(_adjust_environment.bind("salinity", -1))
-	if salinity_up_button:
-		salinity_up_button.pressed.connect(_adjust_environment.bind("salinity", 1))
-	if temp_down_button:
-		temp_down_button.pressed.connect(_adjust_environment.bind("temperature", -1))
-	if temp_up_button:
-		temp_up_button.pressed.connect(_adjust_environment.bind("temperature", 1))
+	if salinity_low_button:
+		salinity_low_button.pressed.connect(_set_environment_target.bind("salinity", -1))
+	if salinity_medium_button:
+		salinity_medium_button.pressed.connect(_set_environment_target.bind("salinity", 0))
+	if salinity_high_button:
+		salinity_high_button.pressed.connect(_set_environment_target.bind("salinity", 1))
+	if temp_cold_button:
+		temp_cold_button.pressed.connect(_set_environment_target.bind("temperature", -1))
+	if temp_moderate_button:
+		temp_moderate_button.pressed.connect(_set_environment_target.bind("temperature", 0))
+	if temp_warm_button:
+		temp_warm_button.pressed.connect(_set_environment_target.bind("temperature", 1))
 	
 	if home_button:
 		home_button.pressed.connect(_go_home)
@@ -230,23 +224,24 @@ func _bind_environment_ui() -> void:
 	temp_bar = _first_node([
 		"Background/Margin/FramePanel/FrameMargin/RootVBox/TopFlowBar/TopMargin/TopVBox/MetersRow/TemperatureMeter/TempBar"
 	]) as ProgressBar
-	salinity_down_button = _first_node([
-		"Background/Margin/FramePanel/FrameMargin/RootVBox/TopFlowBar/TopMargin/TopVBox/EnvironmentControlRow/SalinityDownButton"
+	salinity_low_button = _first_node([
+		"UIMargin/PortraitVBox/ReefViewport/ReefMargin/ReefLayer/WaterHud/HudMargin/HudVBox/SalinityDialRow/SalinityLowButton"
 	]) as Button
-	salinity_up_button = _first_node([
-		"Background/Margin/FramePanel/FrameMargin/RootVBox/TopFlowBar/TopMargin/TopVBox/EnvironmentControlRow/SalinityUpButton"
+	salinity_medium_button = _first_node([
+		"UIMargin/PortraitVBox/ReefViewport/ReefMargin/ReefLayer/WaterHud/HudMargin/HudVBox/SalinityDialRow/SalinityMediumButton"
 	]) as Button
-	temp_down_button = _first_node([
-		"Background/Margin/FramePanel/FrameMargin/RootVBox/TopFlowBar/TopMargin/TopVBox/EnvironmentControlRow/TempDownButton"
+	salinity_high_button = _first_node([
+		"UIMargin/PortraitVBox/ReefViewport/ReefMargin/ReefLayer/WaterHud/HudMargin/HudVBox/SalinityDialRow/SalinityHighButton"
 	]) as Button
-	temp_up_button = _first_node([
-		"Background/Margin/FramePanel/FrameMargin/RootVBox/TopFlowBar/TopMargin/TopVBox/EnvironmentControlRow/TempUpButton"
+	temp_cold_button = _first_node([
+		"UIMargin/PortraitVBox/ReefViewport/ReefMargin/ReefLayer/WaterHud/HudMargin/HudVBox/TempDialRow/TempColdButton"
 	]) as Button
-
-
-func _add_shop_button() -> void:
-	# Shop button is now static in TurnFlowStrip
-	pass
+	temp_moderate_button = _first_node([
+		"UIMargin/PortraitVBox/ReefViewport/ReefMargin/ReefLayer/WaterHud/HudMargin/HudVBox/TempDialRow/TempModerateButton"
+	]) as Button
+	temp_warm_button = _first_node([
+		"UIMargin/PortraitVBox/ReefViewport/ReefMargin/ReefLayer/WaterHud/HudMargin/HudVBox/TempDialRow/TempWarmButton"
+	]) as Button
 
 
 func _connect_controller() -> void:
@@ -345,51 +340,18 @@ func _load_tutorial_steps() -> void:
 # ─── Identify Phase (Citizen Science, level start) ────────────────────────────
 
 func _build_identify_dialog() -> void:
-	_identify_dialog = AcceptDialog.new()
-	_identify_dialog.title = "Identify the Reef"
-	_identify_dialog.dialog_hide_on_ok = false
-	_identify_dialog.ok_button_text = "Submit (+%d coins if correct)" % _classification_bonus_coins
-	_identify_dialog.canceled.connect(_on_identify_skipped)
-	_identify_dialog.confirmed.connect(_on_identify_confirmed)
-	add_child(_identify_dialog)
+	_identify_phase_scene = IdentifyPhaseScene.instantiate()
+	_identify_phase_scene.visible = false
+	_identify_phase_scene.submitted.connect(_on_identify_confirmed)
+	_identify_phase_scene.skipped.connect(_on_identify_skipped)
+	_identify_phase_scene.identify_ready.connect(_on_identify_ready)
+	add_child(_identify_phase_scene)
 
-	var scroll := ScrollContainer.new()
-	scroll.custom_minimum_size = Vector2(560.0, 420.0)
-	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
-	_identify_dialog.add_child(scroll)
 
-	var root := VBoxContainer.new()
-	root.custom_minimum_size = Vector2(540.0, 0.0)
-	root.add_theme_constant_override("separation", 12)
-	scroll.add_child(root)
-
-	var intro := RichTextLabel.new()
-	intro.fit_content = true
-	intro.bbcode_enabled = true
-	intro.scroll_active = false
-	intro.text = "[b]What coral species do you see?[/b]\nSelect every species you can confidently identify. Reference thumbnails are shown beside each option.\nA correct identification earns [b]%d bonus coins![/b]" % _classification_bonus_coins
-	root.add_child(intro)
-
-	_identify_image = TextureRect.new()
-	_identify_image.custom_minimum_size = Vector2(440.0, 180.0)
-	_identify_image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	_identify_image.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
-	_identify_image.visible = false
-	root.add_child(_identify_image)
-
-	var picker_label := Label.new()
-	picker_label.text = "Species present in this image:"
-	root.add_child(picker_label)
-
-	_identify_choice_list = VBoxContainer.new()
-	_identify_choice_list.add_theme_constant_override("separation", 8)
-	root.add_child(_identify_choice_list)
-
-	_identify_skip_label = Label.new()
-	_identify_skip_label.text = "Close this dialog to skip (no penalty)"
-	_identify_skip_label.modulate = Color(0.7, 0.7, 0.7)
-	root.add_child(_identify_skip_label)
+func _on_identify_ready(is_ready: bool) -> void:
+	if _tutorial_active and _tutorial_step_id == "identify_intro" and _tutorial_overlay:
+		# Toggle the continue button on the tutorial overlay
+		_tutorial_overlay.next_button.visible = is_ready
 
 
 func _build_stressor_tooltip_dialog() -> void:
@@ -417,7 +379,7 @@ func _build_tutorial_overlay() -> void:
 
 
 func _show_identify_phase() -> void:
-	if _identify_dialog == null:
+	if _identify_phase_scene == null:
 		return
 
 	var target_coral := str(_level_def.get("target_coral", ""))
@@ -428,27 +390,16 @@ func _show_identify_phase() -> void:
 	_set_gameplay_buttons_disabled(true)
 
 	var canonical_name := str(_identify_subject.get("canonical_name", "Unknown"))
-
-	var choices: Array[String] = [canonical_name]
-	var coral_names := _available_coral_names()
-	while choices.size() < 4 and coral_names.size() > 0:
-		var candidate := coral_names[randi() % coral_names.size()]
-		if not choices.has(candidate):
-			choices.append(candidate)
-	choices.shuffle()
-	_rebuild_identify_choices(choices)
-
-	_identify_image.visible = false
-	_identify_image.texture = null
+	var intro_text := _identify_intro_copy(canonical_name)
+	var choices := _identify_choices_for_subject(canonical_name)
 	var texture := _identify_subject_texture(_identify_subject, canonical_name)
-	if texture != null:
-		_identify_image.texture = texture
-		_identify_image.visible = true
+	var source_text := _identify_source_caption(texture, canonical_name)
+	var sprite_frames_map := _get_sprite_frames_map(choices)
 
-	_set_turn_hint("Identify the reef first — or close to skip")
-	if _identify_skip_label:
-		_identify_skip_label.visible = not _tutorial_active
-	_identify_dialog.popup_centered()
+	_identify_phase_scene.setup(intro_text, texture, source_text, choices, sprite_frames_map)
+	_identify_phase_scene.visible = true
+	
+	_set_turn_hint("Identify the reef first — or skip to start")
 	if _tutorial_active and _tutorial_step_id.is_empty():
 		_show_tutorial_step("identify_intro")
 
@@ -458,32 +409,30 @@ func _on_identify_skipped() -> void:
 		_in_identify_phase = true
 		_set_gameplay_buttons_disabled(true)
 		status_label.text = "Pick at least one species to continue the tutorial."
-		if _identify_dialog:
-			_identify_dialog.popup_centered()
 		return
+	
+	_hide_tutorial_step()
+	_identify_phase_scene.visible = false
 	_in_identify_phase = false
 	_identify_subject = {}
 	_set_gameplay_buttons_disabled(false)
 	_set_turn_hint("Adjust fish then press Turn")
 	status_label.text = "Level %d ready — replicate the reef!" % _active_level_id
-	if _tutorial_active and _tutorial_step_id == "identify_intro":
-		_show_tutorial_step("goal_intro")
 
 
-func _on_identify_confirmed() -> void:
+func _on_identify_confirmed(selected_choices: Array[String] = []) -> void:
+	if selected_choices.is_empty():
+		# This shouldn't happen if button is disabled, but for safety:
+		status_label.text = "Select at least one species before submitting."
+		return
+
+	_hide_tutorial_step()
+	_identify_phase_scene.visible = false
 	_in_identify_phase = false
 	_set_gameplay_buttons_disabled(false)
 
 	if _identify_subject.is_empty():
-		status_label.text = "Level %d ready — replicate the reef!" % _active_level_id
-		_identify_dialog.hide()
-		return
-
-	var selected_choices := _selected_identify_choices()
-	if selected_choices.is_empty():
-		_in_identify_phase = true
-		_set_gameplay_buttons_disabled(true)
-		status_label.text = "Select at least one species before submitting."
+		status_label.text = "Level %d ready — rebuild the reef." % _active_level_id
 		return
 
 	var canonical_name := str(_identify_subject.get("canonical_name", ""))
@@ -511,75 +460,22 @@ func _on_identify_confirmed() -> void:
 
 	if is_correct:
 		_identify_bonus_coins = _classification_bonus_coins
-		status_label.text = "Correct! +%d bonus coins ready for completion. Now replicate the reef!" % _identify_bonus_coins
+		status_label.text = "Correct. +%d coins are lined up if you finish the reef. Now grow the right helper species." % _identify_bonus_coins
 	else:
 		_identify_bonus_coins = 0
-		status_label.text = "Nice try — it was %s. Now replicate the reef!" % canonical_name
+		status_label.text = "That image was %s. Use the objective card and fish hints to rebuild the reef anyway." % canonical_name
 
 	_set_turn_hint("Adjust fish then press Turn")
-	_identify_dialog.hide()
-	if _tutorial_active and _tutorial_step_id == "identify_intro":
-		_show_tutorial_step("goal_intro")
 
 
-func _rebuild_identify_choices(choices: Array[String]) -> void:
-	_identify_choice_checks.clear()
-	if _identify_choice_list == null:
-		return
-	for child in _identify_choice_list.get_children():
-		child.queue_free()
-	for choice in choices:
-		var row_panel := PanelContainer.new()
-		var row_style := StyleBoxFlat.new()
-		row_style.bg_color = Color(0.12, 0.12, 0.12, 0.45)
-		row_style.border_color = Color(0.32, 0.32, 0.32, 0.9)
-		row_style.border_width_left = 1
-		row_style.border_width_top = 1
-		row_style.border_width_right = 1
-		row_style.border_width_bottom = 1
-		row_style.corner_radius_top_left = 8
-		row_style.corner_radius_top_right = 8
-		row_style.corner_radius_bottom_right = 8
-		row_style.corner_radius_bottom_left = 8
-		row_panel.add_theme_stylebox_override("panel", row_style)
-		_identify_choice_list.add_child(row_panel)
-
-		var row_margin := MarginContainer.new()
-		row_margin.add_theme_constant_override("margin_left", 8)
-		row_margin.add_theme_constant_override("margin_top", 8)
-		row_margin.add_theme_constant_override("margin_right", 8)
-		row_margin.add_theme_constant_override("margin_bottom", 8)
-		row_panel.add_child(row_margin)
-
-		var row := HBoxContainer.new()
-		row.add_theme_constant_override("separation", 10)
-		row_margin.add_child(row)
-
-		var preview := TextureRect.new()
-		preview.custom_minimum_size = Vector2(84.0, 64.0)
-		preview.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		preview.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		var preview_texture := _load_identify_reference_texture(choice)
-		if preview_texture != null:
-			preview.texture = preview_texture
-		else:
-			preview.modulate = Color(0.5, 0.5, 0.5, 0.65)
-		row.add_child(preview)
-
-		var checkbox := CheckBox.new()
-		checkbox.text = choice
-		checkbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		checkbox.add_theme_font_size_override("font_size", 16)
-		row.add_child(checkbox)
-		_identify_choice_checks.append(checkbox)
-
-
-func _selected_identify_choices() -> Array[String]:
-	var selected: Array[String] = []
-	for checkbox in _identify_choice_checks:
-		if checkbox != null and checkbox.button_pressed:
-			selected.append(checkbox.text)
-	return selected
+func _get_sprite_frames_map(choices: Array[String]) -> Dictionary:
+	var result := {}
+	for species in choices:
+		var slug := _normalize_label(species).replace(" ", "_")
+		var sprite_frames_path := "res://assets/sprites/%s.tres" % slug
+		if ResourceLoader.exists(sprite_frames_path):
+			result[species] = load(sprite_frames_path)
+	return result
 
 
 func _load_identify_reference_texture(species_name: String) -> Texture2D:
@@ -620,6 +516,14 @@ func _load_identify_reference_texture(species_name: String) -> Texture2D:
 
 
 func _select_identify_subject(target_coral: String) -> Dictionary:
+	if _tutorial_active:
+		return {
+			"subject_id": "tutorial-%s" % _normalize_label(target_coral).replace(" ", "-"),
+			"canonical_name": target_coral,
+			"accepted_answers": [target_coral],
+			"resource_path": "res://assets/click_a_coral/anomalies/85374760.jpeg",
+			"curated_tutorial": true,
+		}
 	var wanted_subject_id := str(_level_def.get("subject_id", ""))
 	if not wanted_subject_id.is_empty():
 		for entry in _classification_entries:
@@ -652,6 +556,13 @@ func _identify_subject_texture(subject: Dictionary, canonical_name: String) -> T
 		var texture := load(resource_path)
 		if texture is Texture2D:
 			return texture
+
+	var subject_id := str(subject.get("subject_id", ""))
+	if controller and controller.has_method("get_cached_subject_image_path"):
+		var cached_path := str(controller.call("get_cached_subject_image_path", subject_id))
+		var cached_texture := _load_texture_from_resource_or_file(cached_path)
+		if cached_texture != null:
+			return cached_texture
 
 	var reference_texture := _load_identify_reference_texture(canonical_name)
 	if reference_texture != null:
@@ -775,29 +686,23 @@ func _spawn_egg(species: String) -> void:
 	
 	# Position egg randomly in the viewport or near parent (simplified: random)
 	var rect := reef_layer.get_rect()
-	egg.position = Vector2(
-		randf_range(rect.size.x * 0.1, rect.size.x * 0.9),
-		randf_range(rect.size.y * 0.2, rect.size.y * 0.7)
-	)
+	if _tutorial_active and not _tutorial_egg_prompt_shown:
+		_tutorial_egg_prompt_shown = true
+		egg.position = Vector2(rect.size.x * 0.5, rect.size.y * 0.46)
+		_show_tutorial_step("egg_intro")
+	elif _tutorial_active:
+		egg.position = Vector2(rect.size.x * 0.5, rect.size.y * 0.46)
+	else:
+		egg.position = Vector2(
+			randf_range(rect.size.x * 0.1, rect.size.x * 0.9),
+			randf_range(rect.size.y * 0.2, rect.size.y * 0.7)
+		)
 	
 	var slug := species.to_lower().replace(" ", "_")
 	var egg_frames_path := "res://assets/sprites/%s_egg.tres" % slug
-	
-	# Wait, I didn't create .tres files for eggs yet.
-	# The script generated sheets and PNGs but I need to load them.
-	# I'll use a helper to load or create SpriteFrames on the fly for eggs if needed.
-	# Actually, I should have generated .tres files for eggs too.
-	# Let's check how .tres files are generated.
-	
-	# For now, I'll just load the frames if they exist.
 	if ResourceLoader.exists(egg_frames_path):
 		var frames = load(egg_frames_path)
 		egg.setup(species, frames)
-	else:
-		# Fallback: use first frame of standard fish but modulate it?
-		# Or just use a generic egg if I had one.
-		# I'll just load the first frame of the egg PNG for now if no .tres.
-		pass
 
 func _on_egg_placed(egg_node: Node) -> void:
 	var species = egg_node.get("species")
@@ -808,9 +713,31 @@ func _on_egg_placed(egg_node: Node) -> void:
 		_refresh_fish_rows()
 		_update_text()
 		status_label.text = "New %s hatched and placed!" % species
+		if _tutorial_active and _tutorial_step_id == "egg_intro":
+			_hide_tutorial_step()
+			_show_tutorial_step("end_turn_action")
+			status_label.text = "Press End Turn to finish the level."
 	
 	_active_eggs.erase(egg_node)
 	egg_node.queue_free()
+
+
+func _build_guided_tutorial_level(base_level_def: Dictionary) -> Dictionary:
+	var guided := base_level_def.duplicate(true)
+	guided["name"] = "Shallow Bloom Tutorial"
+	guided["target_coral"] = "Madracis Sp."
+	guided["target_population"] = 5
+	guided["turn_limit"] = 10
+	guided["starting_nutrients"] = 18
+	guided["reward_coins"] = 20
+	guided["positive_fish"] = ["Blue Chromis"]
+	guided["negative_fish"] = []
+	guided["starting_fish"] = {"Blue Chromis": 2}
+	guided["subject_id"] = "tutorial-madracis"
+	guided["identify_image_path"] = ""
+	guided["breeding_interval_min"] = 2.0
+	guided["breeding_interval_max"] = 4.0
+	return guided
 
 
 # ─── Breeding Preview Dialog ─────────────────────────────────────────────────
@@ -923,46 +850,6 @@ func _on_breed_preview_confirmed() -> void:
 	_breed_preview_parents = []
 
 
-# ─── Classification dialog (post-level quiz) ──────────────────────────────────
-
-func _build_classification_dialog() -> void:
-	_classification_dialog = AcceptDialog.new()
-	_classification_dialog.title = "Coral Classification"
-	_classification_dialog.dialog_hide_on_ok = true
-	_classification_dialog.ok_button_text = "Submit"
-	_classification_dialog.canceled.connect(_on_classification_cancelled)
-	_classification_dialog.confirmed.connect(_on_classification_confirmed)
-	add_child(_classification_dialog)
-
-	var root := VBoxContainer.new()
-	root.custom_minimum_size = Vector2(520.0, 320.0)
-	root.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	root.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	root.add_theme_constant_override("separation", 10)
-
-	_classification_prompt_label = RichTextLabel.new()
-	_classification_prompt_label.fit_content = true
-	_classification_prompt_label.bbcode_enabled = true
-	_classification_prompt_label.scroll_active = false
-	root.add_child(_classification_prompt_label)
-
-	_classification_image = TextureRect.new()
-	_classification_image.custom_minimum_size = Vector2(420.0, 180.0)
-	_classification_image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	_classification_image.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
-	_classification_image.visible = false
-	root.add_child(_classification_image)
-
-	var picker_label := Label.new()
-	picker_label.text = "Choose coral type:"
-	root.add_child(picker_label)
-
-	_classification_guess_option = OptionButton.new()
-	root.add_child(_classification_guess_option)
-
-	_classification_dialog.add_child(root)
-
-
 # ─── Level End Overlay ────────────────────────────────────────────────────────
 
 func _build_level_end_overlay() -> void:
@@ -1047,8 +934,6 @@ func _build_turn_results_overlay() -> void:
 
 func _on_turn_results_continued() -> void:
 	_showing_turn_results = false
-	if _tutorial_active and _tutorial_step_id == "results_intro":
-		_hide_tutorial_step()
 	_update_text()
 	# Check for level end after closing results
 	if _turns_remaining <= 0 and not _session_over:
@@ -1069,9 +954,6 @@ func _show_turn_results(turn_number: int, current_populations: Dictionary, targe
 	
 	var turn_limit := int(_level_def.get("turn_limit", 0))
 	_turn_results_overlay.show_results(turn_number, turn_limit, current_populations, target_populations, turns_remaining)
-	if _tutorial_active and not _tutorial_results_seen:
-		_tutorial_results_seen = true
-		_show_tutorial_step("results_intro")
 
 
 func _show_level_end_overlay(coins_earned: int) -> void:
@@ -1082,9 +964,10 @@ func _show_level_end_overlay(coins_earned: int) -> void:
 	var speed_bonus := maxi(0, turn_limit - _turns_used) * 5
 	var base_coins := int(_level_def.get("reward_coins", 10))
 	var total_coins := base_coins + speed_bonus + _identify_bonus_coins
-	var rewards_pending := false
-	if controller and controller.has_method("get_pending_reward_total"):
-		rewards_pending = int(controller.call("get_pending_reward_total")) > 0
+	var earned_triggers := 1 if _turns_used < turn_limit else 0
+	var stored_triggers := 0
+	if controller and controller.has_method("get_carryover_triggers"):
+		stored_triggers = int(controller.call("get_carryover_triggers"))
 
 	if _level_end_stats_label:
 		var lines: Array[String] = []
@@ -1095,11 +978,12 @@ func _show_level_end_overlay(coins_earned: int) -> void:
 			lines.append("Speed bonus (%d turns left): [b]+%d[/b]" % [turn_limit - _turns_used, speed_bonus])
 		if _identify_bonus_coins > 0:
 			lines.append("Correct identification: [b]+%d[/b]" % _identify_bonus_coins)
-		if rewards_pending:
-			lines.append("[b]Reward pending sync: %d coins[/b]" % total_coins)
-			lines.append("Coins land after the next successful sync.")
-		else:
-			lines.append("[b]Total earned: %d coins[/b]" % total_coins)
+		if earned_triggers > 0:
+			lines.append("Action reserve earned: [b]+%d[/b] trigger" % earned_triggers)
+		lines.append("[b]Sanctuary grant banked: %d coins[/b]" % total_coins)
+		if stored_triggers > 0:
+			lines.append("Stored action reserve: [b]%d[/b]" % stored_triggers)
+		lines.append("Fast clears and good identification work increase the payout.")
 		_level_end_stats_label.text = "\n".join(lines)
 
 	if _level_end_species_label:
@@ -1362,6 +1246,21 @@ func _on_shop_buy_fish_egg() -> void:
 	_update_text()
 
 
+func _buy_species_egg(species: String) -> void:
+	if _session_over or _in_identify_phase or _showing_turn_results:
+		return
+	if controller == null or not controller.has_method("spend_coins"):
+		return
+	var success: bool = controller.call("spend_coins", SHOP_FISH_EGG_COST)
+	if not success:
+		status_label.text = "Need %d coins to hatch a %s egg" % [SHOP_FISH_EGG_COST, species]
+		return
+	_spawn_egg(species)
+	status_label.text = "%s egg placed in the reef." % species
+	_update_shop_coins()
+	_update_text()
+
+
 func _update_shop_coins() -> void:
 	if _shop_coins_label == null:
 		return
@@ -1437,18 +1336,23 @@ func _start_level_from_state(parsed: Dictionary) -> void:
 	_resume_turn_after_stressor_tooltip = false
 	_identify_bonus_coins = 0
 	_essential_species = []
-	_pending_classification = {}
 	_fish_active_traits = {}
 	_salinity_adjustment = 0
 	_temperature_adjustment = 0
-	_tutorial_results_seen = false
+	_carryover_trigger_boost = 0
+	_tutorial_egg_prompt_shown = false
 	_tutorial_step_id = ""
 	_tutorial_active = false
 	if controller and controller.has_method("is_tutorial_complete"):
-		_tutorial_active = _active_level_id == 1 and not bool(controller.call("is_tutorial_complete"))
+		_tutorial_active = _active_level_id == 0 and not bool(controller.call("is_tutorial_complete"))
 	if _tutorial_active:
-		_turns_remaining = maxi(_turns_remaining, 8)
-		_nutrients = maxi(_nutrients, 14)
+		_level_def = _build_guided_tutorial_level(_level_def)
+		_target_population = int(_level_def.get("target_population", _target_population))
+		_turns_remaining = int(_level_def.get("turn_limit", _turns_remaining))
+		_nutrients = maxi(_nutrients, int(_level_def.get("starting_nutrients", 18)))
+	if controller and controller.has_method("consume_carryover_triggers"):
+		_carryover_trigger_boost = int(controller.call("consume_carryover_triggers", 99))
+		_triggers_remaining += _carryover_trigger_boost
 
 	# Hide overlays from any previous level
 	if _level_end_overlay:
@@ -1484,7 +1388,7 @@ func _start_level_from_state(parsed: Dictionary) -> void:
 	_refresh_fish_rows()
 	_update_coral_growth_visuals()
 	_init_breeding_timers()
-	status_label.text = "Level %d — replicate the reef!" % _active_level_id
+	status_label.text = "Level %d — rebuild the reef." % _active_level_id
 	_update_text()
 	_update_reef_title()
 	_update_breed_row_labels()
@@ -1616,31 +1520,36 @@ func _refresh_fish_rows() -> void:
 			card.setup(species, frames)
 		
 		card.update_pop(int(_fish_population.get(species, 0)))
+		if card.has_method("set_role_hint"):
+			card.call("set_role_hint", _fish_role_text(species), _fish_role_tone(species))
+		if card.has_method("set_tutorial_mode"):
+			card.call("set_tutorial_mode", _tutorial_active)
 		
 		card.feed_pressed.connect(_adjust_fish.bind(species, 1))
 		card.net_pressed.connect(_adjust_fish.bind(species, -1))
+		if card.has_signal("egg_pressed"):
+			card.egg_pressed.connect(_buy_species_egg.bind(species))
 		
 		card.set_disabled(_session_over or _in_identify_phase or _showing_turn_results)
 
-	if _tutorial_active and _tutorial_step_id == "feed_action":
-		_refresh_tutorial_target()
 
 
 func _update_text() -> void:
 	# Update resource labels
 	if _bottom_nutrients_label:
-		_bottom_nutrients_label.text = "Nutrients: %d" % _nutrients
+		_bottom_nutrients_label.text = "Nutrients: %d %s" % [_nutrients, _resource_meter_blocks(_nutrients, _starting_nutrients_for_level(), 5)]
 	if _bottom_coins_label:
 		if controller and controller.has_method("get_coins"):
 			_bottom_coins_label.text = "Coins: %d" % int(controller.call("get_coins"))
 	if _bottom_turn_label:
 		var total_turns := _turns_used + _turns_remaining
-		_bottom_turn_label.text = "Turn: %d/%d  ⚡%d" % [_turns_used, total_turns, _triggers_remaining]
+		var display_turn := _turns_used
+		if not _session_over and total_turns > 0:
+			display_turn = mini(total_turns, _turns_used + 1)
+		_bottom_turn_label.text = "Turn %d/%d" % [display_turn, total_turns]
 	if _bottom_reef_label:
-		var reef_percent := 0
-		if _target_population > 0:
-			reef_percent = int(round(clampf(float(_coral_population) / float(_target_population), 0.0, 1.0) * 100.0))
-		_bottom_reef_label.text = "Reef: %d%%" % reef_percent
+		var total_actions := _action_budget_total()
+		_bottom_reef_label.text = "Actions: %d/%d" % [_triggers_remaining, total_actions]
 	
 	# Update ObjectiveCard
 	if objective_card and objective_card.has_method("update_objective"):
@@ -1653,24 +1562,23 @@ func _update_text() -> void:
 		turn_flow_strip.set_disabled(_session_over or _in_identify_phase or _showing_turn_results)
 	if turn_flow_strip and turn_flow_strip.has_method("set_step"):
 		turn_flow_strip.set_step(1)
-	var environment_locked := _session_over or _in_identify_phase or _showing_turn_results or _triggers_remaining <= 0
-	if salinity_down_button:
-		salinity_down_button.disabled = environment_locked or _salinity_adjustment <= -1
-	if salinity_up_button:
-		salinity_up_button.disabled = environment_locked or _salinity_adjustment >= 1
-	if temp_down_button:
-		temp_down_button.disabled = environment_locked or _temperature_adjustment <= -1
-	if temp_up_button:
-		temp_up_button.disabled = environment_locked or _temperature_adjustment >= 1
+	_update_environment_controls()
 
 	# Update Fish Cards
 	for card in fish_cards:
 		if is_instance_valid(card):
 			card.update_pop(int(_fish_population.get(card.species, 0)))
+			if card.has_method("set_role_hint"):
+				card.call("set_role_hint", _fish_role_text(card.species), _fish_role_tone(card.species))
+			if card.has_method("set_tutorial_mode"):
+				card.call("set_tutorial_mode", _tutorial_active)
 			card.set_disabled(_session_over or _in_identify_phase or _showing_turn_results)
 			if card.has_method("set_net_state"):
 				var net_disabled := _session_over or _in_identify_phase or _showing_turn_results or _triggers_remaining <= 0
-				card.call("set_net_state", net_disabled, _triggers_remaining, _triggers_per_turn)
+				card.call("set_net_state", net_disabled, _triggers_remaining, _action_budget_total())
+			if card.has_method("set_egg_state"):
+				var egg_disabled := _session_over or _in_identify_phase or _showing_turn_results
+				card.call("set_egg_state", egg_disabled, SHOP_FISH_EGG_COST)
 			if card.has_method("set_extinct_state"):
 				card.call("set_extinct_state", int(_fish_population.get(card.species, 0)) <= 0)
 
@@ -1696,7 +1604,7 @@ func _show_tutorial_step(step_id: String) -> void:
 	var show_button := step.has("button_text")
 	var button_text := str(step.get("button_text", "Continue"))
 	var target := _tutorial_target_for_step(step_id)
-	if show_button and step_id != "results_intro":
+	if show_button:
 		_set_gameplay_buttons_disabled(true)
 	_tutorial_overlay.show_step(title, body, target, show_button, button_text)
 
@@ -1713,16 +1621,9 @@ func _on_tutorial_advanced() -> void:
 	if not _tutorial_active:
 		return
 	match _tutorial_step_id:
-		"goal_intro":
-			_hide_tutorial_step()
-			_show_tutorial_step("feed_action")
-		"end_turn_action":
-			_hide_tutorial_step()
-		"win_outro":
-			_hide_tutorial_step()
-			if controller and controller.has_method("set_tutorial_complete"):
-				controller.call("set_tutorial_complete", true)
-			_tutorial_active = false
+		"identify_intro":
+			if _identify_phase_scene:
+				_identify_phase_scene.submit_identification()
 		_:
 			_hide_tutorial_step()
 
@@ -1733,32 +1634,86 @@ func _refresh_tutorial_target() -> void:
 	_tutorial_overlay.refresh_target(_tutorial_target_for_step(_tutorial_step_id))
 
 
-func _tutorial_target_for_step(step_id: String) -> Control:
+func _tutorial_target_for_step(step_id: String) -> Node:
 	match step_id:
 		"identify_intro":
-			return _identify_choice_list if _identify_choice_list != null else _identify_image
-		"goal_intro":
-			return objective_card as Control
-		"feed_action":
-			return _first_feed_button()
+			return _identify_phase_scene
 		"end_turn_action":
 			return next_turn_button
-		"results_intro":
-			return _turn_results_overlay.get_node_or_null("PanelContainer") as Control
-		"win_outro":
-			return null
+		"egg_intro":
+			return reef_viewport as Control
 		_:
 			return null
 
 
-func _first_feed_button() -> Control:
-	for card in fish_cards:
-		if not is_instance_valid(card):
-			continue
-		var button := card.get_node_or_null("Margin/VBox/ActionRow/FeedButton") as Control
-		if button != null:
-			return button
-	return null
+func _feed_button_for_species(species: String) -> Control:
+	var card := _find_fish_card(species)
+	if card == null:
+		return null
+	return card.get_node_or_null("Margin/VBox/ActionRow/FeedButton") as Control
+
+
+func _identify_intro_copy(canonical_name: String) -> String:
+	if _tutorial_active:
+		return "[b]Tutorial ID check[/b]\nThis first image is a curated coral reference for [b]%s[/b]. Compare it with the two options below and pick the one that truly matches before you start rebuilding the reef." % canonical_name
+	var texture_source := "a curated reference image"
+	var subject_texture := _identify_subject_texture(_identify_subject, canonical_name)
+	if subject_texture != null:
+		var path := str(subject_texture.resource_path).to_lower()
+		if path.find("/assets/sprites/") >= 0:
+			texture_source = "a curated species card"
+		elif path.find("/click_a_coral/") >= 0:
+			texture_source = "a reef reference image"
+	return "[b]Field ID check[/b]\nThe large image is %s for [b]%s[/b]. Compare it with the thumbnails and choose the coral that truly matches the shape and colour.\nA correct identification earns [b]%d bonus coins.[/b]" % [texture_source, canonical_name, _classification_bonus_coins]
+
+
+func _identify_source_caption(texture: Texture2D, canonical_name: String) -> String:
+	if _tutorial_active:
+		return "Reference source: curated tutorial coral card for %s" % canonical_name
+	if texture == null:
+		return "Reference source: placeholder card for %s" % canonical_name
+	var path := str(texture.resource_path).to_lower()
+	if path.find("/click_a_coral/anomalies/") >= 0:
+		return "Reference source: reef anomaly image"
+	if path.find("/click_a_coral/dictionary/") >= 0:
+		return "Reference source: curated coral dictionary image"
+	if path.find("/assets/sprites/") >= 0:
+		return "Reference source: curated species card"
+	return "Reference source: curated reef reference"
+
+
+func _available_coral_names() -> Array[String]:
+	var names: Array[String] = []
+	if typeof(_coral_specs_by_name) == TYPE_DICTIONARY:
+		for key in _coral_specs_by_name.keys():
+			names.append(str(key))
+	if names.is_empty():
+		for entry in _species_reference.get("corals", []):
+			if typeof(entry) != TYPE_DICTIONARY:
+				continue
+			var n := str(entry.get("name", ""))
+			if not n.is_empty():
+				names.append(n)
+	return names
+
+
+func _identify_choices_for_subject(canonical_name: String) -> Array[String]:
+	var scripted_choices: Array[String] = []
+	if _tutorial_active:
+		match _normalize_label(canonical_name):
+			"madracis sp":
+				scripted_choices = ["Madracis Sp.", "Madrepora Sp."]
+			"muricea pendula":
+				scripted_choices = ["Muricea pendula", "Thesea nivea"]
+	if scripted_choices.is_empty():
+		scripted_choices.append(canonical_name)
+		var coral_names := _available_coral_names()
+		while scripted_choices.size() < 4 and coral_names.size() > 0:
+			var candidate := coral_names[randi() % coral_names.size()]
+			if not scripted_choices.has(candidate):
+				scripted_choices.append(candidate)
+	scripted_choices.shuffle()
+	return scripted_choices
 
 
 # ─── Coral alignment & animations ────────────────────────────────────────────
@@ -1822,10 +1777,10 @@ func _adjust_fish(species: String, delta: int) -> void:
 	if _session_over or _in_identify_phase or _showing_turn_results:
 		return
 	if _nutrients <= 0:
-		status_label.text = "Out of nutrients"
+		status_label.text = "Out of nutrients. Resolve the reef to refresh the turn."
 		return
 	if delta < 0 and _triggers_remaining <= 0:
-		status_label.text = "No triggers remaining this turn"
+		status_label.text = "No actions left for netting this turn."
 		return
 
 	var current := int(_fish_population.get(species, 0))
@@ -1853,8 +1808,6 @@ func _adjust_fish(species: String, delta: int) -> void:
 	else:
 		status_label.text = "%s %s (%d)" % [species, "fed" if delta > 0 else "netted", next_value]
 	_update_text()
-	if _tutorial_active and delta > 0 and _tutorial_step_id == "feed_action":
-		_show_tutorial_step("end_turn_action")
 	if _nutrients <= 0:
 		_advance_turn()
 
@@ -1884,6 +1837,48 @@ func _get_interaction_hint(species: String) -> String:
 	return ""
 
 
+func _fish_role_text(species: String) -> String:
+	var target_coral := str(_level_def.get("target_coral", ""))
+	if target_coral.is_empty():
+		return "Balanced pick"
+	if _is_positive_species_for_target(species, target_coral):
+		return "Helps %s" % target_coral
+	if _is_negative_species_for_target(species, target_coral):
+		return "Hurts %s" % target_coral
+	return "Side species"
+
+
+func _fish_role_tone(species: String) -> String:
+	var target_coral := str(_level_def.get("target_coral", ""))
+	if target_coral.is_empty():
+		return "neutral"
+	if _is_positive_species_for_target(species, target_coral):
+		return "positive"
+	if _is_negative_species_for_target(species, target_coral):
+		return "negative"
+	return "neutral"
+
+
+func _is_positive_species_for_target(species: String, target_coral: String) -> bool:
+	if _positive_fish.has(species):
+		return true
+	var aids: Dictionary = _interactions.get("fish_aids_coral", {})
+	if typeof(aids) == TYPE_DICTIONARY and aids.has(species):
+		var aided: Array = aids[species]
+		return typeof(aided) == TYPE_ARRAY and aided.has(target_coral)
+	return false
+
+
+func _is_negative_species_for_target(species: String, target_coral: String) -> bool:
+	if _negative_fish.has(species):
+		return true
+	var harms: Dictionary = _interactions.get("fish_harms_coral", {})
+	if typeof(harms) == TYPE_DICTIONARY and harms.has(species):
+		var harmed: Array = harms[species]
+		return typeof(harmed) == TYPE_ARRAY and harmed.has(target_coral)
+	return false
+
+
 # ─── Turn resolution ──────────────────────────────────────────────────────────
 
 func _advance_turn() -> void:
@@ -1907,6 +1902,7 @@ func _advance_turn() -> void:
 	_turns_remaining -= 1
 	_turns_used += 1
 	_triggers_remaining = _triggers_per_turn
+	_carryover_trigger_boost = 0
 	_turn_nutrients_spent = 0
 	_rebuild_species_order()
 	_refresh_fish_rows()
@@ -1921,7 +1917,7 @@ func _advance_turn() -> void:
 		if _tutorial_active:
 			_turns_remaining = 1
 			_nutrients = maxi(_nutrients, 4)
-			status_label.text = "Keep going — match the reef to finish the tutorial."
+			status_label.text = "Keep going. Use the reef check, then feed more helper fish until the target coral catches up."
 			_update_text()
 			return
 		_session_over = true
@@ -2025,19 +2021,20 @@ func _check_win_condition() -> bool:
 
 	_session_over = true
 	var coins_earned := _calculate_coins_earned()
+	var bonus_triggers := 1 if _turns_used < int(_level_def.get("turn_limit", 6)) else 0
+	if bonus_triggers > 0 and controller and controller.has_method("add_carryover_triggers"):
+		controller.call("add_carryover_triggers", bonus_triggers)
 
 	if controller and controller.has_method("complete_current_level"):
 		controller.call("complete_current_level", coins_earned)
-	var rewards_pending := false
-	if controller and controller.has_method("get_pending_reward_total"):
-		rewards_pending = int(controller.call("get_pending_reward_total")) > 0
-	status_label.text = "Reef replicated! Reward pending sync (%d coins)" % coins_earned if rewards_pending else "Reef replicated! Earned %d coins" % coins_earned
+	status_label.text = "Reef replicated. Sanctuary grant secured: %d coins." % coins_earned
 	_refresh_fish_rows()
 	_update_text()
-	_offer_post_level_classification()
 	_show_level_end_overlay(coins_earned)
 	if _tutorial_active:
-		_show_tutorial_step("win_outro")
+		_tutorial_active = false
+		if controller and controller.has_method("set_tutorial_complete"):
+			controller.call("set_tutorial_complete", true)
 	return true
 
 
@@ -2374,107 +2371,6 @@ func _pick_offspring_species(parents: Array[String]) -> String:
 	return parents[0]
 
 
-# ─── Post-level classification quiz ──────────────────────────────────────────
-
-func _offer_post_level_classification() -> void:
-	if _tutorial_active:
-		return
-	if _classification_entries.is_empty() or _classification_dialog == null:
-		return
-
-	var entry: Variant = _classification_entries[randi() % _classification_entries.size()]
-	if typeof(entry) != TYPE_DICTIONARY:
-		return
-
-	_pending_classification = entry
-	_show_classification_dialog(entry)
-
-
-func _show_classification_dialog(entry: Dictionary) -> void:
-	if _classification_dialog == null:
-		return
-
-	var canonical_name := str(entry.get("canonical_name", "Unknown"))
-	var collection_name := str(entry.get("collection_name", "Unknown Collection"))
-	var subject_id := str(entry.get("subject_id", ""))
-
-	_classification_prompt_label.text = "[b]Classify this coral image[/b]\nCollection: %s\nSubject: %s\n\nA correct answer earns [b]%d bonus coins![/b]" % [collection_name, subject_id, _classification_bonus_coins]
-	_classification_guess_option.clear()
-
-	var choices: Array[String] = [canonical_name]
-	var coral_names := _available_coral_names()
-	while choices.size() < 4 and coral_names.size() > 0:
-		var candidate := coral_names[randi() % coral_names.size()]
-		if not choices.has(candidate):
-			choices.append(candidate)
-
-	choices.shuffle()
-	for choice in choices:
-		_classification_guess_option.add_item(choice)
-
-	var resource_path := str(entry.get("resource_path", ""))
-	_classification_image.visible = false
-	_classification_image.texture = null
-	if not resource_path.is_empty() and FileAccess.file_exists(resource_path) and ResourceLoader.exists(resource_path):
-		var texture := load(resource_path)
-		if texture is Texture2D:
-			_classification_image.texture = texture
-			_classification_image.visible = true
-
-	_classification_dialog.popup_centered()
-
-
-func _available_coral_names() -> Array[String]:
-	var names: Array[String] = []
-	if typeof(_coral_specs_by_name) == TYPE_DICTIONARY:
-		for key in _coral_specs_by_name.keys():
-			names.append(str(key))
-	if names.is_empty():
-		for entry in _species_reference.get("corals", []):
-			if typeof(entry) != TYPE_DICTIONARY:
-				continue
-			var name := str(entry.get("name", ""))
-			if not name.is_empty():
-				names.append(name)
-	return names
-
-
-func _on_classification_cancelled() -> void:
-	_pending_classification = {}
-
-
-func _on_classification_confirmed() -> void:
-	if _pending_classification.is_empty():
-		return
-	if controller == null or not controller.has_method("submit_post_level_classification"):
-		return
-	if _classification_guess_option.item_count <= 0:
-		return
-
-	var selected_text := _classification_guess_option.get_item_text(_classification_guess_option.selected)
-	var canonical_name := str(_pending_classification.get("canonical_name", ""))
-	var subject_id := str(_pending_classification.get("subject_id", ""))
-	var accepted_answers := _to_string_array(_pending_classification.get("accepted_answers", []))
-	accepted_answers.append_array(_taxonomy_aliases_for(canonical_name))
-
-	var result = controller.call(
-		"submit_post_level_classification",
-		subject_id,
-		canonical_name,
-		selected_text,
-		accepted_answers,
-		_classification_bonus_coins
-	)
-
-	if typeof(result) == TYPE_DICTIONARY:
-		if bool(result.get("correct", false)):
-			var bonus := int(result.get("bonus", 0))
-			status_label.text = "Correct! +%d coins — %s discovered" % [bonus, canonical_name]
-		else:
-			status_label.text = "Not quite — it was %s" % canonical_name
-
-	_pending_classification = {}
-	_update_text()
 
 
 func _taxonomy_aliases_for(canonical_name: String) -> Array[String]:
@@ -2501,6 +2397,20 @@ func _normalize_label(raw: String) -> String:
 	if controller and controller.has_method("normalize_label"):
 		return controller.call("normalize_label", raw)
 	return raw.to_lower().strip_edges().replace(".", "").replace("-", " ").replace("_", " ")
+
+
+func _load_texture_from_resource_or_file(resource_path: String) -> Texture2D:
+	if resource_path.is_empty() or not FileAccess.file_exists(resource_path):
+		return null
+	if ResourceLoader.exists(resource_path):
+		var loaded := load(resource_path)
+		if loaded is Texture2D:
+			return loaded
+	var image := Image.new()
+	var err := image.load(resource_path)
+	if err != OK:
+		return null
+	return ImageTexture.create_from_image(image)
 
 
 # ─── Navigation ───────────────────────────────────────────────────────────────
@@ -2531,7 +2441,7 @@ func _adjust_environment(kind: String, delta: int) -> void:
 	if delta == 0:
 		return
 	if _triggers_remaining <= 0:
-		status_label.text = "No triggers remaining this turn"
+		status_label.text = "No actions left for water tuning this turn."
 		return
 
 	var value_changed := false
@@ -2560,7 +2470,7 @@ func _adjust_environment(kind: String, delta: int) -> void:
 		return
 
 	_consume_trigger()
-	status_label.text = "Water tuned: salinity %s, temp %s (-%d coins)" % [
+	status_label.text = "Water tuned: salinity %s, temp %s (-%d coins, -1 action)" % [
 		_environment_band_label(_salinity_adjustment, "salinity"),
 		_environment_band_label(_temperature_adjustment, "temperature"),
 		ENV_TUNE_COST
@@ -2568,8 +2478,67 @@ func _adjust_environment(kind: String, delta: int) -> void:
 	_update_text()
 
 
+func _set_environment_target(kind: String, target_value: int) -> void:
+	var current_value := _salinity_adjustment if kind == "salinity" else _temperature_adjustment
+	var delta := target_value - current_value
+	if delta == 0:
+		status_label.text = "%s is already at %s" % [kind.capitalize(), _environment_band_label(target_value, kind)]
+		return
+	if _session_over or _in_identify_phase or _showing_turn_results:
+		return
+	var steps := absi(delta)
+	if _triggers_remaining < steps:
+		status_label.text = "Need %d actions to push %s to %s." % [steps, kind, _environment_band_label(target_value, kind)]
+		return
+	if controller and controller.has_method("get_coins"):
+		var total_cost := ENV_TUNE_COST * steps
+		if int(controller.call("get_coins")) < total_cost:
+			status_label.text = "Need %d coins to push %s to %s." % [total_cost, kind, _environment_band_label(target_value, kind)]
+			return
+	var step_delta := 1 if delta > 0 else -1
+	for _step in range(steps):
+		_adjust_environment(kind, step_delta)
+
+
 func _consume_trigger() -> void:
 	_triggers_remaining = maxi(0, _triggers_remaining - 1)
+
+
+func _action_budget_total() -> int:
+	return _triggers_per_turn + _carryover_trigger_boost
+
+
+func _starting_nutrients_for_level() -> int:
+	return maxi(1, int(_level_def.get("starting_nutrients", maxi(_nutrients, 1))))
+
+
+func _resource_meter_blocks(current_value: int, max_value: int, blocks: int) -> String:
+	if blocks <= 0:
+		return ""
+	var safe_max := maxi(1, max_value)
+	var filled := clampi(int(round((float(current_value) / float(safe_max)) * float(blocks))), 0, blocks)
+	return "█".repeat(filled) + "░".repeat(blocks - filled)
+
+
+func _update_environment_controls() -> void:
+	var blocked := _session_over or _in_identify_phase or _showing_turn_results
+	_set_environment_button_state(salinity_low_button, blocked, "salinity", -1)
+	_set_environment_button_state(salinity_medium_button, blocked, "salinity", 0)
+	_set_environment_button_state(salinity_high_button, blocked, "salinity", 1)
+	_set_environment_button_state(temp_cold_button, blocked, "temperature", -1)
+	_set_environment_button_state(temp_moderate_button, blocked, "temperature", 0)
+	_set_environment_button_state(temp_warm_button, blocked, "temperature", 1)
+
+
+func _set_environment_button_state(button: Button, blocked: bool, kind: String, target_value: int) -> void:
+	if button == null:
+		return
+	var current_value := _salinity_adjustment if kind == "salinity" else _temperature_adjustment
+	var steps := absi(target_value - current_value)
+	var affordable := true
+	if controller and controller.has_method("get_coins"):
+		affordable = int(controller.call("get_coins")) >= (steps * ENV_TUNE_COST)
+	button.disabled = blocked or steps == 0 or _triggers_remaining < steps or not affordable
 
 
 func _build_turns_exhausted_fail_reason() -> String:
@@ -2626,9 +2595,13 @@ func _on_supabase_sync_status(payload_json: String) -> void:
 	var parsed = JSON.parse_string(payload_json)
 	if typeof(parsed) != TYPE_DICTIONARY:
 		return
-	var message := str(parsed.get("message", ""))
 	var kind := str(parsed.get("kind", ""))
-	status_label.text = "%s: %s" % [kind.to_upper(), message]
+	if kind == "success":
+		return
+	if _tutorial_active or _in_identify_phase:
+		return
+	if kind == "error":
+		status_label.text = "Field notes will be saved later. Keep restoring the reef."
 
 
 func _update_coral_growth_visuals() -> void:

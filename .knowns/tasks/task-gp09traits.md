@@ -1,7 +1,7 @@
 ---
 id: gp09traits
 title: "Trait system — research, design, and implementation"
-status: todo
+status: done
 priority: medium
 labels:
   - gameplay
@@ -9,7 +9,7 @@ labels:
   - content
   - research
 createdAt: '2026-03-17T00:00:00Z'
-updatedAt: '2026-03-17T00:00:00Z'
+updatedAt: '2026-03-20T22:51:30Z'
 ---
 
 # Trait system — research, design, and implementation

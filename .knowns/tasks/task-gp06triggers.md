@@ -1,14 +1,14 @@
 ---
 id: gp06triggers
 title: "Trigger system — per-turn action budget"
-status: todo
+status: done
 priority: high
 labels:
   - gameplay
   - economy
   - ui
 createdAt: '2026-03-17T00:00:00Z'
-updatedAt: '2026-03-17T00:00:00Z'
+updatedAt: '2026-03-20T13:29:03Z'
 ---
 
 # Trigger system — per-turn action budget

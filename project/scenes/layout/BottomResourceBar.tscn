@@ -47,10 +47,10 @@ text = "Coins: 0"
 layout_mode = 2
 theme_override_colors/font_color = Color(0.768627, 0.905882, 0.976471, 1)
 theme_override_font_sizes/font_size = 18
-text = "Turn: 0/0"
+text = "Turn 0/0"
 
 [node name="ResD" parent="BottomMargin/BottomRow" instance=ExtResource("1_res_stat")]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.733333, 0.964706, 0.784314, 1)
 theme_override_font_sizes/font_size = 18
-text = "Reef: 0%"
+text = "Actions: 0/2"
