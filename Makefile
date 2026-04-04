@@ -1,6 +1,6 @@
 # Makefile for Coral Clicker
 
-.PHONY: help up down restart ps logs shell-web shell-godot test test-godot godot-export-web nextjs-test clean prune up-desktop sprites supabase-schema
+.PHONY: help up down restart ps logs shell-web shell-godot test test-godot test-tour godot-export-web nextjs-test clean prune up-desktop sprites supabase-schema
 
 help:
 	@echo "Available commands:"
@@ -12,7 +12,8 @@ help:
 	@echo "  up-desktop         - Start web, bridge and electron (desktop profile)"
 	@echo "  sprites            - Generate species sprites using the sprites tool"
 	@echo "  supabase-schema    - Apply supabase/schema.sql to local Supabase"
-	@echo "  test               - Run all tests in docker (test-suite)"
+	@echo "  test               - Run all tests in docker (test-suite + tour)"
+	@echo "  test-tour          - Run Godot tour test pass in docker"
 	@echo "  test-godot         - Run Godot E2E tests in docker"
 	@echo "  godot-export-web   - Export Godot project to Web (web/public/godot)"
 	@echo "  nextjs-test        - Export Godot to Web and run tests in Next.js container"
@@ -44,7 +45,14 @@ supabase-schema:
 	./scripts/apply-supabase-schema.sh
 
 test:
-	docker compose --profile test run --rm test-suite; \
+	docker compose --profile test run --rm test-suite && \
+	docker compose --profile test run --rm tour; \
+	status=$$?; \
+	$(MAKE) clean; \
+	exit $$status
+
+test-tour:
+	docker compose --profile test run --rm tour; \
 	status=$$?; \
 	$(MAKE) clean; \
 	exit $$status

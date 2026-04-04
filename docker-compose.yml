@@ -113,6 +113,21 @@ services:
       - root_node_modules:/workspace/node_modules
     <<: *common-host
 
+  tour:
+    profiles: ["test"]
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: docker/tour.Dockerfile
+    working_dir: /workspace
+    environment:
+      <<: *common-env
+      SCREENSHOT_DIR: /workspace/artifacts/tour
+      REPORT_PATH: /workspace/artifacts/tour_report.json
+      PROJECT_PATH: /workspace/project
+    volumes:
+      - ./:/workspace
+
 volumes:
   web_node_modules:
   root_node_modules:
