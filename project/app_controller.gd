@@ -10,7 +10,10 @@ const CLICK_A_CORAL_DATA_PATH := "res://data/click_a_coral_subjects.json"
 const SAVE_PATH := "user://save.json"
 const PENDING_CLASSIFICATIONS_PATH := "user://pending_classifications.json"
 const SUBJECT_CACHE_DIR := "user://subject_cache"
+const CONFIG_PATH := "res://data/config.json"
 
+# Defaults point to local Supabase dev instance.
+# Override any of these in res://data/config.json for production builds.
 var _supabase_url: String = "http://127.0.0.1:54321"
 var _supabase_anon_key: String = "sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH"
 var _supabase_table: String = "player_progress"
@@ -53,6 +56,7 @@ var state := {
 @onready var _asset_http := HTTPRequest.new()
 
 func _ready() -> void:
+	_load_env_config()
 	_load_content_data()
 	add_child(_http)
 	add_child(_asset_http)
@@ -61,6 +65,24 @@ func _ready() -> void:
 	_load_local_state()
 	_emit_state()
 	call_deferred("_retry_online_work")
+
+
+func _load_env_config() -> void:
+	var cfg: Variant = _read_json_file(CONFIG_PATH)
+	if typeof(cfg) != TYPE_DICTIONARY:
+		return
+	var url: Variant = cfg.get("supabase_url", "")
+	if typeof(url) == TYPE_STRING and not (url as String).is_empty():
+		_supabase_url = url
+	var key: Variant = cfg.get("supabase_anon_key", "")
+	if typeof(key) == TYPE_STRING and not (key as String).is_empty():
+		_supabase_anon_key = key
+	var table: Variant = cfg.get("supabase_table", "")
+	if typeof(table) == TYPE_STRING and not (table as String).is_empty():
+		_supabase_table = table
+	var pid: Variant = cfg.get("player_id", "")
+	if typeof(pid) == TYPE_STRING and not (pid as String).is_empty():
+		_player_id = pid
 
 func _load_content_data() -> void:
 	var levels_raw: Variant = _read_json_file(STARTER_LEVELS_PATH)

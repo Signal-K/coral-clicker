@@ -1,0 +1,7 @@
+{
+  "_comment": "Override Supabase connection for this build. All keys are optional — missing keys fall back to app_controller.gd defaults (localhost dev instance).",
+  "supabase_url": "http://127.0.0.1:54321",
+  "supabase_anon_key": "sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH",
+  "supabase_table": "player_progress",
+  "player_id": ""
+}

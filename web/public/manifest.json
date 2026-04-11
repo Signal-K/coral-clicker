@@ -1,0 +1,32 @@
+{
+  "name": "Coral Clicker",
+  "short_name": "Coral",
+  "description": "Identify reef corals, breed fish, restore the ocean.",
+  "start_url": "/godot/index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#020818",
+  "theme_color": "#020818",
+  "icons": [
+    {
+      "src": "/godot/index.icon.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/godot/index.icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "apple touch icon"
+    },
+    {
+      "src": "/godot/index.icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["games", "education"],
+  "lang": "en-US"
+}
