@@ -5,6 +5,16 @@
       "body": "Tap a species you can see in this photo. Your identification helps real scientists studying Caribbean reefs.",
       "button_text": "Confirm"
     },
+    "goal_intro": {
+      "title": "Rebuild the Target",
+      "body": "Check the objective card to see which coral this mission needs. Your reef health climbs as you grow the target coral toward its goal.",
+      "button_text": "Show Me"
+    },
+    "feed_action": {
+      "title": "Use a Fish Action",
+      "body": "Feed a helpful fish to boost the reef. Each turn gives you a limited number of actions, so spend them where they help most.",
+      "button_text": "Feed a Fish"
+    },
     "egg_intro": {
       "title": "New Hatchling",
       "body": "A breeding event! Tap the egg to hatch it, then drag the fish into your reef."
@@ -13,6 +23,16 @@
       "title": "End the Turn",
       "body": "Press End Turn. Your fish will help the coral grow — one turn is all you need.",
       "button_text": "Got It"
+    },
+    "results_intro": {
+      "title": "Read the Reef Check",
+      "body": "After each turn, the reef check shows what improved and what still needs work. Use it to decide your next move.",
+      "button_text": "Continue"
+    },
+    "win_outro": {
+      "title": "Mission Complete",
+      "body": "You rebuilt the reef and banked the reward. Keep the sanctuary healthy, then head back to the route for the next site.",
+      "button_text": "Finish"
     }
   }
 }

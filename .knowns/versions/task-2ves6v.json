@@ -1,0 +1,32 @@
+{
+  "taskId": "2ves6v",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "2ves6v",
+      "version": 1,
+      "timestamp": "2026-04-11T10:36:22.804Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "newValue": "Tank remains in MVP. Include Tank presentation and interaction design in scope, but keep MVP functionality narrow: stored bonus species, decorative sandbox interaction, passive resource production."
+        }
+      ],
+      "snapshot": {
+        "title": "Design and implement the core late-game readability surfaces",
+        "description": "Ship the minimum viable design/dev pass for the turn results panel, water HUD, bleaching state, fail state, and any map/tank surface that remains in MVP scope.",
+        "status": "todo",
+        "priority": "high",
+        "labels": [
+          "mvp",
+          "ui",
+          "ux",
+          "design"
+        ],
+        "acceptanceCriteria": [],
+        "implementationNotes": "Tank remains in MVP. Include Tank presentation and interaction design in scope, but keep MVP functionality narrow: stored bonus species, decorative sandbox interaction, passive resource production."
+      }
+    }
+  ]
+}

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Coral Lab v2.0 - Scanner</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800;900&amp;family=Space+Grotesk:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#ffa8a3",
+                        "surface": "#001016",
+                        "secondary-fixed": "#ffc4b1",
+                        "on-primary-container": "#004041",
+                        "on-surface": "#d9eff8",
+                        "surface-container-highest": "#092933",
+                        "on-secondary-fixed-variant": "#922f03",
+                        "tertiary-fixed": "#ffd709",
+                        "tertiary": "#ffe792",
+                        "outline-variant": "#374b52",
+                        "primary": "#52f2f5",
+                        "tertiary-container": "#ffd709",
+                        "on-surface-variant": "#99aeb7",
+                        "primary-fixed-dim": "#3de4e7",
+                        "secondary-container": "#8e2c01",
+                        "on-tertiary": "#655400",
+                        "on-secondary": "#491300",
+                        "surface-tint": "#52f2f5",
+                        "on-background": "#d9eff8",
+                        "secondary-dim": "#f7794b",
+                        "on-error": "#490006",
+                        "tertiary-dim": "#efc900",
+                        "surface-dim": "#001016",
+                        "surface-bright": "#0e303a",
+                        "error-dim": "#d7383b",
+                        "inverse-primary": "#006a6c",
+                        "secondary-fixed-dim": "#ffb196",
+                        "secondary": "#fe7e4f",
+                        "primary-dim": "#3de4e7",
+                        "inverse-surface": "#f2fbff",
+                        "on-secondary-container": "#ffd2c3",
+                        "background": "#001016",
+                        "on-primary": "#005859",
+                        "surface-container-low": "#00161d",
+                        "outline": "#647981",
+                        "primary-container": "#0cd0d3",
+                        "inverse-on-surface": "#445860",
+                        "primary-fixed": "#52f2f5",
+                        "surface-container": "#021d25",
+                        "on-tertiary-container": "#5b4b00",
+                        "surface-container-high": "#05232c",
+                        "surface-variant": "#092933",
+                        "on-tertiary-fixed-variant": "#665500",
+                        "on-primary-fixed-variant": "#006264",
+                        "error-container": "#9f0519",
+                        "surface-container-lowest": "#000000",
+                        "on-tertiary-fixed": "#453900",
+                        "tertiary-fixed-dim": "#efc900",
+                        "on-secondary-fixed": "#621c00",
+                        "error": "#ff716c",
+                        "on-primary-fixed": "#004344"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Plus Jakarta Sans"],
+                        "label": ["Space Grotesk"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .scanline {
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1));
+            background-size: 100% 4px;
+        }
+        .reticle-corner {
+            width: 2rem;
+            height: 2rem;
+            border-color: #52f2f5;
+            position: absolute;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body overflow-hidden h-screen w-screen selection:bg-primary-container selection:text-on-primary-container">
+<!-- JSON Component: TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-8 py-4 bg-cyan-950/40 backdrop-blur-xl rounded-b-[3rem] border-b-2 border-cyan-500/20 shadow-[0_20px_40px_rgba(0,16,22,0.8)]">
+<!-- Brand/Leading -->
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-cyan-400 drop-shadow-[0_0_8px_rgba(82,242,245,0.6)]" data-icon="waves" data-weight="fill" style="font-variation-settings: 'FILL' 1;">waves</span>
+<h1 class="font-headline text-xl font-black tracking-widest text-cyan-300 uppercase">CORAL_LAB_v2.0</h1>
+</div>
+<!-- Game Metrics (Added per prompt, integrated into JSON shell) -->
+<div class="hidden md:flex items-center gap-6 bg-surface-container-high/80 px-6 py-2 rounded-full border border-outline-variant/30 shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)]">
+<!-- Depth -->
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center relative">
+<svg class="absolute inset-0 w-full h-full -rotate-90" viewbox="0 0 36 36">
+<path class="text-surface-container-lowest" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+<path class="text-tertiary drop-shadow-[0_0_4px_rgba(255,231,146,0.8)]" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="80, 100" stroke-linecap="round" stroke-width="3"></path>
+</svg>
+<span class="material-symbols-outlined text-[14px] text-tertiary z-10" data-icon="arrow_downward">arrow_downward</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label text-[9px] uppercase tracking-widest text-on-surface-variant">Depth</span>
+<span class="font-label text-sm font-bold text-tertiary">2,840m</span>
+</div>
+</div>
+<div class="w-px h-6 bg-outline-variant/30"></div>
+<!-- Oxygen -->
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center relative">
+<svg class="absolute inset-0 w-full h-full -rotate-90" viewbox="0 0 36 36">
+<path class="text-surface-container-lowest" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+<path class="text-primary drop-shadow-[0_0_4px_rgba(82,242,245,0.8)]" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="94, 100" stroke-linecap="round" stroke-width="3"></path>
+</svg>
+<span class="material-symbols-outlined text-[14px] text-primary z-10" data-icon="air">air</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label text-[9px] uppercase tracking-widest text-on-surface-variant">O2 Level</span>
+<span class="font-label text-sm font-bold text-primary">94%</span>
+</div>
+</div>
+<div class="w-px h-6 bg-outline-variant/30"></div>
+<!-- Hull -->
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center relative">
+<svg class="absolute inset-0 w-full h-full -rotate-90" viewbox="0 0 36 36">
+<path class="text-surface-container-lowest" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+<path class="text-secondary drop-shadow-[0_0_4px_rgba(254,126,79,0.8)]" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="98, 100" stroke-linecap="round" stroke-width="3"></path>
+</svg>
+<span class="material-symbols-outlined text-[14px] text-secondary z-10" data-icon="shield">shield</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label text-[9px] uppercase tracking-widest text-on-surface-variant">Hull Integrity</span>
+<span class="font-label text-sm font-bold text-secondary">98%</span>
+</div>
+</div>
+</div>
+<!-- Trailing -->
+<button class="w-12 h-12 flex items-center justify-center rounded-full bg-surface-container-highest shadow-[inset_0_-2px_4px_rgba(0,0,0,0.4),0_4px_8px_rgba(0,0,0,0.5)] border border-outline-variant/20 hover:bg-cyan-400/10 transition-all duration-300 group">
+<span class="material-symbols-outlined text-cyan-900 group-hover:text-primary transition-colors" data-icon="settings">settings</span>
+</button>
+</header>
+<!-- Main Viewport (Immersive Scene) -->
+<main class="relative w-full h-full bg-surface-container-lowest">
+<!-- Background Scene -->
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full bg-[url('https://images.unsplash.com/photo-1546026423-cc46426ba658?q=80&amp;w=2000&amp;auto=format&amp;fit=crop')] bg-cover bg-center mix-blend-luminosity opacity-40" data-alt="deep underwater scene dark blue bioluminescent coral reef alien fish tactical camera view"></div>
+<!-- Abyssal Chrome Gradients & Scanlines -->
+<div class="absolute inset-0 bg-gradient-to-b from-surface/80 via-transparent to-surface/90"></div>
+<div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-surface-container-lowest/80"></div>
+<div class="absolute inset-0 scanline pointer-events-none opacity-50 z-10"></div>
+</div>
+<!-- Central HUD Reticle -->
+<div class="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
+<div class="relative w-[300px] h-[300px] md:w-[400px] md:h-[400px]">
+<!-- Reticle Corners -->
+<div class="reticle-corner top-0 left-0 border-t-2 border-l-2 rounded-tl-lg shadow-[0_0_10px_rgba(82,242,245,0.5)]"></div>
+<div class="reticle-corner top-0 right-0 border-t-2 border-r-2 rounded-tr-lg shadow-[0_0_10px_rgba(82,242,245,0.5)]"></div>
+<div class="reticle-corner bottom-0 left-0 border-b-2 border-l-2 rounded-bl-lg shadow-[0_0_10px_rgba(82,242,245,0.5)]"></div>
+<div class="reticle-corner bottom-0 right-0 border-b-2 border-r-2 rounded-br-lg shadow-[0_0_10px_rgba(82,242,245,0.5)]"></div>
+<!-- Center Crosshair -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center opacity-70">
+<div class="w-[1px] h-12 bg-primary drop-shadow-[0_0_4px_rgba(82,242,245,1)]"></div>
+<div class="absolute w-12 h-[1px] bg-primary drop-shadow-[0_0_4px_rgba(82,242,245,1)]"></div>
+<div class="absolute w-2 h-2 rounded-full border border-primary bg-surface/50"></div>
+</div>
+<!-- HUD Data Readout Box -->
+<div class="absolute top-[110%] left-1/2 -translate-x-1/2 w-[120%] bg-surface-bright/40 backdrop-blur-[20px] rounded-lg border border-outline-variant/30 shadow-[0_10px_40px_rgba(0,16,22,0.8)] p-4 flex flex-col gap-2 relative overflow-hidden pointer-events-auto">
+<div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-50"></div>
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<span class="font-label text-[10px] text-primary uppercase tracking-[0.2em] animate-pulse">Target Acquired</span>
+<h2 class="font-headline text-lg font-bold text-on-surface tracking-wide">Diploria labyrinthiformis</h2>
+<span class="font-label text-xs text-on-surface-variant">Class: Anthozoa // Grooved Brain Coral</span>
+</div>
+<div class="w-10 h-10 rounded-full border border-primary/30 flex items-center justify-center bg-primary/10">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="biotech">biotech</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mt-2">
+<div class="flex flex-col bg-surface-container/50 p-2 rounded-md border border-outline-variant/10">
+<span class="font-label text-[9px] text-on-surface-variant uppercase tracking-wider">Health</span>
+<div class="w-full bg-surface-container-lowest h-1.5 rounded-full mt-1 overflow-hidden">
+<div class="bg-primary h-full w-[85%] shadow-[0_0_8px_rgba(82,242,245,0.8)]"></div>
+</div>
+</div>
+<div class="flex flex-col bg-surface-container/50 p-2 rounded-md border border-outline-variant/10">
+<span class="font-label text-[9px] text-on-surface-variant uppercase tracking-wider">Toxicity</span>
+<div class="w-full bg-surface-container-lowest h-1.5 rounded-full mt-1 overflow-hidden">
+<div class="bg-tertiary h-full w-[12%] shadow-[0_0_8px_rgba(255,231,146,0.8)]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- JSON Component: BottomNavBar -->
+<footer class="fixed bottom-0 w-full z-50 flex justify-around items-center px-6 pb-8 pt-4 bg-cyan-950/80 backdrop-blur-2xl rounded-t-[3rem] border-t-2 border-cyan-500/20 shadow-[0_-10px_50px_rgba(0,16,22,0.9)]">
+<!-- Active Tab: SCAN -->
+<button class="flex flex-col items-center justify-center bg-gradient-to-b from-cyan-400 to-cyan-600 text-cyan-950 rounded-full p-4 shadow-[0_0_20px_rgba(82,242,245,0.4)] scale-95 brightness-125 transition-transform translate-y-1 group border border-primary-container">
+<span class="material-symbols-outlined text-[28px] mb-1 drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]" data-icon="radar" data-weight="fill" style="font-variation-settings: 'FILL' 1;">radar</span>
+<span class="font-space-grotesk font-label text-[10px] uppercase tracking-[0.2em] font-bold text-surface-container-lowest">SCAN</span>
+</button>
+<!-- Inactive Tab: COLLECT -->
+<button class="flex flex-col items-center justify-center text-cyan-600/50 p-4 hover:text-cyan-300 hover:bg-cyan-400/10 transition-all duration-300 rounded-full group">
+<span class="material-symbols-outlined text-[28px] mb-1 group-hover:drop-shadow-[0_0_8px_rgba(82,242,245,0.4)] transition-all" data-icon="grid_view">grid_view</span>
+<span class="font-space-grotesk font-label text-[10px] uppercase tracking-[0.2em] font-bold">COLLECT</span>
+</button>
+<!-- Inactive Tab: FISH -->
+<button class="flex flex-col items-center justify-center text-cyan-600/50 p-4 hover:text-cyan-300 hover:bg-cyan-400/10 transition-all duration-300 rounded-full group">
+<span class="material-symbols-outlined text-[28px] mb-1 group-hover:drop-shadow-[0_0_8px_rgba(82,242,245,0.4)] transition-all" data-icon="catching_pokemon">capture</span>
+<span class="font-space-grotesk font-label text-[10px] uppercase tracking-[0.2em] font-bold">FISH</span>
+</button>
+</footer>
+</body></html>

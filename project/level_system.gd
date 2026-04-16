@@ -155,6 +155,7 @@ var _turn_results_title_label: Label = null
 var _turn_results_rows: VBoxContainer = null
 var _turn_results_meta_label: RichTextLabel = null
 var _tutorial_overlay: CanvasLayer = null
+var _stressor_overlay: Control = null
 
 var level_buttons: Array[Button] = []
 var fish_cards: Array[Node] = []
@@ -163,6 +164,7 @@ var fish_cards: Array[Node] = []
 func _ready() -> void:
 	controller = get_node_or_null("/root/AppController")
 	_bind_environment_ui()
+	_stressor_overlay = _first_node(["UIMargin/PortraitVBox/ReefViewport/ReefMargin/ReefLayer/StressorOverlay", "Background/Margin/FramePanel/FrameMargin/RootVBox/MidRow/ReefViewport/ReefMargin/ReefLayer/StressorOverlay"]) as Control
 	_wire_scene_signals()
 	call_deferred("_align_coral_to_sand")
 	resized.connect(_align_coral_to_sand)
@@ -396,10 +398,10 @@ func _show_identify_phase() -> void:
 	var source_text := _identify_source_caption(texture, canonical_name)
 	var choice_texture_map := _get_species_card_textures_map(choices)
 
-	_identify_phase_scene.setup(intro_text, texture, source_text, choices, choice_texture_map, not _tutorial_active)
+	_identify_phase_scene.setup(intro_text, texture, source_text, choices, choice_texture_map, false)
 	_identify_phase_scene.visible = true
 	
-	_set_turn_hint("Identify the reef first — or skip to start")
+	_set_turn_hint("Identify the dominant coral to unlock the reef")
 
 
 func _on_identify_skipped() -> void:
@@ -972,7 +974,7 @@ func _show_turn_results(turn_number: int, current_populations: Dictionary, targe
 	_set_gameplay_buttons_disabled(true)
 	
 	var turn_limit := int(_level_def.get("turn_limit", 0))
-	_turn_results_overlay.show_results(turn_number, turn_limit, current_populations, target_populations, turns_remaining)
+	_turn_results_overlay.show_results(turn_number, turn_limit, current_populations, target_populations, turns_remaining, _stressor_specs_by_name.keys())
 
 
 func _show_level_end_overlay(coins_earned: int) -> void:
@@ -1565,17 +1567,18 @@ func _update_text() -> void:
 		var display_turn := _turns_used
 		if not _session_over and total_turns > 0:
 			display_turn = mini(total_turns, _turns_used + 1)
-		_bottom_turn_label.text = "Turn %d/%d" % [display_turn, total_turns]
+		_bottom_turn_label.text = "Turn: %d/%d" % [display_turn, total_turns]
 	if _bottom_reef_label:
-		var total_actions := _action_budget_total()
-		_bottom_reef_label.text = "Actions: %d/%d" % [_triggers_remaining, total_actions]
+		var reef_percent := 0
+		if _target_population > 0:
+			reef_percent = int(round(clampf(float(_coral_population) / float(_target_population), 0.0, 1.0) * 100.0))
+		_bottom_reef_label.text = "Reef: %d%%" % reef_percent
 	
 	# Update ObjectiveCard
 	if objective_card and objective_card.has_method("update_objective"):
 		var target_species := str(_level_def.get("target_coral", "Unknown"))
 		objective_card.update_objective(target_species, _target_population, _turns_remaining)
-		_update_environment_meters(target_species)
-	
+		_update_environment_readouts()	
 	# Update TurnFlowStrip
 	if turn_flow_strip and turn_flow_strip.has_method("set_disabled"):
 		turn_flow_strip.set_disabled(_session_over or _in_identify_phase or _showing_turn_results)
@@ -1602,6 +1605,7 @@ func _update_text() -> void:
 				card.call("set_extinct_state", int(_fish_population.get(card.species, 0)) <= 0)
 
 	_update_coral_growth_visuals()
+	_update_stressor_hud()
 	if _tutorial_active:
 		_refresh_tutorial_target()
 
@@ -1663,6 +1667,14 @@ func _tutorial_target_for_step(step_id: String) -> Node:
 			return reef_viewport as Control
 		_:
 			return null
+
+
+func _tutorial_focus_species() -> String:
+	if not _positive_fish.is_empty():
+		return str(_positive_fish[0])
+	if not _fish_species_order.is_empty():
+		return _fish_species_order[0]
+	return ""
 
 
 func _feed_button_for_species(species: String) -> Control:
@@ -2419,17 +2431,29 @@ func _normalize_label(raw: String) -> String:
 
 
 func _load_texture_from_resource_or_file(resource_path: String) -> Texture2D:
-	if resource_path.is_empty() or not FileAccess.file_exists(resource_path):
-		return null
+	if resource_path.is_empty():
+		return _get_fallback_placeholder()
+		
+	if not FileAccess.file_exists(resource_path):
+		# If it's a res:// path and doesn't exist, it might be in a PCK or non-existent
+		if not resource_path.begins_with("res://"):
+			return _get_fallback_placeholder()
+			
 	if ResourceLoader.exists(resource_path):
 		var loaded := load(resource_path)
 		if loaded is Texture2D:
 			return loaded
+			
 	var image := Image.new()
 	var err := image.load(resource_path)
 	if err != OK:
-		return null
+		return _get_fallback_placeholder()
 	return ImageTexture.create_from_image(image)
+
+func _get_fallback_placeholder() -> Texture2D:
+	var p := PlaceholderTexture2D.new()
+	p.size = Vector2(256, 256)
+	return p
 
 
 # ─── Navigation ───────────────────────────────────────────────────────────────
@@ -2673,22 +2697,41 @@ func _update_coral_growth_visuals() -> void:
 		_set_turn_hint("Reef replicated — well done!")
 
 
-func _update_environment_meters(target_coral: String) -> void:
+func _update_environment_readouts() -> void:
+	var target_coral := str(_level_def.get("target_coral", ""))
 	var coral_spec: Dictionary = _coral_specs_by_name.get(target_coral, {})
 	if typeof(coral_spec) != TYPE_DICTIONARY:
 		return
+
+	if salinity_readout_label:
+		var band := _environment_band_label(_salinity_adjustment, "salinity")
+		salinity_readout_label.text = "Salinity: %s" % band
+		var color := Color.WHITE
+		match _salinity_adjustment:
+			-1: color = Color.CYAN # Low
+			0: color = Color.WHITE # Normal
+			1: color = Color.ORANGE # High
+		salinity_readout_label.add_theme_color_override("font_color", color)
+
+	if temperature_readout_label:
+		var band := _environment_band_label(_temperature_adjustment, "temperature")
+		temperature_readout_label.text = "Temp: %s" % band
+		var color := Color.WHITE
+		match _temperature_adjustment:
+			-1: color = Color.SKY_BLUE # Cold
+			0: color = Color.WHITE # Moderate
+			1: color = Color.ORANGE_RED # Warm
+		temperature_readout_label.add_theme_color_override("font_color", color)
+
 	var salinity_pref := str(coral_spec.get("preferred_salinity", ""))
 	var temp_pref := str(coral_spec.get("preferred_temperature", ""))
 	var salinity_value := clampf(_preference_to_meter_value(salinity_pref) + float(_salinity_adjustment * 22), 0.0, 100.0)
 	var temp_value := clampf(_preference_to_meter_value(temp_pref) + float(_temperature_adjustment * 22), 0.0, 100.0)
+	
 	if salinity_bar:
 		salinity_bar.value = salinity_value
 	if temp_bar:
 		temp_bar.value = temp_value
-	if salinity_readout_label:
-		salinity_readout_label.text = "Salinity: %s" % _environment_band_label(_salinity_adjustment, "salinity")
-	if temperature_readout_label:
-		temperature_readout_label.text = "Temp: %s" % _environment_band_label(_temperature_adjustment, "temperature")
 
 
 func _preference_to_meter_value(preference: String) -> float:
@@ -2744,3 +2787,24 @@ func _environment_alignment_bonus(target_coral: String) -> float:
 	var temp_delta := absf(temp_value - ideal_temp) / 100.0
 	var penalty := (salinity_delta + temp_delta) * 2.0
 	return clampf(1.1 - penalty, -1.5, 1.1)
+
+
+func _update_stressor_hud() -> void:
+	if _stressor_overlay == null:
+		return
+	
+	var urchins = int(_fish_population.get("Longspine Sea Urchin", 0))
+	var lionfish = int(_fish_population.get("Red Lionfish", 0))
+	
+	if urchins > 0 or lionfish > 0:
+		_stressor_overlay.visible = true
+		var label = _stressor_overlay.get_node_or_null("StressorLabel")
+		if label:
+			if urchins > 0 and lionfish > 0:
+				label.text = "MULTIPLE STRESSORS DETECTED"
+			elif urchins > 0:
+				label.text = "SEA URCHIN OVERGRAZING"
+			else:
+				label.text = "LIONFISH PREDATION ACTIVE"
+	else:
+		_stressor_overlay.visible = false

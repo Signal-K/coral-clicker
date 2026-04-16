@@ -26,7 +26,8 @@
         "Sergeant Major": 1,
         "Longspine Sea Urchin": 2
       },
-      "reward_coins": 10
+      "reward_coins": 10,
+      "subject_id": "97990910"
     },
     {
       "id": 2,
@@ -51,7 +52,8 @@
         "Creole Wrasse": 1,
         "Red Lionfish": 1
       },
-      "reward_coins": 20
+      "reward_coins": 20,
+      "subject_id": "109125904"
     },
     {
       "id": 3,
@@ -76,7 +78,8 @@
         "French Angelfish": 1,
         "Red Lionfish": 2
       },
-      "reward_coins": 30
+      "reward_coins": 30,
+      "subject_id": "97990913"
     },
     {
       "id": 4,
@@ -101,7 +104,8 @@
         "Blue Chromis": 2,
         "Longspine Sea Urchin": 2
       },
-      "reward_coins": 40
+      "reward_coins": 40,
+      "subject_id": "109126046"
     },
     {
       "id": 5,
@@ -128,7 +132,8 @@
         "Red Lionfish": 1,
         "Longspine Sea Urchin": 1
       },
-      "reward_coins": 50
+      "reward_coins": 50,
+      "subject_id": "97990928"
     },
     {
       "id": 6,
@@ -153,7 +158,8 @@
         "French Angelfish": 2,
         "Red Lionfish": 1
       },
-      "reward_coins": 60
+      "reward_coins": 60,
+      "subject_id": "109126500"
     },
     {
       "id": 7,
@@ -178,7 +184,8 @@
         "Parrotfish": 2,
         "Longspine Sea Urchin": 2
       },
-      "reward_coins": 70
+      "reward_coins": 70,
+      "subject_id": "106529456"
     },
     {
       "id": 8,
@@ -203,7 +210,8 @@
         "Blue Chromis": 2,
         "Red Lionfish": 1
       },
-      "reward_coins": 80
+      "reward_coins": 80,
+      "subject_id": "97990930"
     },
     {
       "id": 9,
@@ -230,7 +238,8 @@
         "Red Lionfish": 1,
         "Longspine Sea Urchin": 1
       },
-      "reward_coins": 90
+      "reward_coins": 90,
+      "subject_id": "109127092"
     },
     {
       "id": 10,
@@ -259,7 +268,8 @@
         "Red Lionfish": 1,
         "Longspine Sea Urchin": 1
       },
-      "reward_coins": 100
+      "reward_coins": 100,
+      "subject_id": "97990952"
     }
   ]
 }

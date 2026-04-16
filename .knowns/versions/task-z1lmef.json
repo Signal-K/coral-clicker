@@ -1,0 +1,31 @@
+{
+  "taskId": "z1lmef",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "z1lmef",
+      "version": 1,
+      "timestamp": "2026-04-11T10:36:22.807Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "newValue": "2026-04-11 product decisions: The Tank stays in MVP. Initial MVP scope: store bonus fish/coral earned from levels, allow decorative sandbox interaction, and generate passive resources. Identify phase is mandatory on every non-tutorial level. Shipping target is web/PWA for all users until native distribution is available."
+        }
+      ],
+      "snapshot": {
+        "title": "Coral MVP Recovery Sprint — 2026-04-11",
+        "description": "Sprint created on 2026-04-11 from the Coral MVP audit. Goal: close the MVP blockers identified in .knowns/docs/mvp-audit-2026-04-11.md and revisit archived incomplete work in a controlled order.",
+        "status": "in-progress",
+        "priority": "high",
+        "labels": [
+          "sprint",
+          "mvp",
+          "planning"
+        ],
+        "acceptanceCriteria": [],
+        "implementationNotes": "2026-04-11 product decisions: The Tank stays in MVP. Initial MVP scope: store bonus fish/coral earned from levels, allow decorative sandbox interaction, and generate passive resources. Identify phase is mandatory on every non-tutorial level. Shipping target is web/PWA for all users until native distribution is available."
+      }
+    }
+  ]
+}

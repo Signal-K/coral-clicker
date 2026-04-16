@@ -1,0 +1,32 @@
+{
+  "taskId": "mz3flr",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "mz3flr",
+      "version": 1,
+      "timestamp": "2026-04-11T10:36:22.804Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "newValue": "Web/PWA is the primary shipping platform for MVP. The browser shell must be production-facing, installable, and free of debug host controls."
+        }
+      ],
+      "snapshot": {
+        "title": "Replace debug web shell with player-facing PWA shell",
+        "description": "Turn the current web host from internal debug controls into a player-facing shell suitable for the MVP browser/PWA release path. Remove direct bridge/debug affordances from the primary experience.",
+        "status": "todo",
+        "priority": "high",
+        "labels": [
+          "mvp",
+          "web",
+          "pwa",
+          "ux"
+        ],
+        "acceptanceCriteria": [],
+        "implementationNotes": "Web/PWA is the primary shipping platform for MVP. The browser shell must be production-facing, installable, and free of debug host controls."
+      }
+    }
+  ]
+}

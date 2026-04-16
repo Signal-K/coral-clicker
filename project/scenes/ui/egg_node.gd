@@ -10,7 +10,6 @@ var drag_offset: Vector2 = Vector2.ZERO
 @onready var area_2d: Area2D = $Area2D
 
 func _ready() -> void:
-	play("default")
 	# Random initial rotation/bobbing offset
 	rotation = randf_range(-0.1, 0.1)
 

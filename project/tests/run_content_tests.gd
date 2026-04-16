@@ -234,8 +234,8 @@ func _init() -> void:
 	var expected_defaults := {
 		"ResA": "Nutrients: 0",
 		"ResB": "Coins: 0",
-		"ResC": "Turn 0/0",
-		"ResD": "Actions: 0/2",
+		"ResC": "Turn: 0/0",
+		"ResD": "Reef: 0%",
 	}
 	for node_name in expected_defaults.keys():
 		var label := resource_bar.get_node_or_null("BottomMargin/BottomRow/%s" % node_name) as Label

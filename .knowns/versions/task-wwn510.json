@@ -1,0 +1,32 @@
+{
+  "taskId": "wwn510",
+  "currentVersion": 1,
+  "versions": [
+    {
+      "id": "v1",
+      "taskId": "wwn510",
+      "version": 1,
+      "timestamp": "2026-04-11T10:36:22.805Z",
+      "changes": [
+        {
+          "field": "implementationNotes",
+          "newValue": "Identify is mandatory on every non-tutorial level. Remove or redesign any non-tutorial skip path so level flow always passes through identification."
+        }
+      ],
+      "snapshot": {
+        "title": "Finish level content wiring and assign real subject IDs",
+        "description": "Complete the 10-level data pass, assign real subject_id values from click_a_coral_subjects.json, and verify the identify flow uses real content for MVP.",
+        "status": "todo",
+        "priority": "high",
+        "labels": [
+          "mvp",
+          "content",
+          "identify",
+          "data"
+        ],
+        "acceptanceCriteria": [],
+        "implementationNotes": "Identify is mandatory on every non-tutorial level. Remove or redesign any non-tutorial skip path so level flow always passes through identification."
+      }
+    }
+  ]
+}

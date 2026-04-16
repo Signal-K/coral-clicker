@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CORAL LAB - World Map</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error": "#ffb4ab",
+                    "on-primary-fixed-variant": "#004e5a",
+                    "tertiary": "#8fd5db",
+                    "on-error": "#690005",
+                    "on-surface": "#deebec",
+                    "primary-fixed": "#7bf4ff",
+                    "on-error-container": "#ffdad6",
+                    "outline-variant": "#3f484a",
+                    "background": "#0e1415",
+                    "surface-container-lowest": "#090f10",
+                    "secondary": "#b1cbd0",
+                    "on-tertiary": "#00363a",
+                    "on-primary-container": "#7bf4ff",
+                    "inverse-primary": "#006876",
+                    "tertiary-fixed-dim": "#8fd5db",
+                    "surface-container": "#1a2122",
+                    "on-secondary-fixed": "#051f23",
+                    "on-tertiary-fixed-variant": "#004f54",
+                    "outline": "#899294",
+                    "surface-dim": "#0e1415",
+                    "secondary-fixed-dim": "#b1cbd0",
+                    "primary": "#4dd8e9",
+                    "on-primary": "#00363e",
+                    "on-background": "#deebec",
+                    "inverse-surface": "#deebec",
+                    "tertiary-container": "#004f54",
+                    "primary-fixed-dim": "#4dd8e9",
+                    "inverse-on-surface": "#2b3133",
+                    "surface-container-highest": "#333a3b",
+                    "on-surface-variant": "#bfc8ca",
+                    "surface-container-high": "#252b2c",
+                    "on-secondary-container": "#cde7ec",
+                    "on-secondary-fixed-variant": "#324b4f",
+                    "on-primary-fixed": "#001f24",
+                    "on-secondary": "#1c3438",
+                    "surface-bright": "#343a3b",
+                    "secondary-fixed": "#cde7ec",
+                    "surface-variant": "#3f484a",
+                    "surface-container-low": "#161c1e",
+                    "surface-tint": "#4dd8e9",
+                    "secondary-container": "#324b4f",
+                    "error-container": "#93000a",
+                    "surface": "#0e1415",
+                    "on-tertiary-container": "#aaf1f7",
+                    "error-dim": "#ffb4ab",
+                    "primary-container": "#004e5a",
+                    "secondary-dim": "#b1cbd0",
+                    "primary-dim": "#4dd8e9",
+                    "tertiary-fixed": "#aaf1f7",
+                    "on-tertiary-fixed": "#002022",
+                    "tertiary-dim": "#8fd5db"
+            },
+            "borderRadius": {
+                    "DEFAULT": "9999px",
+                    "lg": "9999px",
+                    "xl": "9999px",
+                    "full": "9999px"
+            },
+            "spacing": {},
+            "fontFamily": {
+                    "headline": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "display": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "body": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "label": [
+                            "Space Grotesk"
+                    ]
+            },
+            "fontSize": {}
+    },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+        .bg-map-grid {
+            background-image: 
+                linear-gradient(to right, rgba(77, 216, 233, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(77, 216, 233, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        
+        /* Skeuomorphic tactile styles */
+        .tactile-panel {
+            background: linear-gradient(145deg, theme('colors.surface-container-high'), theme('colors.surface-container'));
+            border: 2px solid theme('colors.surface-container-lowest');
+            box-shadow: 
+                inset 1px 1px 2px rgba(255,255,255,0.05),
+                inset -1px -1px 2px rgba(0,0,0,0.5),
+                0 10px 20px rgba(0,0,0,0.5);
+        }
+        .tactile-button {
+            background: linear-gradient(145deg, theme('colors.surface-container-high'), theme('colors.surface-container-low'));
+            border: 1px solid theme('colors.surface-container-lowest');
+            box-shadow: 
+                inset 2px 2px 4px rgba(255,255,255,0.05),
+                inset -2px -2px 4px rgba(0,0,0,0.4),
+                0 4px 6px rgba(0,0,0,0.4);
+            transition: all 0.1s;
+        }
+        .tactile-button:active {
+            background: theme('colors.surface-container-low');
+            box-shadow: 
+                inset 2px 2px 4px rgba(0,0,0,0.4),
+                inset -2px -2px 4px rgba(255,255,255,0.02),
+                0 1px 2px rgba(0,0,0,0.4);
+        }
+        .tactile-button.active {
+            background: theme('colors.primary-container');
+            color: theme('colors.on-primary-container');
+            box-shadow: 
+                inset 2px 2px 4px rgba(0,0,0,0.6),
+                inset -2px -2px 4px rgba(255,255,255,0.1),
+                0 0 10px theme('colors.primary');
+            border-color: theme('colors.primary');
+        }
+        
+        .tactile-dial {
+            background: conic-gradient(from 0deg, theme('colors.surface-container-high'), theme('colors.surface-container-lowest'), theme('colors.surface-container-high'));
+            box-shadow: 
+                inset 0 0 10px rgba(0,0,0,0.8),
+                0 5px 15px rgba(0,0,0,0.5);
+            border: 2px solid theme('colors.outline-variant');
+        }
+        .tactile-dial-inner {
+            background: radial-gradient(circle, theme('colors.surface-container-highest'), theme('colors.surface-container-low'));
+            box-shadow: inset 2px 2px 5px rgba(255,255,255,0.05), inset -2px -2px 5px rgba(0,0,0,0.5);
+        }
+
+        .screen-glass {
+            background: rgba(9, 15, 16, 0.7);
+            border: 4px solid theme('colors.surface-container-high');
+            border-radius: 24px;
+            box-shadow: 
+                inset 0 0 50px rgba(0,0,0,0.8),
+                inset 0 0 5px theme('colors.primary'),
+                0 10px 30px rgba(0,0,0,0.6);
+        }
+        .scanlines {
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1));
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-primary selection:text-on-primary">
+<!-- Top Console Header (Sandwich Top) -->
+<header class="fixed top-0 left-0 w-full z-50 h-24 tactile-panel rounded-b-[2rem] flex justify-between items-center px-6">
+<div class="flex items-center gap-6">
+<div class="flex flex-col items-center justify-center w-16 h-16 rounded-full tactile-dial relative">
+<div class="w-12 h-12 rounded-full tactile-dial-inner flex items-center justify-center">
+<div class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_theme('colors.primary')]"></div>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="font-headline font-black uppercase tracking-tighter text-xl text-primary drop-shadow-[0_0_5px_theme('colors.primary')]">CORAL LAB</span>
+<span class="font-label text-[10px] text-tertiary tracking-widest uppercase opacity-70">Console Active</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<!-- Status Readout -->
+<div class="bg-surface-container-lowest px-6 py-3 rounded-full border border-outline-variant shadow-[inset_0_2px_10px_rgba(0,0,0,0.8)] flex items-center gap-4">
+<div class="flex items-center gap-2">
+<span class="font-label text-xs text-on-surface-variant uppercase">Depth</span>
+<span class="font-label text-sm text-tertiary font-bold">10,400m</span>
+</div>
+<div class="w-px h-6 bg-outline-variant"></div>
+<div class="flex items-center gap-2">
+<span class="font-label text-xs text-on-surface-variant uppercase">Pressure</span>
+<span class="font-label text-sm text-error font-bold drop-shadow-[0_0_5px_theme('colors.error')]">CRITICAL</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<!-- Coins Total -->
+<div class="flex items-center gap-2 bg-surface-container-lowest px-4 py-2 rounded-full border border-outline-variant/50 shadow-[inset_0_2px_5px_rgba(0,0,0,0.6)]">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">monetization_on</span>
+<span class="font-label font-bold text-tertiary tracking-widest">42,050</span>
+</div>
+<button class="w-12 h-12 rounded-full tactile-button flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface">settings</span>
+</button>
+<img alt="Technician Avatar" class="w-12 h-12 rounded-full border-2 border-primary tactile-button object-cover p-0.5" data-alt="Close up portrait of a technician wearing a dark blue tactical uniform in low light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbmoP4NmqUaienJ9Sq4c4G8rAUnXLXm6cR6OiP_AQlzsP5pCknAc1cUVIbKEP99t_5IQUfgfWi7uXNbDuF919tQB8YnrY8dKA_xSEFgZnrxOmu1366_YYeKb2hG67MsYM80WqubyrJryR4adbk52mwav1vOP6B4N7qIUnfceofLt4MWJdV9mTyh7Aizo0I1gMsZyy1TDCvTcg8okp0qmNhyF-aMv677sdeGSD6JFmAZEL2XHVWtq-ajYputZ9HwFkE_APlKLxCkJg"/>
+</div>
+</header>
+<!-- Main Screen Canvas -->
+<main class="flex-grow relative pt-28 pb-32 overflow-hidden bg-background px-6">
+<!-- Deep Water Background Layer -->
+<div class="absolute inset-0 z-[-2] bg-gradient-to-b from-surface-container-low to-surface-container-lowest opacity-90"></div>
+<!-- Ambient Light Passes -->
+<div class="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[150px] pointer-events-none"></div>
+<!-- Map Viewport (CRT Glass effect) -->
+<div class="w-full h-full screen-glass relative overflow-hidden flex items-center justify-center bg-map-grid">
+<!-- CRT Scanlines overlay -->
+<div class="absolute inset-0 scanlines z-50"></div>
+<div class="absolute inset-0 bg-primary/5 mix-blend-overlay z-40 pointer-events-none"></div>
+<!-- Map Content Layer -->
+<div class="absolute inset-0 p-8 flex flex-col justify-center items-center z-10">
+<!-- SVG Path Connecting Nodes -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" style="z-index: 1;">
+<path d="M 250 400 Q 400 350, 500 500 T 800 300 T 1000 450" fill="none" opacity="0.4" stroke="theme('colors.primary')" stroke-dasharray="10 10" stroke-width="3"></path>
+</svg>
+<!-- Tactical Map Container -->
+<div class="relative w-full max-w-5xl h-full flex items-center justify-center z-20">
+<!-- Sandbox Node (Left) -->
+<div class="absolute left-20 top-1/3 flex flex-col items-center gap-3 group cursor-pointer">
+<div class="w-20 h-20 rounded-full tactile-dial flex items-center justify-center group-hover:scale-105 transition-transform duration-300 relative">
+<div class="w-16 h-16 rounded-full tactile-dial-inner flex items-center justify-center border-2 border-secondary/50">
+<span class="material-symbols-outlined text-secondary text-3xl" style="font-variation-settings: 'FILL' 1;">science</span>
+</div>
+<!-- Notification dot -->
+<div class="absolute top-0 right-0 w-4 h-4 bg-tertiary rounded-full shadow-[0_0_10px_theme('colors.tertiary')] border-2 border-surface-container-highest"></div>
+</div>
+<span class="font-label text-sm font-bold text-secondary tracking-widest bg-surface-container-lowest/80 px-3 py-1.5 rounded-full border border-outline-variant/30 backdrop-blur-sm">SANDBOX</span>
+</div>
+<!-- Tutorial Node (Bottom Left) -->
+<div class="absolute left-1/3 bottom-1/4 flex flex-col items-center gap-3 group cursor-pointer">
+<div class="w-16 h-16 rounded-full tactile-button flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-2xl">school</span>
+</div>
+<span class="font-label text-xs text-primary tracking-widest">SIMULATION</span>
+</div>
+<!-- Level 1 Node (Active) -->
+<div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-4 group cursor-pointer z-30">
+<!-- Popover Gallery Thumbnail -->
+<div class="absolute bottom-full mb-6 w-48 bg-surface-container-highest p-3 rounded-[2rem] border border-primary/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.8)] pointer-events-none">
+<img alt="Coral Reef Node" class="w-full h-24 object-cover rounded-3xl mb-2 border border-outline-variant" data-alt="Dark underwater photography of glowing bioluminescent coral reef formations" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDE-vy_VIhT9ofxp0y46rYNsAKoZI1ZNxynQWnGUNi7CT0PUm3-z5QZCQV-qx8-_upanTNyJNZPtBlM4uEvZ8134nizIadDFPJ9fGnCGijvucrzOZiikdHE_h-Se2nwgwTufIIPj0CIJOSDMwGvGwsUHcfOvqSTPkGlz2eFOdRLhTG6hzcULcdNty8VH7V-emhhPgxvjKtwhm6PcNjs1XqXIkPXonyc_wkWrZgzON0FM44_M9DnyFMsGOOE2T_3oxNwf-Muk04bD20"/>
+<p class="font-label text-[10px] text-primary text-center uppercase tracking-widest">Last Recon: 0400hrs</p>
+</div>
+<div class="w-28 h-28 rounded-full tactile-dial border-primary flex items-center justify-center shadow-[0_0_40px_rgba(77,216,233,0.3)] relative group-hover:scale-105 transition-transform">
+<div class="w-24 h-24 rounded-full tactile-dial-inner bg-primary/20 border-2 border-primary flex items-center justify-center shadow-[inset_0_0_20px_rgba(77,216,233,0.5)]">
+<span class="font-headline font-black text-primary text-4xl drop-shadow-[0_0_8px_theme('colors.primary')]">01</span>
+</div>
+</div>
+<span class="font-label text-base font-bold text-primary tracking-widest bg-primary/10 px-4 py-2 rounded-full border border-primary/50 shadow-[0_0_15px_rgba(77,216,233,0.2)] backdrop-blur-sm">SHALLOWS</span>
+</div>
+<!-- Level 2 Node (Locked) -->
+<div class="absolute right-1/3 top-1/4 flex flex-col items-center gap-3 group cursor-not-allowed opacity-60">
+<div class="w-20 h-20 rounded-full tactile-dial flex items-center justify-center">
+<div class="w-16 h-16 rounded-full tactile-dial-inner flex items-center justify-center border border-outline/30 bg-surface-container-lowest">
+<span class="material-symbols-outlined text-outline text-2xl">lock</span>
+</div>
+</div>
+<span class="font-label text-xs text-outline tracking-widest">TRENCH L2</span>
+</div>
+<!-- Level 3 Node (Locked) -->
+<div class="absolute right-20 bottom-1/3 flex flex-col items-center gap-3 group cursor-not-allowed opacity-40">
+<div class="w-16 h-16 rounded-full tactile-dial flex items-center justify-center">
+<div class="w-12 h-12 rounded-full tactile-dial-inner flex items-center justify-center border border-outline/30 bg-surface-container-lowest">
+<span class="material-symbols-outlined text-outline">lock</span>
+</div>
+</div>
+<span class="font-label text-[10px] text-outline tracking-widest">ABYSS L3</span>
+</div>
+</div>
+</div>
+<!-- Viewport HUD Overlay -->
+<div class="absolute top-6 left-6 font-label text-xs text-primary/70 tracking-widest leading-relaxed drop-shadow-[0_0_2px_theme('colors.primary')]">
+                    SECTOR 7-G: ABYSSAL TRENCH<br/>
+                    SYS.OP.MODE: NOMINAL<br/>
+                    COORD: 45.92°N 11.23°W
+                </div>
+<!-- Fake radar sweep visual integrated into HUD -->
+<div class="absolute bottom-6 right-6 w-32 h-32 rounded-full border-2 border-primary/20 bg-surface-container-lowest/80 backdrop-blur-md shadow-[inset_0_0_20px_rgba(0,0,0,0.8)] overflow-hidden">
+<div class="absolute w-full h-full rounded-full border border-primary/10 scale-75"></div>
+<div class="absolute w-full h-full rounded-full border border-primary/10 scale-50"></div>
+<!-- Radar arm -->
+<div class="absolute top-1/2 left-1/2 w-1/2 h-1 bg-gradient-to-r from-transparent to-primary/60 origin-left animate-[spin_4s_linear_infinite]" style="transform-origin: 0 50%;"></div>
+<div class="absolute top-1/2 left-1/2 w-2 h-2 -ml-1 -mt-1 bg-primary rounded-full shadow-[0_0_5px_theme('colors.primary')]"></div>
+</div>
+</div>
+</main>
+<!-- Bottom Console Footer (Sandwich Bottom) -->
+<footer class="fixed bottom-0 left-0 w-full z-50 h-28 tactile-panel rounded-t-[2rem] flex justify-center items-center px-8 pb-safe">
+<div class="flex gap-4 w-full max-w-4xl justify-between bg-surface-container-lowest/50 p-3 rounded-full border border-outline-variant/30 shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)]">
+<button class="flex-1 tactile-button rounded-full py-3 px-6 flex flex-col items-center justify-center gap-1 group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">radar</span>
+<span class="font-label font-bold text-[10px] tracking-widest text-on-surface-variant group-hover:text-primary transition-colors">SONAR</span>
+</button>
+<button class="flex-1 tactile-button rounded-full py-3 px-6 flex flex-col items-center justify-center gap-1 group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">explore</span>
+<span class="font-label font-bold text-[10px] tracking-widest text-on-surface-variant group-hover:text-primary transition-colors">MISSION</span>
+</button>
+<button class="flex-1 tactile-button active rounded-full py-3 px-6 flex flex-col items-center justify-center gap-1 scale-105">
+<span class="material-symbols-outlined text-on-primary-container drop-shadow-[0_0_5px_theme('colors.primary')]" style="font-variation-settings: 'FILL' 1;">biotech</span>
+<span class="font-label font-bold text-[10px] tracking-widest text-on-primary-container drop-shadow-[0_0_5px_theme('colors.primary')]">INTEL</span>
+</button>
+<button class="flex-1 tactile-button rounded-full py-3 px-6 flex flex-col items-center justify-center gap-1 group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">anchor</span>
+<span class="font-label font-bold text-[10px] tracking-widest text-on-surface-variant group-hover:text-primary transition-colors">DEPLOY</span>
+</button>
+<button class="flex-1 tactile-button rounded-full py-3 px-6 flex flex-col items-center justify-center gap-1 group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">terminal</span>
+<span class="font-label font-bold text-[10px] tracking-widest text-on-surface-variant group-hover:text-primary transition-colors">LOGS</span>
+</button>
+</div>
+</footer>
+</body></html>

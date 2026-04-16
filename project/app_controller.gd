@@ -64,6 +64,13 @@ func _ready() -> void:
 	_asset_http.request_completed.connect(_on_asset_request_completed)
 	_load_local_state()
 	_emit_state()
+	
+	var sync_timer := Timer.new()
+	sync_timer.wait_time = 60.0
+	sync_timer.timeout.connect(_retry_online_work)
+	add_child(sync_timer)
+	sync_timer.start()
+
 	call_deferred("_retry_online_work")
 
 
