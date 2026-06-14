@@ -1,0 +1,506 @@
+[gd_scene load_steps=14 format=3 uid="uid://levelend"]
+
+[ext_resource type="Script" uid="uid://brdr7nc4wmwg6" path="res://scenes/ui/level_end_screen.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://bp6f7iri3kn6f" path="res://assets/reference/click_a_coral_sample.jpeg" id="2_reef_img"]
+[ext_resource type="Texture2D" uid="uid://c8ckg1a1w6pu4" path="res://assets/sprites/acanthogorgiidae_card_frame_00.png" id="3_card1"]
+[ext_resource type="Texture2D" uid="uid://dlxjvt2qjj1vp" path="res://assets/sprites/blue_chromis_card_frame_00.png" id="4_card2"]
+[ext_resource type="Texture2D" uid="uid://ccgaup0bytco6" path="res://assets/sprites/madracis_sp_card_frame_00.png" id="5_card3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_perf"]
+content_margin_left = 24.0
+content_margin_top = 24.0
+content_margin_right = 24.0
+content_margin_bottom = 24.0
+bg_color = Color(0.082, 0.106, 0.114, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.247, 0.282, 0.29, 0.3)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bonus"]
+content_margin_left = 14.0
+content_margin_top = 10.0
+content_margin_right = 14.0
+content_margin_bottom = 10.0
+bg_color = Color(0.098, 0.122, 0.129, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.31, 0.847, 0.918, 0.25)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_compare"]
+content_margin_left = 24.0
+content_margin_top = 24.0
+content_margin_right = 24.0
+content_margin_bottom = 24.0
+bg_color = Color(0.141, 0.165, 0.169, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.247, 0.282, 0.29, 0.3)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_source"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.059, 0.075, 0.082, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.247, 0.282, 0.29, 0.5)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_recon"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.059, 0.075, 0.082, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.31, 0.847, 0.918, 0.5)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_footer"]
+content_margin_left = 24.0
+content_margin_top = 16.0
+content_margin_right = 24.0
+content_margin_bottom = 16.0
+bg_color = Color(0.098, 0.122, 0.129, 0.97)
+border_width_top = 1
+border_color = Color(0.247, 0.282, 0.29, 0.35)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ghost"]
+content_margin_left = 24.0
+content_margin_top = 14.0
+content_margin_right = 24.0
+content_margin_bottom = 14.0
+bg_color = Color(0.141, 0.165, 0.169, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.247, 0.282, 0.29, 0.6)
+corner_radius_top_left = 999
+corner_radius_top_right = 999
+corner_radius_bottom_right = 999
+corner_radius_bottom_left = 999
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_primary"]
+content_margin_left = 28.0
+content_margin_top = 14.0
+content_margin_right = 28.0
+content_margin_bottom = 14.0
+bg_color = Color(0.31, 0.847, 0.918, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.188, 0.573, 0.624, 1)
+corner_radius_top_left = 999
+corner_radius_top_right = 999
+corner_radius_bottom_right = 999
+corner_radius_bottom_left = 999
+
+[node name="LevelEndScreen" type="Control"]
+z_index = 30
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Bg" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.043, 0.055, 0.059, 1)
+
+[node name="Layout" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="Scroll" type="ScrollContainer" parent="Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="ContentMargin" type="MarginContainer" parent="Layout/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="Content" type="VBoxContainer" parent="Layout/Scroll/ContentMargin"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 28
+
+[node name="TitleSection" type="VBoxContainer" parent="Layout/Scroll/ContentMargin/Content"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="TitleLabel" type="Label" parent="Layout/Scroll/ContentMargin/Content/TitleSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.31, 0.847, 0.918, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_font_sizes/font_size = 46
+text = "MISSION SUCCESS"
+horizontal_alignment = 1
+
+[node name="SubtitleLabel" type="Label" parent="Layout/Scroll/ContentMargin/Content/TitleSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.847, 0.2, 1)
+theme_override_font_sizes/font_size = 13
+text = "REEF RECONSTRUCTED"
+horizontal_alignment = 1
+
+[node name="CardsRow" type="HBoxContainer" parent="Layout/Scroll/ContentMargin/Content"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="PerfCard" type="PanelContainer" parent="Layout/Scroll/ContentMargin/Content/CardsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 4.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_perf")
+
+[node name="PerfContent" type="VBoxContainer" parent="Layout/Scroll/ContentMargin/Content/CardsRow/PerfCard"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="SectionRow" type="HBoxContainer" parent="Layout/Scroll/ContentMargin/Content/CardsRow/PerfCard/PerfContent"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="LeftBorder" type="ColorRect" parent="Layout/Scroll/ContentMargin/Content/CardsRow/PerfCard/PerfContent/SectionRow"]
+custom_minimum_size = Vector2(4, 16)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.31, 0.847, 0.918, 1)
+
+[node name="SectionLabel" type="Label" parent="Layout/Scroll/ContentMargin/Content/CardsRow/PerfCard/PerfContent/SectionRow"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.749, 0.784, 0.792, 1)
+theme_override_font_sizes/font_size = 10
+text = "PERFORMANCE DATA"
+
+[node name="MetricsBox" type="VBoxContainer" parent="Layout/Scroll/ContentMargin/Content/CardsRow/PerfCard/PerfContent"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TurnsRow" type="HBoxContainer" parent="Layout/Scroll/ContentMargin/Content/CardsRow/PerfCard/PerfContent/MetricsBox"]
+layout_mode = 2
+
+[node name="TurnsLeft" type="HBoxContainer" parent="Layout/Scroll/ContentMargin/Content/CardsRow/PerfCard/PerfContent/MetricsBox/TurnsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="TurnsIconLabel" type="Label" parent="Layout/Scroll/ContentMargin/Content/CardsRow/PerfCard/PerfContent/MetricsBox/TurnsRow/TurnsLeft"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.729, 0.776, 0.918, 1)
+theme_override_font_sizes/font_size = 14
+text = "↺"
+
+[node name="TurnsLabel" type="Label" parent="Layout/Scroll/ContentMargin/Content/CardsRow/PerfCard/PerfContent/MetricsBox/TurnsRow/TurnsLeft"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.871, 0.89, 0.898, 1)
+theme_override_font_sizes/font_size = 12
+text = "TURNS TAKEN"
+
+[node name="TurnsRight" type="VBoxContainer" parent="Layout/Scroll/ContentMargin/Content/CardsRow/PerfCard/PerfContent/MetricsBox/TurnsRow"]
+layout_mode = 2
+
+[node name="TurnsValue" type="Label" parent="Layout/Scroll/ContentMargin/Content/CardsRow/PerfCard/PerfContent/MetricsBox/TurnsRow/TurnsRight"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.31, 0.847, 0.918, 1)
+theme_override_font_sizes/font_size = 24
+text = "3"
+horizontal_alignment = 2
+
+[node name="TurnsMax" type="Label" parent="Layout/Scroll/ContentMargin/Content/CardsRow/PerfCard/PerfContent/MetricsBox/TurnsRow/TurnsRight"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.749, 0.784, 0.792, 1)
+theme_override_font_sizes/font_size = 9
+text = "/ 6 LIMIT"
+horizontal_alignment = 2
+
+[node name="Sep1" type="HSeparator" parent="Layout/Scroll/ContentMargin/Content/CardsRow/PerfCard/PerfContent/MetricsBox"]
+layout_mode = 2
+
+[node name="CoinsRow" type="HBoxContainer" parent="Layout/Scroll/ContentMargin/Content/CardsRow/PerfCard/PerfContent/MetricsBox"]
+layout_mode = 2
+
+[node name="CoinsLeft" type="HBoxContainer" parent="Layout/Scroll/ContentMargin/Content/CardsRow/PerfCard/PerfContent/MetricsBox/CoinsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="CoinsIconLabel" type="Label" parent="Layout/Scroll/ContentMargin/Content/CardsRow/PerfCard/PerfContent/MetricsBox/CoinsRow/CoinsLeft"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.694, 0.796, 0.816, 1)
+theme_override_font_sizes/font_size = 14
+text = "◈"
+
+[node name="CoinsLabel" type="Label" parent="Layout/Scroll/ContentMargin/Content/CardsRow/PerfCard/PerfContent/MetricsBox/CoinsRow/CoinsLeft"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.871, 0.89, 0.898, 1)
+theme_override_font_sizes/font_size = 12
+text = "COINS YIELD"
+
+[node name="CoinsRight" type="VBoxContainer" parent="Layout/Scroll/ContentMargin/Content/CardsRow/PerfCard/PerfContent/MetricsBox/CoinsRow"]
+layout_mode = 2
+
+[node name="CoinsValue" type="Label" parent="Layout/Scroll/ContentMargin/Content/CardsRow/PerfCard/PerfContent/MetricsBox/CoinsRow/CoinsRight"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.694, 0.796, 0.816, 1)
+theme_override_font_sizes/font_size = 24
+text = "+50"
+horizontal_alignment = 2
+
+[node name="CoinsBase" type="Label" parent="Layout/Scroll/ContentMargin/Content/CardsRow/PerfCard/PerfContent/MetricsBox/CoinsRow/CoinsRight"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.694, 0.796, 0.816, 0.7)
+theme_override_font_sizes/font_size = 9
+text = "BASE REWARD"
+horizontal_alignment = 2
+
+[node name="BonusBox" type="PanelContainer" parent="Layout/Scroll/ContentMargin/Content/CardsRow/PerfCard/PerfContent/MetricsBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bonus")
+
+[node name="BonusRow" type="HBoxContainer" parent="Layout/Scroll/ContentMargin/Content/CardsRow/PerfCard/PerfContent/MetricsBox/BonusBox"]
+layout_mode = 2
+
+[node name="BonusLabel" type="Label" parent="Layout/Scroll/ContentMargin/Content/CardsRow/PerfCard/PerfContent/MetricsBox/BonusBox/BonusRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.31, 0.847, 0.918, 1)
+theme_override_font_sizes/font_size = 11
+text = "⚡  SPEED BONUS"
+
+[node name="BonusValue" type="Label" parent="Layout/Scroll/ContentMargin/Content/CardsRow/PerfCard/PerfContent/MetricsBox/BonusBox/BonusRow"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.31, 0.847, 0.918, 1)
+theme_override_font_sizes/font_size = 16
+text = "+25"
+
+[node name="Sep2" type="HSeparator" parent="Layout/Scroll/ContentMargin/Content/CardsRow/PerfCard/PerfContent"]
+layout_mode = 2
+
+[node name="TotalRow" type="HBoxContainer" parent="Layout/Scroll/ContentMargin/Content/CardsRow/PerfCard/PerfContent"]
+layout_mode = 2
+
+[node name="TotalLabel" type="Label" parent="Layout/Scroll/ContentMargin/Content/CardsRow/PerfCard/PerfContent/TotalRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 2
+theme_override_colors/font_color = Color(0.749, 0.784, 0.792, 1)
+theme_override_font_sizes/font_size = 11
+text = "TOTAL ACCRUED"
+
+[node name="TotalValue" type="Label" parent="Layout/Scroll/ContentMargin/Content/CardsRow/PerfCard/PerfContent/TotalRow"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.871, 0.89, 0.898, 1)
+theme_override_font_sizes/font_size = 40
+text = "75"
+vertical_alignment = 1
+
+[node name="CompareCard" type="PanelContainer" parent="Layout/Scroll/ContentMargin/Content/CardsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 6.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_compare")
+
+[node name="CompareContent" type="VBoxContainer" parent="Layout/Scroll/ContentMargin/Content/CardsRow/CompareCard"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="CompareSectionRow" type="HBoxContainer" parent="Layout/Scroll/ContentMargin/Content/CardsRow/CompareCard/CompareContent"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="CompareBorder" type="ColorRect" parent="Layout/Scroll/ContentMargin/Content/CardsRow/CompareCard/CompareContent/CompareSectionRow"]
+custom_minimum_size = Vector2(4, 16)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.31, 0.847, 0.918, 1)
+
+[node name="CompareSectionLabel" type="Label" parent="Layout/Scroll/ContentMargin/Content/CardsRow/CompareCard/CompareContent/CompareSectionRow"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.749, 0.784, 0.792, 1)
+theme_override_font_sizes/font_size = 10
+text = "REEF TOPOGRAPHY VERIFICATION"
+
+[node name="ImagePair" type="HBoxContainer" parent="Layout/Scroll/ContentMargin/Content/CardsRow/CompareCard/CompareContent"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="SourcePanel" type="PanelContainer" parent="Layout/Scroll/ContentMargin/Content/CardsRow/CompareCard/CompareContent/ImagePair"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_source")
+
+[node name="SourceStack" type="Control" parent="Layout/Scroll/ContentMargin/Content/CardsRow/CompareCard/CompareContent/ImagePair/SourcePanel"]
+custom_minimum_size = Vector2(0, 260)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ZooniverseImage" type="TextureRect" parent="Layout/Scroll/ContentMargin/Content/CardsRow/CompareCard/CompareContent/ImagePair/SourcePanel/SourceStack"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_reef_img")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="SourceBadge" type="Label" parent="Layout/Scroll/ContentMargin/Content/CardsRow/CompareCard/CompareContent/ImagePair/SourcePanel/SourceStack"]
+layout_mode = 1
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 180.0
+offset_bottom = 32.0
+theme_override_colors/font_color = Color(0.871, 0.89, 0.898, 0.9)
+theme_override_font_sizes/font_size = 8
+text = "SOURCE: ZOONIVERSE"
+
+[node name="ReconPanel" type="PanelContainer" parent="Layout/Scroll/ContentMargin/Content/CardsRow/CompareCard/CompareContent/ImagePair"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_recon")
+
+[node name="ReconVBox" type="VBoxContainer" parent="Layout/Scroll/ContentMargin/Content/CardsRow/CompareCard/CompareContent/ImagePair/ReconPanel"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ReconBadge" type="Label" parent="Layout/Scroll/ContentMargin/Content/CardsRow/CompareCard/CompareContent/ImagePair/ReconPanel/ReconVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.31, 0.847, 0.918, 1)
+theme_override_font_sizes/font_size = 8
+text = "✓  PLAYER RECONSTRUCTION"
+
+[node name="SpeciesGrid" type="GridContainer" parent="Layout/Scroll/ContentMargin/Content/CardsRow/CompareCard/CompareContent/ImagePair/ReconPanel/ReconVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/h_separation = 6
+theme_override_constants/v_separation = 6
+columns = 2
+
+[node name="Placeholder1" type="TextureRect" parent="Layout/Scroll/ContentMargin/Content/CardsRow/CompareCard/CompareContent/ImagePair/ReconPanel/ReconVBox/SpeciesGrid"]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+texture = ExtResource("3_card1")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Placeholder2" type="TextureRect" parent="Layout/Scroll/ContentMargin/Content/CardsRow/CompareCard/CompareContent/ImagePair/ReconPanel/ReconVBox/SpeciesGrid"]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+texture = ExtResource("4_card2")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Placeholder3" type="TextureRect" parent="Layout/Scroll/ContentMargin/Content/CardsRow/CompareCard/CompareContent/ImagePair/ReconPanel/ReconVBox/SpeciesGrid"]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+texture = ExtResource("5_card3")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="SummaryLabel" type="Label" parent="Layout/Scroll/ContentMargin/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.31, 0.847, 0.918, 0.7)
+theme_override_font_sizes/font_size = 12
+text = "— / — species at target"
+horizontal_alignment = 1
+
+[node name="Footer" type="PanelContainer" parent="Layout"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_footer")
+
+[node name="FooterContent" type="HBoxContainer" parent="Layout/Footer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 2
+
+[node name="ReplayButton" type="Button" parent="Layout/Footer/FooterContent"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "REPLAY"
+
+[node name="HomeButton" type="Button" parent="Layout/Footer/FooterContent"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.749, 0.784, 0.792, 1)
+theme_override_font_sizes/font_size = 13
+theme_override_styles/normal = SubResource("StyleBoxFlat_ghost")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ghost")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ghost")
+theme_override_styles/focus = SubResource("StyleBoxFlat_ghost")
+text = "HOME"
+
+[node name="NextButton" type="Button" parent="Layout/Footer/FooterContent"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.027, 0.133, 0.153, 1)
+theme_override_font_sizes/font_size = 13
+theme_override_styles/normal = SubResource("StyleBoxFlat_primary")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_primary")
+theme_override_styles/hover = SubResource("StyleBoxFlat_primary")
+theme_override_styles/focus = SubResource("StyleBoxFlat_primary")
+text = "NEXT LEVEL  »"

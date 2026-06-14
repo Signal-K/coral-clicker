@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Identify Phase Screen - Coral Clicker</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700&amp;family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#52f2f5", "on-primary": "#005859", "primary-container": "#0cd0d3", "on-primary-container": "#004041", secondary: "#fe7e4f", "on-secondary": "#491300", "secondary-container": "#8e2c01", "on-secondary-container": "#ffd2c3", tertiary: "#ffe792", "on-tertiary": "#655400", "tertiary-container": "#ffd709", "on-tertiary-container": "#5b4b00", error: "#ff716c", "on-error": "#490006", "error-container": "#9f0519", "on-error-container": "#ffa8a3", background: "#001016", "on-background": "#d9eff8", surface: "#001016", "on-surface": "#d9eff8", "surface-variant": "#092933", "on-surface-variant": "#99aeb7", outline: "#647981", "outline-variant": "#374b52", "surface-container-highest": "#092933", "surface-container-high": "#05232c", "surface-container": "#021d25", "surface-container-low": "#00161d", "surface-container-lowest": "#000000", "inverse-surface": "#f2fbff", "inverse-on-surface": "#445860", "inverse-primary": "#006a6c", "tertiary-fixed-dim": "#efc900", "on-tertiary-fixed-variant": "#665500", "on-secondary-fixed-variant": "#922f03", "primary-dim": "#3de4e7", "on-tertiary-fixed": "#453900", "primary-fixed": "#52f2f5", "error-dim": "#d7383b", "on-primary-fixed-variant": "#006264", "surface-tint": "#52f2f5", "on-secondary-fixed": "#621c00", "tertiary-fixed": "#ffd709", "surface-bright": "#0e303a", "primary-fixed-dim": "#3de4e7", "tertiary-dim": "#efc900", "secondary-dim": "#f7794b", "secondary-fixed": "#ffc4b1", "secondary-fixed-dim": "#ffb196", "on-primary-fixed": "#004344", "surface-dim": "#001016"}, borderRadius: {DEFAULT: "1rem", lg: "2rem", xl: "3rem", full: "9999px"}, spacing: {margin: "32px", gutter: "24px", unit: "4px", "panel-padding": "16px", "stack-gap": "12px"}, fontFamily: {"data-md": ["Space Grotesk"], "body-md": ["Plus Jakarta Sans"], "data-lg": ["Space Grotesk"], "label-lg": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "data-sm": ["Space Grotesk"], "label-sm": ["Plus Jakarta Sans"], headline: ["Plus Jakarta Sans"], display: ["Plus Jakarta Sans"], body: ["Plus Jakarta Sans"], label: ["Space Grotesk"]}, fontSize: {"data-md": ["24px", {lineHeight: "1.2", letterSpacing: "0.05em", fontWeight: "500"}], "body-md": ["16px", {lineHeight: "1.6", fontWeight: "400"}], "data-lg": ["42px", {lineHeight: "1.1", letterSpacing: "-0.02em", fontWeight: "700"}], "label-lg": ["18px", {lineHeight: "1.4", fontWeight: "600"}], "label-md": ["14px", {lineHeight: "1.4", fontWeight: "500"}], "data-sm": ["14px", {lineHeight: "1.2", letterSpacing: "0.1em", fontWeight: "600"}], "label-sm": ["11px", {lineHeight: "1.2", letterSpacing: "0.05em", fontWeight: "700"}]}}}};</script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined[data-weight="fill"] {
+            font-variation-settings: 'FILL' 1;
+        }
+        
+        /* Skeuomorphic utilities */
+        .panel-inset {
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.6), inset 0 -1px 2px rgba(255,255,255,0.05);
+            background: linear-gradient(to bottom, rgba(30, 32, 33, 0.95), rgba(14, 20, 21, 0.95));
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .btn-extrude {
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.3), 0 4px 6px rgba(0,0,0,0.6), 0 2px 4px rgba(0,0,0,0.8);
+            border-bottom: 2px solid rgba(0,0,0,0.4);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+        .btn-extrude:active {
+            box-shadow: inset 0 3px 6px rgba(0,0,0,0.8), 0 0 0 rgba(0,0,0,0.8);
+            transform: translateY(3px);
+            border-bottom: 0px solid rgba(0,0,0,0.4);
+            margin-bottom: 2px;
+        }
+        .bloom-cyan {
+            box-shadow: 0 0 16px rgba(72, 216, 244, 0.5);
+        }
+        .bg-glass {
+            background: linear-gradient(135deg, rgba(14, 20, 21, 0.85) 0%, rgba(30, 32, 33, 0.95) 100%);
+            backdrop-filter: blur(12px);
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.05), 0 2px 4px rgba(0,0,0,0.4);
+        }
+        .chip-extrude {
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 2px 0 rgba(0,0,0,0.6), 0 2px 4px rgba(0,0,0,0.4);
+        }
+        .chip-extrude:active {
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.6);
+            transform: translateY(2px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface h-screen w-full overflow-hidden flex flex-col font-body-md antialiased md:hidden selection:bg-primary-container selection:text-on-primary-container">
+<!-- Immersive Background Image -->
+<div class="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat" data-alt="vibrant underwater scene of a colorful tropical coral reef illuminated by shafts of sunlight piercing through clear blue water" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBEKE6SozLBZQuh5W7W-VTOoXDvX-Urx8JToAx40BMHHDGl1yD-0mLVkXSx6evLao2Dq14-RwDy-8dPQ_Dlgxdf5A-s1u7o2oXeC2W8opvwr1aZsN3Xvmnr1alj7-rLg1cl5ru7LSjqGiX8TP8B90CW22rZd4vW7dlguHhVK9VELmtht8Q1LnNzFkwWjCXc-ncyGDwuCKgycPS0TIOFm0bvL7pzN4cYBZHKgjHG-9bJLztHn78ysbCl9xYzvs38IuSP8rCpFr2ZzUQ');">
+<!-- Dark gradient overlay for readability -->
+<div class="absolute inset-0 bg-gradient-to-b from-surface/90 via-surface/40 to-surface/95 mix-blend-multiply"></div>
+</div>
+<!-- Top Navigation Context -->
+<header class="relative z-10 w-full flex items-center justify-between px-panel-padding py-stack-gap border-b border-outline-variant bg-surface-container/80 backdrop-blur-md panel-inset">
+<div class="flex items-center gap-unit">
+<span class="material-symbols-outlined text-primary text-xl" data-weight="fill">track_changes</span>
+<h1 class="font-data-md text-data-md text-primary tracking-widest uppercase ml-2 drop-shadow-[0_0_8px_rgba(72,216,244,0.4)]">Mission: Classification</h1>
+</div>
+<div class="flex items-center gap-2 bg-surface-container-highest px-4 py-2 rounded-full border border-outline-variant panel-inset">
+<span class="material-symbols-outlined text-secondary text-sm" data-weight="fill">toll</span>
+<span class="font-data-sm text-data-sm text-secondary">2,450</span>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="relative z-10 flex-1 w-full flex flex-col justify-end p-panel-padding pb-gutter overflow-y-auto hide-scrollbar">
+<!-- Target Reticle Overlay (Decorative) -->
+<div class="absolute inset-0 pointer-events-none flex items-center justify-center opacity-30">
+<div class="w-64 h-64 border border-primary/50 rounded-full relative">
+<div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-4 bg-primary"></div>
+<div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-1 h-4 bg-primary"></div>
+<div class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-1 bg-primary"></div>
+<div class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-4 h-1 bg-primary"></div>
+<div class="absolute inset-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-error rounded-full bloom-cyan opacity-80"></div>
+</div>
+</div>
+<!-- Identification Grid Container -->
+<div class="w-full max-w-md mx-auto space-y-stack-gap mt-auto">
+<div class="flex items-center justify-between mb-unit">
+<h2 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary bloom-cyan block"></span>
+                    Select Species Present
+                </h2>
+</div>
+<!-- Chips Grid -->
+<div class="grid grid-cols-2 gap-unit">
+<!-- Chip 1 (Selected State) -->
+<button class="relative overflow-hidden rounded-full bg-primary-container border-2 border-primary chip-extrude px-4 py-3 flex items-center gap-3 transition-all">
+<span class="material-symbols-outlined text-primary text-xl" data-weight="fill">radio_button_checked</span>
+<span class="font-label-md text-label-md text-on-primary-container text-left leading-tight font-bold">Brain Coral</span>
+</button>
+<!-- Chip 2 (Unselected State) -->
+<button class="relative overflow-hidden rounded-full bg-glass border border-outline-variant chip-extrude px-4 py-3 flex items-center gap-3 transition-all hover:bg-surface-container-highest">
+<span class="material-symbols-outlined text-outline text-xl">radio_button_unchecked</span>
+<span class="font-label-md text-label-md text-on-surface text-left leading-tight">Parrotfish</span>
+</button>
+<!-- Chip 3 (Unselected State) -->
+<button class="relative overflow-hidden rounded-full bg-glass border border-outline-variant chip-extrude px-4 py-3 flex items-center gap-3 transition-all hover:bg-surface-container-highest">
+<span class="material-symbols-outlined text-outline text-xl">radio_button_unchecked</span>
+<span class="font-label-md text-label-md text-on-surface text-left leading-tight">Tube Sponge</span>
+</button>
+<!-- Chip 4 (Unselected State) -->
+<button class="relative overflow-hidden rounded-full bg-glass border border-outline-variant chip-extrude px-4 py-3 flex items-center gap-3 transition-all hover:bg-surface-container-highest">
+<span class="material-symbols-outlined text-outline text-xl">radio_button_unchecked</span>
+<span class="font-label-md text-label-md text-on-surface text-left leading-tight">Sea Fan</span>
+</button>
+<!-- Chip 5 (Unselected State) -->
+<button class="relative overflow-hidden rounded-full bg-glass border border-outline-variant chip-extrude px-4 py-3 flex items-center gap-3 transition-all hover:bg-surface-container-highest">
+<span class="material-symbols-outlined text-outline text-xl">radio_button_unchecked</span>
+<span class="font-label-md text-label-md text-on-surface text-left leading-tight">Clownfish</span>
+</button>
+<!-- Chip 6 (Unselected State) -->
+<button class="relative overflow-hidden rounded-full bg-glass border border-outline-variant chip-extrude px-4 py-3 flex items-center gap-3 transition-all hover:bg-surface-container-highest">
+<span class="material-symbols-outlined text-outline text-xl">radio_button_unchecked</span>
+<span class="font-label-md text-label-md text-on-surface text-left leading-tight">Anemone</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Bottom Action Bar (Transactional Shell Replacement) -->
+<div class="relative z-20 w-full bg-surface-container border-t border-outline-variant p-panel-padding pt-stack-gap pb-8 flex gap-stack-gap panel-inset">
+<!-- Secondary Action -->
+<button class="flex-1 bg-surface-variant hover:bg-surface-container-highest text-on-surface-variant font-label-lg text-label-lg py-4 px-4 rounded-full btn-extrude transition-all flex flex-col items-center justify-center gap-1 border border-outline-variant/50">
+<span class="material-symbols-outlined text-xl">help</span>
+<span class="text-xs uppercase tracking-wider font-semibold">I'm Not Sure</span>
+</button>
+<!-- Primary Action -->
+<button class="flex-[2] bg-gradient-to-b from-primary to-inverse-primary text-on-primary font-label-lg text-label-lg py-4 px-4 rounded-full btn-extrude transition-all flex flex-col items-center justify-center gap-1 border border-primary-container bloom-cyan">
+<span class="material-symbols-outlined text-xl">check_circle</span>
+<span class="uppercase tracking-wider font-bold shadow-sm">Confirm Selection</span>
+</button>
+</div>
+</body></html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Coral Lab Terminal - Abyssal Experience</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&amp;family=Space+Grotesk:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #001f24;
+            overflow: hidden;
+        }
+        .skeuomorphic-panel {
+            background: linear-gradient(145deg, #00252b, #001a1e);
+            box-shadow:  5px 5px 15px #001215, -5px -5px 15px #002c33, inset 0 2px 4px rgba(255,255,255,0.05);
+            border: 1px solid rgba(0, 75, 87, 0.3);
+        }
+        .skeuomorphic-dial {
+            background: linear-gradient(145deg, #001a1e, #00252b);
+            box-shadow: inset 4px 4px 8px #001215, inset -4px -4px 8px #002c33;
+            border: 2px solid #004b57;
+        }
+        .skeuomorphic-btn {
+            background: linear-gradient(145deg, #00252b, #001a1e);
+            box-shadow:  4px 4px 10px #001215, -4px -4px 10px #002c33, inset 0 1px 2px rgba(255,255,255,0.1);
+            border: 2px solid #003a44;
+            transition: all 0.1s ease;
+        }
+        .skeuomorphic-btn:active {
+            background: linear-gradient(145deg, #001a1e, #00252b);
+            box-shadow: inset 4px 4px 10px #001215, inset -4px -4px 10px #002c33;
+            border-color: #004b57;
+        }
+        .glass-panel {
+            background: rgba(0, 31, 36, 0.6);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(0, 106, 113, 0.3);
+            border-bottom: 1px solid rgba(0, 31, 36, 0.8);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary": "#4cd9e1",
+                      "on-primary": "#00373a",
+                      "primary-container": "#004f53",
+                      "on-primary-container": "#6ff6fe",
+                      "secondary": "#b1cbd0",
+                      "on-secondary": "#1c3438",
+                      "secondary-container": "#334b4f",
+                      "on-secondary-container": "#cde7ec",
+                      "tertiary": "#bac6ea",
+                      "on-tertiary": "#24304d",
+                      "tertiary-container": "#3a4664",
+                      "on-tertiary-container": "#dae2ff",
+                      "error": "#ffb4ab",
+                      "on-error": "#690005",
+                      "error-container": "#93000a",
+                      "on-error-container": "#ffdad6",
+                      "background": "#001f24",
+                      "on-background": "#a6eeff",
+                      "surface": "#001f24",
+                      "on-surface": "#a6eeff",
+                      "surface-variant": "#3f484a",
+                      "on-surface-variant": "#bfc8ca",
+                      "outline": "#899294",
+                      "outline-variant": "#3f484a"
+              },
+              "fontFamily": {
+                      "headline": ["Plus Jakarta Sans", "sans-serif"],
+                      "body": ["Plus Jakarta Sans", "sans-serif"],
+                      "label": ["Space Grotesk", "sans-serif"]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="font-body text-on-surface">
+<!-- Subaquatic Background Canvas -->
+<div class="fixed inset-0 z-0">
+<img class="w-full h-full object-cover opacity-50" data-alt="vibrant underwater scene with glowing neon bioluminescent coral reefs, schools of tropical fish swimming in deep dark cyan water with atmospheric light rays" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCu1KzqPJMA8y2AINu8BUr-TQlTtI_HO37_xnVYPETdwcR0dwIXb_hH8-UGOBE1ldAQmadSnjUDa7yhYMWoNnc6Y3yD_VvWf6dhYxMzO0IUHsUs_Y8F5IGdxlwpmpsMR9M0bsAdNIgvkI03JdXzelcRwEPDJjoYKbC7CbmBBjVrKpWUEXArLQYaJ5I3lYHenDCzlYdkfGDh1PQdx-A3JBZgEQmJuVPH03rs48qca0A_6O_ColY5EkvIAIrupNpLyKSSiRQEGIeJG5Q"/>
+<div class="absolute inset-0 bg-[#001f24]/40 mix-blend-multiply"></div>
+<div class="absolute inset-0 radial-gradient(circle at center, transparent 0%, #001f24 100%)"></div>
+</div>
+<!-- Header Console (Sandwich Top) -->
+<header class="fixed top-0 left-0 w-full z-50 glass-panel shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+<div class="flex flex-col w-full">
+<!-- Top Nav & Identity -->
+<div class="flex items-center justify-between px-6 py-3 border-b border-primary/10 bg-[#001a1e]/80">
+<div class="text-xl font-bold text-primary tracking-widest drop-shadow-[0_0_5px_rgba(76,217,225,0.5)]">CORAL_LAB_OS // v2.0</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="font-label text-xs tracking-widest uppercase text-primary font-black px-3 py-1 bg-primary/10 rounded border border-primary/20" href="#">MAIN_SYS</a>
+<a class="font-label text-xs tracking-widest uppercase text-on-surface-variant hover:text-primary transition-colors" href="#">DIAGNOSTICS</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary hover:text-white transition-colors">settings</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border-2 border-primary/50 skeuomorphic-panel">
+<img alt="Researcher Avatar" class="w-full h-full object-cover" data-alt="Researcher Avatar with a sleek high-tech interface reflection on glasses" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAN_DndjuVLVPoiW3wcUSypCJJuPZjyiYMYKvuvtpTiiSa9BVnpM5pETrghziprKHE7P6FQlhSE1m6gFNs6UtNF0O5Fy_AjjHMN03_kEPtAaBVtF3GLm7j7uGV1PK7sOHUt3Y0WA5h0_zxDrbkHADLBsVeCgPnO8zD7qPAWM16aPSmUmaeTWyto6EEPNxd1v74wkBOXLSnPMTc3EiUPvEiE-lQrJKIyGbCA7oj2rdkhFo5aWLmzCcQkA0JLSawqXeHXuH4E9f820Vc"/>
+</div>
+</div>
+</div>
+<!-- Telemetry Gauges -->
+<div class="flex justify-center items-center gap-8 py-4 px-6 bg-[#00252b]/90">
+<!-- Depth Gauge -->
+<div class="flex items-center gap-4 skeuomorphic-panel px-6 py-3 rounded-xl border border-[#003a44]">
+<div class="relative w-12 h-12 rounded-full skeuomorphic-dial flex items-center justify-center">
+<svg class="absolute inset-1 w-10 h-10 transform -rotate-90">
+<circle cx="20" cy="20" fill="none" r="16" stroke="rgba(255,255,255,0.05)" stroke-width="4"></circle>
+<circle cx="20" cy="20" fill="none" r="16" stroke="#4cd9e1" stroke-dasharray="100.5" stroke-dashoffset="20" stroke-width="4"></circle>
+</svg>
+<span class="material-symbols-outlined text-primary text-sm absolute">water_drop</span>
+</div>
+<div>
+<div class="font-label text-[10px] uppercase tracking-widest text-outline">Depth</div>
+<div class="font-label text-xl font-bold text-primary">2,840<span class="text-[10px] ml-1 text-on-surface-variant">m</span></div>
+</div>
+</div>
+<!-- Pressure Gauge -->
+<div class="flex items-center gap-4 skeuomorphic-panel px-6 py-3 rounded-xl border border-[#003a44]">
+<div class="relative w-12 h-12 rounded-full skeuomorphic-dial flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-xl">compress</span>
+</div>
+<div>
+<div class="font-label text-[10px] uppercase tracking-widest text-outline">Pressure</div>
+<div class="font-label text-xl font-bold text-secondary">28.4<span class="text-[10px] ml-1 text-on-surface-variant">MPa</span></div>
+</div>
+</div>
+<!-- Oxygen Gauge -->
+<div class="flex items-center gap-4 skeuomorphic-panel px-6 py-3 rounded-xl border border-[#003a44]">
+<div class="relative w-12 h-12 rounded-full skeuomorphic-dial flex items-center justify-center">
+<svg class="absolute inset-1 w-10 h-10 transform -rotate-90">
+<circle cx="20" cy="20" fill="none" r="16" stroke="rgba(255,255,255,0.05)" stroke-width="4"></circle>
+<circle cx="20" cy="20" fill="none" r="16" stroke="#4cd9e1" stroke-dasharray="100.5" stroke-dashoffset="6" stroke-width="4"></circle>
+</svg>
+<span class="material-symbols-outlined text-primary text-sm absolute">air</span>
+</div>
+<div>
+<div class="font-label text-[10px] uppercase tracking-widest text-outline">O2 Reserves</div>
+<div class="font-label text-xl font-bold text-primary">94<span class="text-[10px] ml-1 text-on-surface-variant">%</span></div>
+</div>
+</div>
+<!-- Hull Integrity -->
+<div class="flex items-center gap-4 skeuomorphic-panel px-6 py-3 rounded-xl border border-[#003a44]">
+<div class="w-12 h-12 rounded-full skeuomorphic-dial flex items-center justify-center p-2">
+<div class="w-full flex flex-col gap-[2px]">
+<div class="h-[3px] bg-secondary w-full rounded-sm shadow-[0_0_5px_#b1cbd0]"></div>
+<div class="h-[3px] bg-secondary w-full rounded-sm shadow-[0_0_5px_#b1cbd0]"></div>
+<div class="h-[3px] bg-secondary w-full rounded-sm shadow-[0_0_5px_#b1cbd0]"></div>
+<div class="h-[3px] bg-secondary w-full rounded-sm shadow-[0_0_5px_#b1cbd0]"></div>
+<div class="h-[3px] bg-[#001215] w-full rounded-sm"></div>
+</div>
+</div>
+<div>
+<div class="font-label text-[10px] uppercase tracking-widest text-outline">Hull Integrity</div>
+<div class="font-label text-xl font-bold text-secondary">98<span class="text-[10px] ml-1 text-on-surface-variant">%</span></div>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Abyssal Interface Canvas -->
+<main class="relative z-10 w-full h-screen flex flex-col items-center justify-center pt-40 pb-32 pointer-events-none">
+<!-- Central Viewport Reticle -->
+<div class="relative w-96 h-96 border-[3px] border-primary/10 rounded-full flex items-center justify-center shadow-[inset_0_0_50px_rgba(0,75,87,0.3)]">
+<div class="absolute w-full h-[2px] bg-primary/20 shadow-[0_0_10px_rgba(76,217,225,0.5)]"></div>
+<div class="absolute h-full w-[2px] bg-primary/20 shadow-[0_0_10px_rgba(76,217,225,0.5)]"></div>
+<div class="w-6 h-6 border-2 border-primary rounded-full animate-pulse shadow-[0_0_20px_rgba(76,217,225,0.8)] bg-primary/20"></div>
+<!-- Target Tracking Data -->
+<div class="absolute top-0 right-0 transform translate-x-16 -translate-y-8 skeuomorphic-panel p-4 rounded-lg pointer-events-auto border border-primary/30">
+<div class="flex items-center gap-2 mb-2">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+<div class="text-xs font-label text-primary font-bold tracking-widest uppercase">SCANNING_OBJECT_042</div>
+</div>
+<div class="text-sm font-label text-on-surface mb-1">Species: <span class="text-secondary">Diploria labyrinthiformis</span></div>
+<div class="text-xs font-label text-outline flex justify-between">
+<span>Health Index:</span>
+<span class="text-primary font-bold">0.88</span>
+</div>
+<div class="w-full h-1 bg-[#001215] mt-2 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[88%] shadow-[0_0_5px_#4cd9e1]"></div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar / Control Console (Sandwich Bottom) -->
+<footer class="fixed bottom-0 left-0 w-full z-50 glass-panel py-6 px-12 border-t border-primary/20 shadow-[0_-20px_50px_rgba(0,0,0,0.8)]">
+<div class="max-w-4xl mx-auto flex justify-between items-center bg-[#001a1e]/60 p-4 rounded-3xl skeuomorphic-panel">
+<!-- Auxiliary Left -->
+<div class="flex gap-4">
+<button class="skeuomorphic-btn w-16 h-16 rounded-2xl flex flex-col items-center justify-center gap-1">
+<span class="material-symbols-outlined text-outline text-xl">database</span>
+<span class="text-[8px] font-label font-bold text-outline tracking-widest uppercase">Logs</span>
+</button>
+<button class="skeuomorphic-btn w-16 h-16 rounded-2xl flex flex-col items-center justify-center gap-1">
+<span class="material-symbols-outlined text-outline text-xl">map</span>
+<span class="text-[8px] font-label font-bold text-outline tracking-widest uppercase">Sonar</span>
+</button>
+</div>
+<!-- Primary Actions Center -->
+<div class="flex gap-8 relative -top-8">
+<button class="skeuomorphic-btn w-24 h-24 rounded-full flex flex-col items-center justify-center gap-2 border-[3px] border-secondary/40 shadow-[0_15px_25px_rgba(0,0,0,0.5)]">
+<span class="material-symbols-outlined text-secondary text-3xl drop-shadow-[0_0_8px_rgba(177,203,208,0.6)]">set_meal</span>
+<span class="text-[10px] font-label font-bold text-secondary tracking-widest uppercase">Tag Fish</span>
+</button>
+<button class="skeuomorphic-btn w-28 h-28 rounded-full flex flex-col items-center justify-center gap-2 border-[4px] border-primary/50 shadow-[0_20px_30px_rgba(0,0,0,0.6),_inset_0_0_20px_rgba(76,217,225,0.1)] scale-110 z-10">
+<span class="material-symbols-outlined text-primary text-4xl drop-shadow-[0_0_12px_rgba(76,217,225,0.8)]">shutter_speed</span>
+<span class="text-[11px] font-label font-black text-primary tracking-widest uppercase">Collect</span>
+</button>
+<button class="skeuomorphic-btn w-24 h-24 rounded-full flex flex-col items-center justify-center gap-2 border-[3px] border-tertiary/40 shadow-[0_15px_25px_rgba(0,0,0,0.5)]">
+<span class="material-symbols-outlined text-tertiary text-3xl drop-shadow-[0_0_8px_rgba(186,198,234,0.6)]">layers</span>
+<span class="text-[10px] font-label font-bold text-tertiary tracking-widest uppercase">Scan Coral</span>
+</button>
+</div>
+<!-- Auxiliary Right -->
+<div class="flex gap-4">
+<button class="skeuomorphic-btn w-16 h-16 rounded-2xl flex flex-col items-center justify-center gap-1">
+<span class="material-symbols-outlined text-outline text-xl">inventory_2</span>
+<span class="text-[8px] font-label font-bold text-outline tracking-widest uppercase">Cargo</span>
+</button>
+<button class="skeuomorphic-btn w-16 h-16 rounded-2xl flex flex-col items-center justify-center gap-1">
+<span class="material-symbols-outlined text-outline text-xl">power_settings_new</span>
+<span class="text-[8px] font-label font-bold text-outline tracking-widest uppercase">System</span>
+</button>
+</div>
+</div>
+</footer>
+</body></html>

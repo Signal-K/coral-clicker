@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PHASE: EQUILIBRIUM</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700&amp;family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {secondary: "#fe7e4f", "on-primary": "#005859", surface: "#001016", "on-secondary-fixed-variant": "#922f03", "surface-container-low": "#00161d", background: "#001016", "on-primary-fixed": "#004344", tertiary: "#ffe792", "on-secondary-fixed": "#621c00", "tertiary-container": "#ffd709", "secondary-container": "#8e2c01", "on-surface": "#d9eff8", "inverse-on-surface": "#445860", "on-surface-variant": "#99aeb7", "on-primary-fixed-variant": "#006264", "surface-container-lowest": "#000000", "on-secondary": "#491300", "on-tertiary": "#655400", "tertiary-fixed": "#ffd709", "surface-variant": "#092933", "secondary-fixed": "#ffc4b1", "on-primary-container": "#004041", "surface-dim": "#001016", "on-tertiary-container": "#5b4b00", "surface-container": "#021d25", "surface-tint": "#52f2f5", outline: "#647981", "on-tertiary-fixed-variant": "#665500", "on-secondary-container": "#ffd2c3", "inverse-surface": "#f2fbff", error: "#ff716c", "outline-variant": "#374b52", "error-container": "#9f0519", "surface-container-high": "#05232c", "primary-container": "#0cd0d3", "on-error-container": "#ffa8a3", "primary-fixed": "#52f2f5", primary: "#52f2f5", "on-background": "#d9eff8", "surface-container-highest": "#092933", "surface-bright": "#0e303a", "on-error": "#490006", "on-tertiary-fixed": "#453900", "primary-fixed-dim": "#3de4e7", "tertiary-fixed-dim": "#efc900", "secondary-fixed-dim": "#ffb196", "inverse-primary": "#006a6c", "primary-dim": "#3de4e7", "error-dim": "#d7383b", "tertiary-dim": "#efc900", "secondary-dim": "#f7794b"}, borderRadius: {DEFAULT: "1rem", lg: "2rem", xl: "3rem", full: "9999px"}, spacing: {gutter: "24px", "panel-padding": "16px", "stack-gap": "12px", margin: "32px", unit: "4px"}, fontFamily: {"label-sm": ["Plus Jakarta Sans"], "data-lg": ["Space Grotesk"], "label-md": ["Plus Jakarta Sans"], "data-md": ["Space Grotesk"], "body-md": ["Plus Jakarta Sans"], "label-lg": ["Plus Jakarta Sans"], "data-sm": ["Space Grotesk"], headline: ["Plus Jakarta Sans"], display: ["Plus Jakarta Sans"], body: ["Plus Jakarta Sans"], label: ["Space Grotesk"]}, fontSize: {"label-sm": ["11px", {lineHeight: "1.2", letterSpacing: "0.05em", fontWeight: "700"}], "data-lg": ["42px", {lineHeight: "1.1", letterSpacing: "-0.02em", fontWeight: "700"}], "label-md": ["14px", {lineHeight: "1.4", fontWeight: "500"}], "data-md": ["24px", {lineHeight: "1.2", letterSpacing: "0.05em", fontWeight: "500"}], "body-md": ["16px", {lineHeight: "1.6", fontWeight: "400"}], "label-lg": ["18px", {lineHeight: "1.4", fontWeight: "600"}], "data-sm": ["14px", {lineHeight: "1.2", letterSpacing: "0.1em", fontWeight: "600"}]}}}};</script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined[data-weight="fill"] {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        .inset-well {
+            box-shadow: inset 0px 4px 12px rgba(0, 0, 0, 0.4), 0px 1px 0px rgba(255, 255, 255, 0.05);
+        }
+
+        .tactile-btn {
+            background: linear-gradient(180deg, theme('colors.surface-container-high') 0%, theme('colors.surface-container') 100%);
+            box-shadow: 0px -1px 0px 0px rgba(255, 255, 255, 0.1) inset, 0px 2px 4px rgba(0, 0, 0, 0.4);
+            border: 1px solid theme('colors.surface-variant');
+        }
+
+        .tactile-btn:active {
+            background: linear-gradient(180deg, theme('colors.surface-container') 0%, theme('colors.surface-container-high') 100%);
+            box-shadow: inset 0px 2px 6px rgba(0, 0, 0, 0.6);
+        }
+
+        .emissive-glow {
+            text-shadow: 0 0 8px theme('colors.primary');
+        }
+
+        .dial-texture {
+            background-image: repeating-conic-gradient(from 0deg, transparent 0deg 10deg, rgba(255,255,255,0.05) 10deg 20deg);
+        }
+        
+        .panel-chamfer {
+            border: 1px solid;
+            border-image-source: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 100%);
+            border-image-slice: 1;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex overflow-hidden">
+<!-- TopAppBar (Web Hidden) -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 h-14 bg-neutral-900/95 font-['Space_Grotesk'] uppercase tracking-widest text-xs docked full-width top-0 border-b border-[#88c0d0]/20 border-b border-neutral-800 shadow-[inset_0_-1px_0_rgba(255,255,255,0.05)] shadow-lg shadow-black/50 md:hidden">
+<div class="text-xl font-bold text-[#88c0d0] drop-shadow-[0_0_5px_rgba(136,192,208,0.5)]">CORAL_OPERATOR_V.1</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-neutral-500 hover:bg-neutral-800/50 hover:text-[#88c0d0] active:inner-shadow-lg transition-transform duration-75">settings_input_component</span>
+<span class="material-symbols-outlined text-neutral-500 hover:bg-neutral-800/50 hover:text-[#88c0d0] active:inner-shadow-lg transition-transform duration-75">sensors</span>
+<span class="material-symbols-outlined text-neutral-500 hover:bg-neutral-800/50 hover:text-[#88c0d0] active:inner-shadow-lg transition-transform duration-75">power_settings_new</span>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col h-screen pt-14 md:pt-0 relative bg-surface-container-lowest">
+<!-- Background Immersive Viewport -->
+<div class="absolute inset-0 z-0">
+<img alt="Deep sea coral reef glowing faintly in dark abyssal waters with particulate matter floating" class="w-full h-full object-cover opacity-30 mix-blend-luminosity" data-alt="Deep sea coral reef glowing faintly in dark abyssal waters with particulate matter floating" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBaB2Ppg9w_AgRvs6wIr0XpogZkgTwYKOZ6uaw-RJhh3I03D_opkDnRRwT2lCNO5tU-g_mKR_41Z_PLw6BcKP-1ISOVpMv1EklJUhWCCN5C6zu0TmczvBi2y151Gc8h5ZYs70SJO2WEvMS0rrYERtsH0czOQTo9tzp-fiy-Tlts7DSrubpkjb8DC73HPEYr4mjrsfS-Ytqmf1kaiNEZmtou7ph5aSfewZ577YInJv8FYZz1CRs4RZzPG_8kvTgczKkwe2uA-StrTNY"/>
+<div class="absolute inset-0 bg-gradient-to-b from-surface-container-lowest/90 via-transparent to-surface-container-lowest/90"></div>
+</div>
+<!-- Header Sandwich Layer -->
+<div class="relative z-10 px-gutter py-panel-padding flex items-center justify-between panel-chamfer bg-surface-container/60 backdrop-blur-md">
+<div class="flex items-center gap-4">
+<div class="flex flex-col">
+<span class="font-label-sm text-on-surface-variant uppercase tracking-widest">Current Status</span>
+<h1 class="font-data-md text-primary emissive-glow">PHASE: EQUILIBRIUM</h1>
+</div>
+<div class="h-8 w-px bg-surface-variant mx-2"></div>
+<div class="inset-well bg-surface px-4 py-2 rounded">
+<span class="font-data-sm text-secondary">TURN 12</span>
+</div>
+</div>
+<div class="flex items-center gap-stack-gap">
+<div class="hidden md:flex items-center gap-6 mr-6">
+<a class="flex items-center gap-2 text-primary hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-sm">extension</span>
+<span class="font-label-sm uppercase tracking-wider">Tactics</span>
+</a>
+<a class="flex items-center gap-2 text-on-surface-variant hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-sm">shopping_cart</span>
+<span class="font-label-sm uppercase tracking-wider">Supplies</span>
+</a>
+<a class="flex items-center gap-2 text-on-surface-variant hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-sm">biotech</span>
+<span class="font-label-sm uppercase tracking-wider">Bio-Review</span>
+</a>
+</div>
+<div class="inset-well bg-surface/80 px-4 py-2 rounded flex items-center gap-3 border border-surface-variant">
+<span class="material-symbols-outlined text-secondary text-sm">target</span>
+<span class="font-label-md text-on-surface">Stabilize pH Level &gt; 7.8</span>
+</div>
+<button class="tactile-btn rounded p-2 flex justify-center items-center hidden md:flex">
+<span class="material-symbols-outlined text-on-surface">settings</span>
+</button>
+</div>
+</div>
+<!-- Center Sandwich Layer (HUD) -->
+<div class="relative z-10 flex-1 flex flex-col items-center justify-center p-gutter gap-margin">
+<div class="grid grid-cols-2 gap-margin">
+<!-- Temperature Dial -->
+<div class="panel-chamfer bg-surface-container-low/80 backdrop-blur-md p-panel-padding rounded-lg flex flex-col items-center gap-stack-gap min-w-[200px]">
+<div class="flex w-full justify-between items-center mb-2">
+<span class="font-label-sm text-on-surface-variant uppercase">Thermal Core</span>
+<span class="material-symbols-outlined text-primary text-sm" data-weight="fill">thermostat</span>
+</div>
+<div class="relative w-32 h-32 rounded-full inset-well bg-surface flex items-center justify-center border-4 border-surface-variant">
+<div class="absolute inset-2 rounded-full dial-texture opacity-20"></div>
+<div class="w-24 h-24 rounded-full tactile-btn flex flex-col items-center justify-center z-10 relative cursor-pointer">
+<span class="font-data-md text-on-surface">24.5°</span>
+<div class="absolute -top-1 w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_theme('colors.primary')]"></div>
+</div>
+</div>
+<div class="flex gap-unit w-full mt-4">
+<button class="flex-1 tactile-btn rounded py-2 flex justify-center items-center">
+<span class="material-symbols-outlined text-on-surface">remove</span>
+</button>
+<button class="flex-1 tactile-btn rounded py-2 flex justify-center items-center">
+<span class="material-symbols-outlined text-on-surface">add</span>
+</button>
+</div>
+</div>
+<!-- Salinity Dial -->
+<div class="panel-chamfer bg-surface-container-low/80 backdrop-blur-md p-panel-padding rounded-lg flex flex-col items-center gap-stack-gap min-w-[200px]">
+<div class="flex w-full justify-between items-center mb-2">
+<span class="font-label-sm text-on-surface-variant uppercase">Salinity Mix</span>
+<span class="material-symbols-outlined text-primary text-sm" data-weight="fill">water_drop</span>
+</div>
+<div class="relative w-32 h-32 rounded-full inset-well bg-surface flex items-center justify-center border-4 border-surface-variant">
+<div class="absolute inset-2 rounded-full dial-texture opacity-20"></div>
+<div class="w-24 h-24 rounded-full tactile-btn flex flex-col items-center justify-center z-10 relative cursor-pointer">
+<span class="font-data-md text-on-surface">35<span class="text-sm">ppt</span></span>
+<div class="absolute top-2 right-2 w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_theme('colors.primary')]"></div>
+</div>
+</div>
+<div class="flex gap-unit w-full mt-4">
+<button class="flex-1 tactile-btn rounded py-2 flex justify-center items-center">
+<span class="material-symbols-outlined text-on-surface">remove</span>
+</button>
+<button class="flex-1 tactile-btn rounded py-2 flex justify-center items-center">
+<span class="material-symbols-outlined text-on-surface">add</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Sandwich Layer -->
+<div class="relative z-10 mt-auto bg-surface-container/90 backdrop-blur-xl border-t border-surface-variant flex flex-col pb-20 md:pb-0">
+<!-- BottomResourceBar -->
+<div class="flex items-center justify-between px-gutter py-3 border-b border-surface-variant/50">
+<div class="flex-1 max-w-md flex items-center gap-4">
+<span class="font-label-sm text-on-surface-variant uppercase w-20">Nutrients</span>
+<div class="flex-1 h-3 inset-well bg-surface rounded-full overflow-hidden relative">
+<div class="absolute top-0 left-0 h-full w-[65%] bg-primary shadow-[0_0_10px_theme('colors.primary')] opacity-80 border-r border-white/50"></div>
+<!-- Segmentation markers -->
+<div class="absolute inset-0 flex justify-between px-4 opacity-20">
+<div class="w-px h-full bg-white"></div>
+<div class="w-px h-full bg-white"></div>
+<div class="w-px h-full bg-white"></div>
+</div>
+</div>
+<span class="font-data-sm text-primary">65%</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 inset-well bg-surface px-3 py-1.5 rounded">
+<span class="material-symbols-outlined text-secondary text-[18px]">toll</span>
+<span class="font-data-sm text-secondary">2,450</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-label-sm text-on-surface-variant uppercase">Sequence</span>
+<span class="font-data-sm text-on-surface">Turn 3/6</span>
+</div>
+</div>
+</div>
+<!-- Fish Card Strip -->
+<div class="flex gap-unit p-unit overflow-x-auto no-scrollbar">
+<div class="panel-chamfer bg-surface-container flex items-center gap-3 p-2 rounded min-w-max cursor-pointer hover:bg-surface-container-high transition-colors">
+<div class="w-10 h-10 rounded inset-well bg-surface flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-weight="fill">set_meal</span>
+</div>
+<div class="flex flex-col pr-4">
+<span class="font-label-md text-on-surface">Parrotfish</span>
+<span class="font-data-sm text-secondary">Qty: 3</span>
+</div>
+</div>
+<div class="panel-chamfer bg-surface-container flex items-center gap-3 p-2 rounded min-w-max opacity-60 cursor-pointer hover:bg-surface-container-high transition-colors">
+<div class="w-10 h-10 rounded inset-well bg-surface flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant" data-weight="fill">set_meal</span>
+</div>
+<div class="flex flex-col pr-4">
+<span class="font-label-md text-on-surface-variant">French Angelfish</span>
+<span class="font-data-sm text-on-surface-variant">Qty: 1</span>
+</div>
+</div>
+<div class="panel-chamfer bg-surface-container flex items-center gap-3 p-2 rounded min-w-max opacity-60 cursor-pointer hover:bg-surface-container-high transition-colors">
+<div class="w-10 h-10 rounded inset-well bg-surface flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant" data-weight="fill">bug_report</span>
+</div>
+<div class="flex flex-col pr-4">
+<span class="font-label-md text-on-surface-variant">Cleaner Shrimp</span>
+<span class="font-data-sm text-on-surface-variant">Qty: 0</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 px-2 backdrop-blur-md bg-neutral-900/90 font-['Space_Grotesk'] font-bold text-[10px] uppercase docked full-width bottom-0 rounded-t-lg border-t-2 border-[#88c0d0]/30 border-r border-neutral-800 last:border-r-0 shadow-[0_-4px_20px_rgba(0,0,0,0.9)]">
+<a class="flex flex-col items-center justify-center text-neutral-600 p-2 hover:bg-neutral-800/80 hover:text-[#88c0d0] active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined mb-1">water_drop</span>
+<span>Nutrients</span>
+</a>
+<a class="flex flex-col items-center justify-center text-neutral-600 p-2 hover:bg-neutral-800/80 hover:text-[#88c0d0] active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined mb-1">payments</span>
+<span>Bio-Credits</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-neutral-800 shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)] text-[#88c0d0] p-2 active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined mb-1">hourglass_empty</span>
+<span>Turns</span>
+</a>
+<a class="flex flex-col items-center justify-center text-neutral-600 p-2 hover:bg-neutral-800/80 hover:text-[#88c0d0] active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined mb-1">capture</span>
+<span>Fish_Slot</span>
+</a>
+<a class="flex flex-col items-center justify-center text-neutral-600 p-2 hover:bg-neutral-800/80 hover:text-[#88c0d0] active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined mb-1">grid_view</span>
+<span>Sub_Net</span>
+</a>
+</nav>
+</body></html>

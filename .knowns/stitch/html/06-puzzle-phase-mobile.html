@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Coral Clicker - Equilibrium Phase</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700&amp;family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#52f2f5", "on-primary": "#005859", "primary-container": "#0cd0d3", "on-primary-container": "#004041", secondary: "#fe7e4f", "on-secondary": "#491300", "secondary-container": "#8e2c01", "on-secondary-container": "#ffd2c3", tertiary: "#ffe792", "on-tertiary": "#655400", "tertiary-container": "#ffd709", "on-tertiary-container": "#5b4b00", error: "#ff716c", "on-error": "#490006", "error-container": "#9f0519", "on-error-container": "#ffa8a3", background: "#001016", "on-background": "#d9eff8", surface: "#001016", "on-surface": "#d9eff8", "surface-variant": "#092933", "on-surface-variant": "#99aeb7", outline: "#647981", "outline-variant": "#374b52", shadow: "#000000", scrim: "#000000", "inverse-surface": "#f2fbff", "inverse-on-surface": "#445860", "inverse-primary": "#006a6c", "surface-dim": "#001016", "surface-bright": "#0e303a", "surface-container-lowest": "#000000", "surface-container-low": "#00161d", "surface-container": "#021d25", "surface-container-high": "#05232c", "surface-container-highest": "#092933", "tertiary-fixed-dim": "#efc900", "on-tertiary-fixed-variant": "#665500", "on-secondary-fixed-variant": "#922f03", "primary-dim": "#3de4e7", "on-tertiary-fixed": "#453900", "primary-fixed": "#52f2f5", "error-dim": "#d7383b", "on-primary-fixed-variant": "#006264", "surface-tint": "#52f2f5", "on-secondary-fixed": "#621c00", "tertiary-fixed": "#ffd709", "primary-fixed-dim": "#3de4e7", "tertiary-dim": "#efc900", "secondary-dim": "#f7794b", "secondary-fixed": "#ffc4b1", "secondary-fixed-dim": "#ffb196", "on-primary-fixed": "#004344"}, borderRadius: {DEFAULT: "1rem", lg: "2rem", xl: "3rem", full: "9999px"}, fontFamily: {sans: ["Plus Jakarta Sans", "sans-serif"], headline: ["Plus Jakarta Sans"], display: ["Plus Jakarta Sans"], body: ["Plus Jakarta Sans"], label: ["Space Grotesk"]}, fontSize: {}}}};</script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .hud-dial-track { background: conic-gradient(from 180deg at 50% 50%, theme('colors.primary') 0%, theme('colors.surface-container-lowest') 40%, theme('colors.surface-container-lowest') 100%); }
+        .glass-panel { background: linear-gradient(135deg, rgba(27, 33, 34, 0.8) 0%, rgba(14, 20, 21, 0.95) 100%); backdrop-filter: blur(12px); }
+        .tactical-btn-bg { background: linear-gradient(180deg, theme('colors.surface-container-high') 0%, theme('colors.surface-container-lowest') 100%); }
+        .skeuomorphic-shadow { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1); }
+        .skeuomorphic-inner { box-shadow: inset 0 2px 4px rgba(0,0,0,0.6), 0 1px 0 rgba(255,255,255,0.05); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface h-screen w-full overflow-hidden flex flex-col antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="bg-surface-container-lowest border-b-2 border-surface-container-highest shadow-[0_4px_24px_rgba(0,0,0,0.8),inset_0_-1px_0_rgba(79,216,235,0.2)] fixed top-0 w-full z-50 flex items-center justify-between px-4 h-16">
+<div class="flex items-center gap-3 cursor-pointer active:scale-95 transition-transform tactical-btn-bg p-2.5 rounded-full skeuomorphic-shadow border border-surface-container-high">
+<span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings: 'FILL' 1;">sensors</span>
+</div>
+<div class="flex-1 flex justify-center pointer-events-none">
+<h1 class="text-primary text-base font-extrabold tracking-[0.15em] uppercase drop-shadow-[0_0_8px_rgba(79,216,235,0.4)] m-0">Equilibrium</h1>
+</div>
+<div class="flex items-center">
+<div class="tactical-btn-bg px-4 py-1.5 rounded-full border border-surface-container-high skeuomorphic-shadow flex items-center gap-2">
+<span class="text-on-surface-variant text-[10px] font-bold uppercase tracking-wider">Turn</span>
+<span class="text-primary text-sm font-black">12</span>
+</div>
+</div>
+</header>
+<!-- Main Viewport Canvas -->
+<main class="flex-grow relative mt-16 mb-20 w-full flex flex-col justify-between overflow-hidden bg-surface-container-lowest">
+<!-- Immersive Background -->
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full bg-cover bg-center opacity-50 mix-blend-luminosity" data-alt="deep underwater reef environment with dark blue lighting, mechanical structures integrated into coral formations, cinematic lighting" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA7saDCItJaV3rfW4atIntXyj5BEpdwyb7cdPFR3f860oFAK2Y_PmwbHDqu4TN73EmjJDnsqrCvRSp2-rFOO3rgViReW4lQTJ3RZ-Okar56hFfaLVPQc4xcx9cHawULsPGJdWG7AMkWwrLz5iM2rOt1MvbSa7nVrbrWUCIX1RhtaBF7sIBccc5ctlJu--4IQmNNacbvtNc4X-GoSlgvzg2b4ElkRgvf2dYcSL29ccl6ufQFmOkINXYmU-rumsUTMXwXZ0BNkoS7eUQ');"></div>
+<!-- Vignette overlay for HUD depth -->
+<div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-background/90 to-background pointer-events-none"></div>
+</div>
+<!-- Upper HUD Area -->
+<div class="relative z-10 w-full px-4 pt-6 flex justify-between items-start pointer-events-none">
+<!-- Left Dials: Environment Controls -->
+<div class="flex flex-col gap-6 pointer-events-auto">
+<!-- Thermometer Dial -->
+<div class="glass-panel p-3 rounded-full border border-outline-variant shadow-[0_8px_16px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.1)] flex flex-col items-center gap-3 w-20">
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mt-1">Temp</span>
+<div class="relative w-14 h-14 rounded-full bg-surface-container-highest skeuomorphic-inner border border-surface-bright flex items-center justify-center">
+<div class="absolute inset-1 rounded-full hud-dial-track rotate-45 opacity-90 blur-[1px]"></div>
+<div class="relative z-10 w-10 h-10 rounded-full tactical-btn-bg skeuomorphic-shadow flex items-center justify-center border border-outline-variant">
+<span class="text-sm font-bold text-primary drop-shadow-[0_0_4px_theme(colors.primary)]">24°</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 w-full pb-1">
+<button class="tactical-btn-bg w-full h-8 rounded-full skeuomorphic-shadow flex items-center justify-center active:skeuomorphic-inner border border-surface-container-highest group">
+<span class="material-symbols-outlined text-on-surface text-[16px] group-active:text-primary">add</span>
+</button>
+<button class="tactical-btn-bg w-full h-8 rounded-full skeuomorphic-shadow flex items-center justify-center active:skeuomorphic-inner border border-surface-container-highest group">
+<span class="material-symbols-outlined text-on-surface text-[16px] group-active:text-primary">remove</span>
+</button>
+</div>
+</div>
+<!-- Salinity Dial -->
+<div class="glass-panel p-3 rounded-full border border-outline-variant shadow-[0_8px_16px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.1)] flex flex-col items-center gap-3 w-20">
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mt-1">Salin</span>
+<div class="relative w-14 h-14 rounded-full bg-surface-container-highest skeuomorphic-inner border border-surface-bright flex items-center justify-center">
+<div class="absolute inset-1 rounded-full bg-[conic-gradient(from_220deg_at_50%_50%,_theme('colors.secondary')_0%,_transparent_50%)] opacity-80 blur-[1px]"></div>
+<div class="relative z-10 w-10 h-10 rounded-full tactical-btn-bg skeuomorphic-shadow flex items-center justify-center border border-outline-variant">
+<span class="text-sm font-bold text-secondary drop-shadow-[0_0_4px_theme(colors.secondary)]">35%</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 w-full pb-1">
+<button class="tactical-btn-bg w-full h-8 rounded-full skeuomorphic-shadow flex items-center justify-center active:skeuomorphic-inner border border-surface-container-highest group">
+<span class="material-symbols-outlined text-on-surface text-[16px] group-active:text-secondary">add</span>
+</button>
+<button class="tactical-btn-bg w-full h-8 rounded-full skeuomorphic-shadow flex items-center justify-center active:skeuomorphic-inner border border-surface-container-highest group">
+<span class="material-symbols-outlined text-on-surface text-[16px] group-active:text-secondary">remove</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Right Actions: Tactical Overlays -->
+<div class="flex flex-col gap-5 pointer-events-auto">
+<button class="relative w-16 h-16 rounded-full tactical-btn-bg skeuomorphic-shadow border border-surface-container-highest flex items-center justify-center group active:skeuomorphic-inner transition-all">
+<span class="material-symbols-outlined text-on-surface text-2xl group-active:text-primary drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">set_meal</span>
+</button>
+<button class="relative w-16 h-16 rounded-full tactical-btn-bg skeuomorphic-shadow border border-surface-container-highest flex items-center justify-center group active:skeuomorphic-inner transition-all">
+<span class="material-symbols-outlined text-on-surface text-2xl group-active:text-primary drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">phishing</span>
+<div class="absolute -bottom-1 -right-1 bg-surface-container-highest border border-primary text-primary font-bold text-[10px] px-2 py-0.5 rounded-full skeuomorphic-shadow">2/2</div>
+</button>
+</div>
+</div>
+<!-- Lower Area: Data Strip & Fish Cards -->
+<div class="relative z-10 w-full flex flex-col gap-4 pb-6 pointer-events-auto">
+<!-- Telemetry Strip (Nutrients) -->
+<div class="px-4">
+<div class="glass-panel w-full rounded-full border border-outline-variant p-2.5 flex items-center gap-4 skeuomorphic-shadow">
+<div class="w-8 h-8 rounded-full tactical-btn-bg flex items-center justify-center skeuomorphic-inner border border-surface-container-high">
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">eco</span>
+</div>
+<div class="flex-grow h-3 bg-surface-container-lowest rounded-full overflow-hidden skeuomorphic-inner flex">
+<div class="h-full w-[24%] bg-primary shadow-[0_0_12px_theme(colors.primary)] border-r border-surface-container-lowest"></div>
+<div class="h-full w-1 border-r border-surface-container-lowest bg-primary/20"></div>
+<div class="h-full w-1 border-r border-surface-container-lowest bg-primary/20"></div>
+</div>
+<span class="text-sm font-bold text-on-surface w-14 text-right tracking-wider">24<span class="text-[10px] text-on-surface-variant">/100</span></span>
+</div>
+</div>
+<!-- Fish Card Strip (Horizontal Scroll) -->
+<div class="w-full overflow-x-auto snap-x snap-mandatory hide-scrollbar pl-4 pr-4">
+<div class="flex gap-4 w-max pb-4">
+<!-- Card 1 -->
+<div class="snap-start w-44 glass-panel rounded-2xl border border-outline-variant skeuomorphic-shadow overflow-hidden flex flex-col relative">
+<div class="absolute top-0 left-0 w-full h-1 bg-primary opacity-80 shadow-[0_0_8px_theme(colors.primary)]"></div>
+<div class="p-3 border-b border-surface-container-highest bg-surface-container-low/80 flex justify-between items-center">
+<span class="text-[11px] font-extrabold text-primary uppercase tracking-wider">Parrotfish</span>
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">info</span>
+</div>
+<div class="p-4 flex items-center justify-between bg-surface-container-lowest/50">
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Pop</span>
+<div class="w-10 h-10 rounded-full tactical-btn-bg flex items-center justify-center skeuomorphic-inner border border-surface-container-high">
+<span class="text-lg font-black text-on-surface drop-shadow-md">3</span>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="snap-start w-44 glass-panel rounded-2xl border border-outline-variant skeuomorphic-shadow overflow-hidden flex flex-col relative">
+<div class="absolute top-0 left-0 w-full h-1 bg-secondary opacity-80 shadow-[0_0_8px_theme(colors.secondary)]"></div>
+<div class="p-3 border-b border-surface-container-highest bg-surface-container-low/80 flex justify-between items-center">
+<span class="text-[11px] font-extrabold text-secondary uppercase tracking-wider truncate mr-2">French Angelfish</span>
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant flex-shrink-0">info</span>
+</div>
+<div class="p-4 flex items-center justify-between bg-surface-container-lowest/50">
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Pop</span>
+<div class="w-10 h-10 rounded-full tactical-btn-bg flex items-center justify-center skeuomorphic-inner border border-surface-container-high">
+<span class="text-lg font-black text-on-surface drop-shadow-md">1</span>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="snap-start w-44 glass-panel rounded-2xl border border-error/30 skeuomorphic-shadow overflow-hidden flex flex-col relative bg-error-container/20">
+<div class="p-3 border-b border-error/20 bg-surface-container-low/80 flex justify-between items-center opacity-80">
+<span class="text-[11px] font-extrabold text-error uppercase tracking-wider line-through decoration-error/50">Blue Chromis</span>
+<span class="material-symbols-outlined text-[14px] text-error">warning</span>
+</div>
+<div class="p-4 flex items-center justify-center bg-surface-container-lowest/50 h-[73px]">
+<span class="text-xs font-black text-error uppercase tracking-[0.2em] opacity-70">Extinct</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="bg-surface-container-lowest border-t-2 border-surface-container-highest shadow-[0_-8px_24px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.05)] fixed bottom-0 w-full z-50 flex justify-around items-center px-2 py-3 h-20">
+<!-- Tab 1: Nutrients -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:text-primary transition-colors flex-1 group">
+<div class="w-10 h-10 rounded-full tactical-btn-bg flex items-center justify-center skeuomorphic-shadow border border-surface-container-high mb-1 group-active:skeuomorphic-inner">
+<span class="material-symbols-outlined text-[20px]">eco</span>
+</div>
+<span class="text-[9px] font-extrabold uppercase tracking-widest">Nutrients</span>
+</button>
+<!-- Tab 2: Coins -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:text-primary transition-colors flex-1 group">
+<div class="w-10 h-10 rounded-full tactical-btn-bg flex items-center justify-center skeuomorphic-shadow border border-surface-container-high mb-1 group-active:skeuomorphic-inner">
+<span class="material-symbols-outlined text-[20px]">toll</span>
+</div>
+<span class="text-[9px] font-extrabold uppercase tracking-widest">Coins</span>
+</button>
+<!-- Tab 3: Cycle (Active) -->
+<button class="flex flex-col items-center justify-center text-primary p-2 transition-colors flex-1 group">
+<div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center shadow-[0_0_16px_rgba(79,216,235,0.4),inset_0_2px_4px_rgba(0,0,0,0.4)] border border-primary/50 mb-1 group-active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[24px] text-on-primary-container drop-shadow-[0_0_4px_rgba(151,240,255,0.8)]" style="font-variation-settings: 'FILL' 1;">hourglass_bottom</span>
+</div>
+<span class="text-[9px] font-extrabold uppercase tracking-widest drop-shadow-[0_0_2px_rgba(79,216,235,0.8)]">Cycle</span>
+</button>
+</nav>
+</body></html>

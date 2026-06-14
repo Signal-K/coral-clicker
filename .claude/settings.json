@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "mcp__stitch__generate_screen_from_text|mcp__stitch__edit_screens|mcp__stitch__generate_variants|mcp__stitch__get_screen|mcp__stitch__apply_design_system|mcp__stitch__create_project|mcp__stitch__get_project|mcp__stitch__list_screens",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":\"STITCH VALIDATION REQUIRED: Before implementing anything from this Stitch output, read .knowns/stitch/VALIDATION-RULES.md and run the quick word-list check. Remove sidebars, fake nav tabs (Mission/Intel/Logs), nonexistent stats (depth/pressure/telemetry), and fix any wrong terminology. Only borrow individual component styling — rebuild full-screen layouts from scratch using the validation rules.\"}}'",
+            "statusMessage": "Checking Stitch output against validation rules..."
+          }
+        ]
+      }
+    ]
+  }
+}
