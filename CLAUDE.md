@@ -1,5 +1,7 @@
 # Coral Clicker — Agent Context
 
+@AGENTS.md
+
 Relaxed puzzle game (Godot 4.5 + mobile PWA). Player identifies coral in Zooniverse reef photos, then replicates that reef composition using fish breeding and environment controls. 10 puzzle levels + Tank sandbox hub. Citizen science data feeds back to Zooniverse.
 
 ## Start here
@@ -69,3 +71,6 @@ This file explains what creative tasks are, why they exist, which tasks are open
 - Results panel blocks input until dismissed
 - Fail = restart, no partial coins
 - Offline coins held until Supabase sync
+## Desk-first agent workflow
+
+Desk is the sole project-management system. Before changing code, resolve or create the relevant Desk ticket. Update it during work, comment with results and tests before finishing, attach useful file references, and include the Desk key in the commit. Never use Knowns, `.knowns`, Plate, or repo-local ticket Markdown as a substitute.
